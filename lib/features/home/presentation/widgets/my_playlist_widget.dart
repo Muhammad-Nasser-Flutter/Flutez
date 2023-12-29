@@ -1,3 +1,4 @@
+import 'package:flutez/features/home/presentation/widgets/home_playlist_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,30 +26,7 @@ class MyPlaylistWidget extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      width: 190.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      child: Image.asset(
-                        Assets.cover3,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text18(
-                    text: "Believer",
-                    weight: FontWeight.w500,
-                  ),
-                ],
-              );
+              return const HomePlayListItemWidget();
             },
             separatorBuilder: (BuildContext context, int index) {
               return SizedBox(

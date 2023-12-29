@@ -1,9 +1,13 @@
+import 'package:flutez/features/Track/Model/artist_model.dart';
+import 'package:flutez/features/Track/Model/track_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/theming/assets.dart';
 import '../../../../core/widgets/custom_texts.dart';
+import '../../../Track/Bloc/track_cubit.dart';
 
 class PlayingTrack extends StatelessWidget {
   const PlayingTrack({super.key});
@@ -35,7 +39,7 @@ class PlayingTrack extends StatelessWidget {
                       children: [
                         Text18(
                           text:
-                          "Chaff & DustChaff & DustChaff & DustChaff & Dust",
+                          "Chaff & Dust",
                           maxLines: 1,
                           overFlow: TextOverflow.ellipsis,
                         ),
@@ -65,7 +69,10 @@ class PlayingTrack extends StatelessWidget {
                   width: 10.w,
                 ),
                 InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    context.read<SongRepository>().setCurrentSong(Song(artist: Artist(name: "Imagine Dragons"), title: "Believer", imageUrl: "",trackPath: "assets/songs/Believer.mp3"));
+                    context.read<SongRepository>().play();
+                  },
                   child: Padding(
                     padding: EdgeInsets.all(5.r),
                     child: SvgPicture.asset(

@@ -5,7 +5,9 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:audio_service/audio_service.dart';
 import 'package:flutez/core/routing/app_router.dart';
+import 'package:flutez/packages/audio_handler/lib/src/audio_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -14,7 +16,7 @@ import 'package:flutez/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(appRouter: AppRouter(),));
+    await tester.pumpWidget(MyApp(appRouter: AppRouter(),audioHandler: MyAudioHandler(),));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

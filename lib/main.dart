@@ -1,4 +1,7 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutez/features/Track/Bloc/track_cubit.dart';
+import 'package:flutez/packages/audio_handler/lib/src/audio_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +18,15 @@ import 'core/theming/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  AudioHandler audioHandler = await AudioService.init(
+    builder: () => MyAudioHandler(),
+    config: const AudioServiceConfig(
+      // androidNotificationChannelId: "com.example.Flutez",
+      // androidNotificationChannelName: "Flutez",
+      // androidNotificationOngoing: true,
+      // androidStopForegroundOnPause: true,
+    ),
+  );
   await EasyLocalization.ensureInitialized();
   await CacheHelper.init();
   Bloc.observer = MyBlocObserver();
@@ -36,6 +48,7 @@ void main() async {
       path: 'assets/languages',
       child: MyApp(
         appRouter: AppRouter(),
+        audioHandler: audioHandler,
       ),
     ),
   );
@@ -43,7 +56,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final AppRouter appRouter;
-  const MyApp({super.key, required this.appRouter});
+  final AudioHandler audioHandler;
+  const MyApp({super.key, required this.appRouter, required this.audioHandler});
 
   // This widget is the root of your application.
   @override
@@ -51,18 +65,23 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      child: MaterialApp(
-        title: 'FluteZ',
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: ThemeMode.dark,
-        initialRoute: Routes.homeScreen,
-        onGenerateRoute: appRouter.generateRoute,
-        builder: EasyLoading.init(),
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<SongRepository>(create: (context)=> SongRepository(audioHandler:audioHandler)),
+        ],
+        child: MaterialApp(
+          title: 'FluteZ',
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: ThemeMode.dark,
+          initialRoute: Routes.homeScreen,
+          onGenerateRoute: appRouter.generateRoute,
+          builder: EasyLoading.init(),
+        ),
       ),
     );
   }

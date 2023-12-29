@@ -6,14 +6,14 @@ import 'package:palette_generator/palette_generator.dart';
 import '../../../../core/theming/assets.dart';
 import '../../../../core/widgets/custom_texts.dart';
 
-class RecommendedItemWidget extends StatefulWidget {
-  const RecommendedItemWidget({super.key});
+class HomePlayListItemWidget extends StatefulWidget {
+  const HomePlayListItemWidget({super.key});
 
   @override
-  State<RecommendedItemWidget> createState() => _RecommendedItemWidgetState();
+  State<HomePlayListItemWidget> createState() => _HomePlayListItemWidgetState();
 }
 
-class _RecommendedItemWidgetState extends State<RecommendedItemWidget> {
+class _HomePlayListItemWidgetState extends State<HomePlayListItemWidget> {
   PaletteGenerator? _paletteGenerator;
   Color? shadowColor = Colors.grey.withOpacity(0.3);
   @override
@@ -28,7 +28,7 @@ class _RecommendedItemWidgetState extends State<RecommendedItemWidget> {
     const imageProvider = AssetImage(Assets.cover1);
 
     PaletteGenerator paletteGenerator =
-        await PaletteGenerator.fromImageProvider(imageProvider);
+    await PaletteGenerator.fromImageProvider(imageProvider);
 
     setState(() {
       _paletteGenerator = paletteGenerator;
@@ -56,7 +56,7 @@ class _RecommendedItemWidgetState extends State<RecommendedItemWidget> {
               borderRadius: BorderRadius.circular(15.r),
             ),
             child: Image.asset(
-              Assets.cover1,
+              Assets.cover3,
               fit: BoxFit.cover,
             ),
           ),
@@ -65,16 +65,9 @@ class _RecommendedItemWidgetState extends State<RecommendedItemWidget> {
           height: 10.h,
         ),
         Text18(
-          text: "Monster Go Bump",
+          text: "Believer",
           weight: FontWeight.w500,
         ),
-        SizedBox(
-          height: 5.h,
-        ),
-        Text12(
-          text: "ERIKA RECINOS",
-          weight: FontWeight.w400,
-        )
       ],
     );
   }
