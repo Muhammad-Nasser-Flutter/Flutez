@@ -18,15 +18,6 @@ import 'core/theming/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AudioHandler audioHandler = await AudioService.init(
-    builder: () => MyAudioHandler(),
-    config: const AudioServiceConfig(
-      // androidNotificationChannelId: "com.example.Flutez",
-      // androidNotificationChannelName: "Flutez",
-      // androidNotificationOngoing: true,
-      // androidStopForegroundOnPause: true,
-    ),
-  );
   await EasyLocalization.ensureInitialized();
   await CacheHelper.init();
   Bloc.observer = MyBlocObserver();
@@ -48,7 +39,6 @@ void main() async {
       path: 'assets/languages',
       child: MyApp(
         appRouter: AppRouter(),
-        audioHandler: audioHandler,
       ),
     ),
   );
@@ -56,8 +46,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final AppRouter appRouter;
-  final AudioHandler audioHandler;
-  const MyApp({super.key, required this.appRouter, required this.audioHandler});
+  const MyApp({super.key, required this.appRouter,});
 
   // This widget is the root of your application.
   @override
@@ -65,9 +54,9 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      child: MultiRepositoryProvider(
+      child: MultiBlocProvider(
         providers: [
-          RepositoryProvider<SongRepository>(create: (context)=> SongRepository(audioHandler:audioHandler)),
+          BlocProvider(create: (context)=> TrackCubit()..initHandler()),
         ],
         child: MaterialApp(
           title: 'FluteZ',
