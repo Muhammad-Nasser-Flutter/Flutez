@@ -1,0 +1,1 @@
+int mainLayoutInitialScreenIndex=0;
