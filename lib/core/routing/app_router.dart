@@ -1,9 +1,10 @@
 import 'package:flutez/core/routing/routes.dart';
+import 'package:flutez/features/Liked%20Songs/presentation/liked_songs_screen.dart';
+import 'package:flutez/features/Track/presentation/playing_now_screen.dart';
 import 'package:flutez/features/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
-
 
 class AppRouter {
   Route generateRoute(RouteSettings settings) {
@@ -47,6 +48,20 @@ class AppRouter {
       case Routes.homeScreen:
         return PageTransition(
           child: const HomeScreen(),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
+      case Routes.likedSongs:
+        return PageTransition(
+          child: const LikedSongsScreen(),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
+        case Routes.playingNowScreen:
+        return PageTransition(
+          child: const PlayingNowScreen(),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,

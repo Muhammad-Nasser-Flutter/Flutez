@@ -1,20 +1,18 @@
 import 'package:flutez/core/helpers/extensions.dart';
-import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
+import 'package:flutez/core/widgets/icon_widget.dart';
 import 'package:flutez/core/widgets/search_icon.dart';
+import 'package:flutez/features/Liked%20Songs/presentation/widgets/liked_song_item.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
-import 'package:flutez/features/home/presentation/widgets/my_playlist_widget.dart';
 import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
-import 'package:flutez/features/home/presentation/widgets/recommended_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class LikedSongsScreen extends StatelessWidget {
+  const LikedSongsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,30 +22,43 @@ class HomeScreen extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            InkWell(
-              onTap: () {
-                context.pushNamed(Routes.likedSongs);
+            IconWidget(
+              onPressed: () {
+                context.pop();
               },
-              child: Container(
-                padding: EdgeInsets.all(10.r),
-                child: SvgPicture.asset(Assets.drawerIcon),
-              ),
+              iconAsset: Assets.arrowBackIcon,
             ),
             const SearchWidget()
           ],
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 20.w),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const RecommendedWidget(),
               SizedBox(
-                height: 20.h,
+                height: 10.h,
               ),
-              const MyPlaylistWidget(),
+              Text24(
+                text: "Liked Songs",
+                textColor: Colors.white,
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 8,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, childAspectRatio: 0.8,mainAxisSpacing: 20,crossAxisSpacing: 20
+                ),
+                itemBuilder: (context, index) {
+                  return const LikedSongItem();
+                },
+              )
             ],
           ),
         ),

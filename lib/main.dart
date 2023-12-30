@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context)=> TrackCubit()..initHandler()),
+          BlocProvider(create: (context)=> TrackCubit()),
         ],
         child: MaterialApp(
           title: 'FluteZ',
