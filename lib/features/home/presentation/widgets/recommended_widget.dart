@@ -1,26 +1,14 @@
 import 'package:flutez/features/home/Bloc/home_cubit.dart';
+import 'package:flutez/features/home/Bloc/home_states.dart';
 import 'package:flutez/features/home/presentation/widgets/recommended_item_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../core/theming/assets.dart';
 import '../../../../core/widgets/custom_texts.dart';
 
-class RecommendedWidget extends StatefulWidget {
+class RecommendedWidget extends StatelessWidget {
   const RecommendedWidget({super.key});
 
-  @override
-  State<RecommendedWidget> createState() => _RecommendedWidgetState();
-}
-
-class _RecommendedWidgetState extends State<RecommendedWidget> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    HomeCubit.get(context).updatePlaylistPaletteGenerator();
-    HomeCubit.get(context).updateRecommendedPaletteGenerator();
-  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,18 +23,23 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
         ),
         SizedBox(
           height: 280.h,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return const RecommendedItemWidget();
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                width: 15.w,
+          child: BlocBuilder<HomeCubit,HomeStates>(
+            builder:(context,state){
+              var homeCubit = HomeCubit.get(context);
+              return ListView.separated(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return RecommendedItemWidget(recommendedTrack: homeCubit.recommendedTracks[index],index:index);
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    width: 15.w,
+                  );
+                },
+                itemCount: homeCubit.recommendedTracks.length,
               );
             },
-            itemCount: 5,
           ),
         ),
       ],

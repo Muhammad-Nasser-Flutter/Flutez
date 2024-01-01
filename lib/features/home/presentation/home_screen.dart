@@ -24,7 +24,9 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           const SearchWidget(),
-          SizedBox(width: 15.w,)
+          SizedBox(
+            width: 15.w,
+          )
         ],
       ),
       body: Padding(
@@ -42,7 +44,12 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const PlayingTrack(),
+      bottomNavigationBar: BlocBuilder<TrackCubit,TrackStates>(
+        builder: (context, state) {
+          var trackCubit = TrackCubit.get(context);
+          return trackCubit.currentTrack == null? const SizedBox(): const PlayingTrack();
+        },
+      ),
     );
   }
 }

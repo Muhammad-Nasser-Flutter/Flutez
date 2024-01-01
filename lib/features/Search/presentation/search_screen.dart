@@ -9,6 +9,8 @@ import 'package:flutez/features/Liked%20Songs/presentation/widgets/liked_song_it
 import 'package:flutez/features/Search/Bloc/search_cubit.dart';
 import 'package:flutez/features/Search/Bloc/search_states.dart';
 import 'package:flutez/features/Search/presentation/widgets/search_item.dart';
+import 'package:flutez/features/Track/Bloc/track_cubit.dart';
+import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,14 +94,17 @@ class SearchScreen extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: searchCubit.searches.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.8,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 20,
                     ),
                     itemBuilder: (context, index) {
-                      return SearchItem(searchModel: searchCubit.searches[index],);
+                      return SearchItem(
+                        searchModel: searchCubit.searches[index],
+                      );
                     },
                   ),
                 ],
@@ -108,7 +113,14 @@ class SearchScreen extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: const PlayingTrack(),
+      bottomNavigationBar: BlocBuilder<TrackCubit, TrackStates>(
+        builder: (context, state) {
+          var trackCubit = TrackCubit.get(context);
+          return trackCubit.currentTrack == null
+              ? const SizedBox()
+              : const PlayingTrack();
+        },
+      ),
     );
   }
 }

@@ -8,10 +8,12 @@ class IconWidget extends StatelessWidget {
     required this.onPressed,
     required this.iconAsset,
     this.size,
+    this.color,
   });
   final VoidCallback onPressed;
   final String iconAsset;
   double? size;
+  Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class IconWidget extends StatelessWidget {
         child: SvgPicture.asset(
           iconAsset,
           width: size,
+          color: color,
         ),
       ),
     );

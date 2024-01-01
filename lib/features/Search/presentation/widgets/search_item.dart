@@ -7,25 +7,15 @@ import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/features/Search/models/search_model.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
+import 'package:flutez/features/home/models/recommended_track_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:palette_generator/palette_generator.dart';
 
-class SearchItem extends StatefulWidget {
+class SearchItem extends StatelessWidget {
   final SearchModel searchModel;
   const SearchItem({super.key, required this.searchModel});
-
-  @override
-  State<SearchItem> createState() => _SearchItemState();
-}
-
-class _SearchItemState extends State<SearchItem> {
-  @override
-  void initState() {
-    super.initState();
-    // Load your image here and get its dominant color
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +24,14 @@ class _SearchItemState extends State<SearchItem> {
         var trackCubit = TrackCubit.get(context);
         return GestureDetector(
           onTap: () {
-            trackCubit.getTrackLink(widget.searchModel.videoId!);
+            trackCubit.getTrackLink(
+              RecommendedTrackModel(
+                author: searchModel.channel!.name,
+                thumbnail: searchModel.thumbnails![1].url,
+                title: searchModel.title,
+                videoId: searchModel.id,
+              ),
+            );
             context.pushNamed(Routes.playingNowScreen);
           },
           child: Column(
@@ -55,8 +52,8 @@ class _SearchItemState extends State<SearchItem> {
                     borderRadius: BorderRadius.circular(5.r),
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: widget.searchModel.thumbnail!,
-                    fit: BoxFit.cover,
+                    imageUrl: searchModel.thumbnails![0].url!,
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
@@ -64,7 +61,8 @@ class _SearchItemState extends State<SearchItem> {
                 height: 10.h,
               ),
               Text18(
-                text: "${ widget.searchModel.title}",overFlow: TextOverflow.ellipsis,
+                text: "${searchModel.title}",
+                overFlow: TextOverflow.ellipsis,
                 weight: FontWeight.w500,
               ),
               SizedBox(
@@ -72,7 +70,7 @@ class _SearchItemState extends State<SearchItem> {
               ),
               Text12(
                 size: 13.sp,
-                text: "${widget.searchModel.author}",
+                text: "${searchModel.channel!.name}",
                 weight: FontWeight.w400,
               ),
             ],

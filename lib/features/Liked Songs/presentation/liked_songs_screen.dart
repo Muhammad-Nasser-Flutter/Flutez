@@ -78,7 +78,12 @@ class _LikedSongsScreenState extends State<LikedSongsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const PlayingTrack(),
+      bottomNavigationBar: BlocBuilder<TrackCubit, TrackStates>(
+        builder: (context, state) {
+          var trackCubit = TrackCubit.get(context);
+          return  trackCubit.currentTrack == null?const SizedBox():const PlayingTrack();
+        },
+      ),
     );
   }
 }

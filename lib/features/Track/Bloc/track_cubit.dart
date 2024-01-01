@@ -4,6 +4,8 @@ import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
+import 'package:flutez/features/Track/Model/track_model.dart';
+import 'package:flutez/features/home/models/recommended_track_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
@@ -56,25 +58,30 @@ class TrackCubit extends Cubit<TrackStates> {
 
   Uri trackLinkUri(String text) {
     return Uri.parse(
-        "https://youtube-mp3-downloader2.p.rapidapi.com/ytmp3/ytmp3/?url=https://www.youtube.com/watch?v=$text");
+        "https://youtube-media-downloader.p.rapidapi.com/v2/video/details?videoId=$text&lang=en-US&videos=false&audios=true&subtitles=false&related=false");
   }
 
-  Future<void> getTrackLink(String text) async {
+  Future<void> getTrackLink(RecommendedTrackModel track) async {
+    if (AudioPlayer != null) {
+      audioPlayer?.stop();
+    }
     emit(GetTrackLinkLoadingState());
     try {
       var response = await http.get(
-        trackLinkUri(text),
+        trackLinkUri(track.videoId!),
         headers: {
           'X-RapidAPI-Key':
               '2d8243ce2dmsh4e144f95478f00fp113780jsna2a7b17243c6',
-          'X-RapidAPI-Host': 'youtube-mp3-downloader2.p.rapidapi.com'
+          'X-RapidAPI-Host': 'youtube-media-downloader.p.rapidapi.com'
         },
       );
       if (response.statusCode == 200) {
-        audioPlayer!.stop();
         dynamic jsonResponse = jsonDecode(response.body);
-        audioPlayer!.setUrl(jsonResponse["link"]);
-        play();
+        setCurrentTrack(
+            trackImgUrl: jsonResponse["thumbnails"][4]["url"],
+            trackUrl: jsonResponse["audios"]["items"][0]["url"],
+            title: track.title!,
+            author: track.author!);
         emit(GetTrackLinkSuccessState());
       } else {
         debugPrint("${response.statusCode}");
@@ -85,4 +92,40 @@ class TrackCubit extends Cubit<TrackStates> {
       emit(GetTrackLinkErrorState());
     }
   }
+
+  Track? currentTrack;
+  void setCurrentTrack({
+    required String trackImgUrl,
+    required String trackUrl,
+    required String title,
+    required String author,
+  }) {
+    currentTrack = Track(
+      id: "id",
+      artist: author,
+      title: title,
+      imageUrl: trackImgUrl,
+      trackUrl: trackUrl,
+    );
+    initHandler(trackUrl);
+    play();
+    emit(SetTrackState());
+  }
+
+  Color? playingNowShadow ;
+  Future<void> updatePlayingPaletteGenerator() async {
+    // Replace 'your_image_path.jpg' with the actual path to your image
+    if(currentTrack != null){
+      var imageProvider = NetworkImage(currentTrack!.imageUrl);
+      PaletteGenerator paletteGenerator =
+      await PaletteGenerator.fromImageProvider(imageProvider);
+
+      _paletteGenerator = paletteGenerator;
+      playingNowShadow = _paletteGenerator?.vibrantColor?.color.withOpacity(0.1);
+    }
+
+    emit(ShadowsSuccessState());
+  }
+
+
 }

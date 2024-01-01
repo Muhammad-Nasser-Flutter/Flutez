@@ -1,3 +1,4 @@
+import 'package:flutez/features/home/Bloc/home_cubit.dart';
 import 'package:flutez/features/home/presentation/widgets/home_playlist_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,9 +6,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theming/assets.dart';
 import '../../../../core/widgets/custom_texts.dart';
 
-class MyPlaylistWidget extends StatelessWidget {
+class MyPlaylistWidget extends StatefulWidget {
   const MyPlaylistWidget({super.key});
 
+  @override
+  State<MyPlaylistWidget> createState() => _MyPlaylistWidgetState();
+}
+
+class _MyPlaylistWidgetState extends State<MyPlaylistWidget> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    HomeCubit.get(context).updatePlaylistPaletteGenerator();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(

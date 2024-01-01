@@ -5,7 +5,7 @@ class Assets {
   static const String searchIcon = "assets/images/Search.svg";
   static const String nextIcon = "assets/images/next.svg";
   static const String previousIcon = "assets/images/previous.svg";
-  static const String pauseIcon = "assets/images/pause.svg";
+  static const String pauseIcon = "assets/images/pause1.svg";
   static const String cover1 = "assets/images/Cover1.png";
   static const String cover2 = "assets/images/Cover2.png";
   static const String cover3 = "assets/images/Cover3.png";
@@ -26,4 +26,5 @@ class Assets {
   static const String logoutIcon = "assets/images/logout-icon.svg";
   static const String editProfileIcon = "assets/images/edit-profile-icon.svg";
   static const String mailIcon = "assets/images/mail.svg";
+  static const String playIcon = "assets/images/play.svg";
 }
