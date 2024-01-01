@@ -15,4 +15,15 @@ class Assets {
   static const String shuffleIcon = "assets/images/shuffle.svg";
   static const String repeatIcon = "assets/images/repeat.svg";
   static const String volumeIcon = "assets/images/volume.svg";
+  static const String exitIcon = "assets/images/exit.svg";
+  static const String contactUsIcon = "assets/images/contact-us.svg";
+  static const String fAQIcon = "assets/images/FAQ.svg";
+  static const String languageIcon = "assets/images/Language.svg";
+  static const String moonIcon = "assets/images/moon.svg";
+  static const String settingsIcon = "assets/images/settings.svg";
+  static const String userIcon = "assets/images/user.svg";
+  static const String editImageIcon = "assets/images/edit.svg";
+  static const String logoutIcon = "assets/images/logout-icon.svg";
+  static const String editProfileIcon = "assets/images/edit-profile-icon.svg";
+  static const String mailIcon = "assets/images/mail.svg";
 }

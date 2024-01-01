@@ -1,6 +1,10 @@
 import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/features/Liked%20Songs/presentation/liked_songs_screen.dart';
+import 'package:flutez/features/Profile/presentation/profile_screen.dart';
+import 'package:flutez/features/Search/Bloc/search_cubit.dart';
+import 'package:flutez/features/Search/presentation/search_screen.dart';
 import 'package:flutez/features/Track/presentation/playing_now_screen.dart';
+import 'package:flutez/features/home/Bloc/home_cubit.dart';
 import 'package:flutez/features/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +51,10 @@ class AppRouter {
       //   );
       case Routes.homeScreen:
         return PageTransition(
-          child: const HomeScreen(),
+          child: BlocProvider(
+            child: const HomeScreen(),
+            create: (context) => HomeCubit(),
+          ),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,
@@ -59,9 +66,25 @@ class AppRouter {
           alignment: Alignment.center,
           settings: settings,
         );
-        case Routes.playingNowScreen:
+      case Routes.playingNowScreen:
         return PageTransition(
           child: const PlayingNowScreen(),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
+      case Routes.profile:
+        return PageTransition(
+          child: const ProfileScreen(),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
+      case Routes.searchScreen:
+        return PageTransition(
+          child: BlocProvider(
+              create: (BuildContext context) => SearchCubit(),
+              child: SearchScreen()),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,

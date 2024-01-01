@@ -30,7 +30,7 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
     _updatePaletteGenerator();
     if (TrackCubit.get(context).audioPlayer == null) {
       TrackCubit.get(context).initHandler(
-          "https://ytmp3-w1.savevids.net/dl?hash=Rm1ZLCEu14P7aPyYNVCxNNV%2B9TwejWtCegDM7NuH60JW5BzR%2Fh7FmkzZ%2B5NcKgQX6ot%2BXLlZtqQGcjdb1iruOXka%2Bl7hLctH01vDgjGCvG2uWQZZRF67s0Z9aUPFVSufG16Dy76pEccE9lXXN0YOZxj575VdHPBSnzZvngUymYwh3b3rCRZVahjyUeFrKJDxtigxHM6dpzZ008N%2FHlhPZ0kcdru4TSWyUdCoMq6DRNeThB7jMQ6AWMiOr9ECWbI6");
+          "https://ytmp3.savevids.net/dl?hash=zfkoTLHBnJvxSYCc5if12HVIhQ6cKhKVw%2Fa6DcCOaMBLU2y2xsdupPJX0W43ZB8OkbAIsqrT0ItSD9ZLFfsCuPc%2F7dxCFLVw3iXkOFMF3qqQiME%2BrN7JCt2ed%2FvE1hesBCZ%2BVoWmxok%2B3U7wqIiQ5inMNKm235sualf%2Fyrqrdax3mzCB%2BO5KNCBS0pBwOmy8ALq9WUo2BUT1TatdGWMsCwIIQ3QBM5AfDIjw27dj%2FA6IiKoBmwdHKMXfuVhb3ZuJ");
     }
   }
 

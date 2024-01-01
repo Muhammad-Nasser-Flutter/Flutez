@@ -120,7 +120,7 @@ class CustomTextFormField extends StatelessWidget {
           decoration: InputDecoration(
             border: const UnderlineInputBorder(borderSide: BorderSide.none),
             labelText: labelText,
-            hintStyle: hintStyle??TextStyle(fontSize: 15.sp,color: Colors.grey,fontWeight: FontWeight.w400),
+            hintStyle: hintStyle??TextStyle(fontSize: 16.sp,color: Colors.white,fontWeight: FontWeight.w400),
             hintText: hintText,
             helperText: helperText,
             errorText: errorText,

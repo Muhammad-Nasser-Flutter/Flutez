@@ -5,6 +5,7 @@ import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/core/widgets/search_icon.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
+import 'package:flutez/features/home/presentation/widgets/drawer/custom_drawer.dart';
 import 'package:flutez/features/home/presentation/widgets/my_playlist_widget.dart';
 import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
 import 'package:flutez/features/home/presentation/widgets/recommended_widget.dart';
@@ -19,23 +20,12 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: CustomDrawer(),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () {
-                context.pushNamed(Routes.likedSongs);
-              },
-              child: Container(
-                padding: EdgeInsets.all(10.r),
-                child: SvgPicture.asset(Assets.drawerIcon),
-              ),
-            ),
-            const SearchWidget()
-          ],
-        ),
+        actions: [
+          const SearchWidget(),
+          SizedBox(width: 15.w,)
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 20.w),
@@ -52,12 +42,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BlocBuilder<TrackCubit, TrackStates>(
-        builder: (context, state) {
-          var trackCubit = TrackCubit.get(context);
-          return const PlayingTrack();
-        },
-      ),
+      bottomNavigationBar: const PlayingTrack(),
     );
   }
 }

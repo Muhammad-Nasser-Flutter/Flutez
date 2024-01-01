@@ -11,9 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LikedSongsScreen extends StatelessWidget {
+class LikedSongsScreen extends StatefulWidget {
   const LikedSongsScreen({super.key});
 
+  @override
+  State<LikedSongsScreen> createState() => _LikedSongsScreenState();
+}
+
+class _LikedSongsScreenState extends State<LikedSongsScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    TrackCubit.get(context).updatePaletteGenerator();
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +65,10 @@ class LikedSongsScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: 8,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 0.8,mainAxisSpacing: 20,crossAxisSpacing: 20
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.8,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 20,
                 ),
                 itemBuilder: (context, index) {
                   return const LikedSongItem();
@@ -63,12 +78,7 @@ class LikedSongsScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BlocBuilder<TrackCubit, TrackStates>(
-        builder: (context, state) {
-          var trackCubit = TrackCubit.get(context);
-          return const PlayingTrack();
-        },
-      ),
+      bottomNavigationBar: const PlayingTrack(),
     );
   }
 }

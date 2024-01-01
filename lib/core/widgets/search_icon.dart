@@ -1,3 +1,5 @@
+import 'package:flutez/core/helpers/extensions.dart';
+import 'package:flutez/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,7 +12,7 @@ class SearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () =>context.pushNamed(Routes.searchScreen),
       child: Container(
         padding: EdgeInsets.all(10.r),
         child: SvgPicture.asset(Assets.searchIcon),

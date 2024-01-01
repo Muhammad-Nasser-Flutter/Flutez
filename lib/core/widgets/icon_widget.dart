@@ -3,7 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class IconWidget extends StatelessWidget {
-  IconWidget({super.key, required this.onPressed, required this.iconAsset,this.size});
+  IconWidget({
+    super.key,
+    required this.onPressed,
+    required this.iconAsset,
+    this.size,
+  });
   final VoidCallback onPressed;
   final String iconAsset;
   double? size;
@@ -14,7 +19,10 @@ class IconWidget extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.all(10.r),
-        child: SvgPicture.asset(iconAsset,width: size,),
+        child: SvgPicture.asset(
+          iconAsset,
+          width: size,
+        ),
       ),
     );
   }

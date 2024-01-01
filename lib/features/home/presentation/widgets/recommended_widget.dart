@@ -1,3 +1,4 @@
+import 'package:flutez/features/home/Bloc/home_cubit.dart';
 import 'package:flutez/features/home/presentation/widgets/recommended_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,9 +6,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theming/assets.dart';
 import '../../../../core/widgets/custom_texts.dart';
 
-class RecommendedWidget extends StatelessWidget {
+class RecommendedWidget extends StatefulWidget {
   const RecommendedWidget({super.key});
 
+  @override
+  State<RecommendedWidget> createState() => _RecommendedWidgetState();
+}
+
+class _RecommendedWidgetState extends State<RecommendedWidget> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    HomeCubit.get(context).updatePlaylistPaletteGenerator();
+    HomeCubit.get(context).updateRecommendedPaletteGenerator();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
