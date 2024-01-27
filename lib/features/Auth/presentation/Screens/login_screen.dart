@@ -98,7 +98,7 @@ class LoginScreen extends StatelessWidget {
                       text: "LOGIN",
                       color: AppColors.smallTextColor,
                       onPressed: () {
-                        context.pushNamed(Routes.homeScreen);
+                        authCubit.login(email: emailController.text, pass: passController.text,  context: context);
                       },
                     ),
                     SizedBox(

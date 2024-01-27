@@ -5,10 +5,13 @@ import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
+import 'package:flutez/features/home/presentation/widgets/drawer/LogoutCubit/states.dart';
 import 'package:flutez/features/home/presentation/widgets/drawer/drawer_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'LogoutCubit/cubit.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key}) : super(key: key);
@@ -95,6 +98,29 @@ class CustomDrawer extends StatelessWidget {
                 icon: Assets.settingsIcon,
                 label: "Settings",
                 onPressed: () {},
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              BlocProvider(
+                create: (context)=>LogoutCubit(),
+                child: BlocConsumer<LogoutCubit,LogoutStates>(
+                  listener: (context,state){
+                    if(state is LogoutSuccessState){
+                      context.pushNamedAndRemoveUntil(Routes.loginScreen, (route) => false, predicate: (route) => false,);
+                    }
+                  },
+                  builder:(context,state){
+                    var logoutCubit = LogoutCubit.get(context);
+                    return DrawerItem(
+                      icon: Assets.settingsIcon,
+                      label: "Logout",
+                      onPressed: () {
+                        logoutCubit.logout(context: context);
+                      },
+                    );
+                  },
+                ),
               ),
             ],
           ),

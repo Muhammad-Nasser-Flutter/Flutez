@@ -18,6 +18,7 @@ class RegisterScreen extends StatelessWidget {
   var emailController = TextEditingController();
   var passController = TextEditingController();
   var userNameController = TextEditingController();
+  var phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +27,7 @@ class RegisterScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
           child: BlocConsumer<AuthCubit, AuthStates>(
             listener: (context, state) {
-              if(state is RegisterSuccessState){
+              if (state is RegisterSuccessState) {
                 context.pushReplacementNamed(Routes.homeScreen);
               }
             },
@@ -58,15 +59,12 @@ class RegisterScreen extends StatelessWidget {
                     Text24(text: "Register to Enjoy Our"),
                     Text28(text: "Music"),
                     SizedBox(
-                      height: 40.h,
+                      height: 30.h,
                     ),
                     CustomTextFormField(
-                      prefixIcon: InkWell(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
+                      prefixIcon: const Icon(
+                        Icons.person,
+                        color: Colors.white,
                       ),
                       hintText: "User Name",
                       controller: userNameController,
@@ -110,13 +108,41 @@ class RegisterScreen extends StatelessWidget {
                       validator: (s) {},
                     ),
                     SizedBox(
-                      height: 30.h,
+                      height: 20.h,
+                    ),
+                    CustomTextFormField(
+                      prefixIcon: const Icon(
+                        Icons.phone,
+                        color: Colors.white,
+                      ),
+                      hintText: "Phone",
+                      controller: phoneController,
+                      borderWidth: 1,
+                      keyboardType: TextInputType.phone,
+                      validator: (s) {},
+                    ),
+                    SizedBox(
+                      height: 40.h,
                     ),
                     CustomButton(
                       width: double.maxFinite,
                       text: "REGISTER",
                       color: AppColors.smallTextColor,
                       onPressed: () {
+                        if (authCubit.checkValidity(
+                          email: emailController.text,
+                          pass: passController.text,
+                          userName: userNameController.text,
+                          phone:phoneController.text
+                        )) {
+                          authCubit.register(
+                            email: emailController.text,
+                            pass: passController.text,
+                            userName: userNameController.text,
+                            phone: phoneController.text,
+                            context: context,
+                          );
+                        }
                       },
                     ),
                     SizedBox(
