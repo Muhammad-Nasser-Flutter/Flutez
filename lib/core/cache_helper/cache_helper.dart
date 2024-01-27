@@ -20,6 +20,9 @@ class CacheHelper {
     await CacheHelper.saveData(key: CacheKeys.currentLanguage, value: "en");
 
   }
+  static bool isLoggedIn(){
+    return CacheHelper.getData(key: CacheKeys.uId) !=null;
+  }
   static String getCurrentLanguage() {
     // print(CacheHelper.getData( key: CacheKeys.currentLanguage,));
     return CacheHelper.getData( key: CacheKeys.currentLanguage,) ?? "en";

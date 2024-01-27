@@ -27,4 +27,5 @@ class Assets {
   static const String editProfileIcon = "assets/images/edit-profile-icon.svg";
   static const String mailIcon = "assets/images/mail.svg";
   static const String playIcon = "assets/images/play.svg";
+  static const String logo = "assets/images/Flutez LOGO.jpg";
 }

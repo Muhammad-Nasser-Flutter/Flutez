@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "662697512266",
+    "project_id": "flutez-18e07",
+    "storage_bucket": "flutez-18e07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662697512266:android:7e670ca3c88db96ed885b3",
+        "android_client_info": {
+          "package_name": "com.example.flutez"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuj81XpjiroX4ufl3Jhs6qsPGYcUKx2Eg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

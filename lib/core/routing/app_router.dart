@@ -1,4 +1,5 @@
 import 'package:flutez/core/routing/routes.dart';
+import 'package:flutez/features/Auth/Bloc/Auth_cubit.dart';
 import 'package:flutez/features/Liked%20Songs/presentation/liked_songs_screen.dart';
 import 'package:flutez/features/Profile/presentation/profile_screen.dart';
 import 'package:flutez/features/Search/Bloc/search_cubit.dart';
@@ -10,26 +11,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../features/Auth/presentation/Screens/login_screen.dart';
+import '../../features/Auth/presentation/Screens/register_screen.dart';
+
 class AppRouter {
   Route generateRoute(RouteSettings settings) {
     //this arguments to be passed in any screen like this ( arguments as ClassName )
     final arguments = settings.arguments;
 
     switch (settings.name) {
-      // case Routes.loginScreen:
-      //   return PageTransition(
-      //     child: LoginScreen(),
-      //     type: PageTransitionType.fade,
-      //     alignment: Alignment.center,
-      //     settings: settings,
-      //   );
-      // case Routes.registerScreen:
-      //   return PageTransition(
-      //     child: RegisterScreen(),
-      //     type: PageTransitionType.fade,
-      //     alignment: Alignment.center,
-      //     settings: settings,
-      //   );
+      case Routes.loginScreen:
+        return PageTransition(
+          child: BlocProvider(
+            child: LoginScreen(),
+            create: (context) => AuthCubit(),
+          ),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
+      case Routes.registerScreen:
+        return PageTransition(
+          child: BlocProvider(
+            child: RegisterScreen(),
+            create: (context) => AuthCubit(),
+          ),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
       // case Routes.mainLayoutScreen:
       //   return PageTransition(
       //     child: BlocProvider(
