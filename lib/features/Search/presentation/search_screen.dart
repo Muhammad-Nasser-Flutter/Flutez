@@ -56,6 +56,7 @@ class SearchScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: CustomTextFormField(
+                          borderWidth: 1,
                           controller: controller,
                           hintText: "Search desired track ..",
                           padding: EdgeInsets.symmetric(horizontal: 15.w),
@@ -80,8 +81,8 @@ class SearchScreen extends StatelessWidget {
                               color: AppColors.smallTextColor,
                               borderRadius: BorderRadius.circular(12.r),
                               border:
-                                  Border.all(width: 0.3, color: Colors.white)),
-                          padding: const EdgeInsets.all(15.0),
+                                  Border.all(width: 1, color: Colors.white)),
+                          padding: const EdgeInsets.all(14.0),
                           child: SvgPicture.asset(Assets.searchIcon),
                         ),
                       ),

@@ -103,17 +103,21 @@ class CustomDrawer extends StatelessWidget {
                 height: 10.h,
               ),
               BlocProvider(
-                create: (context)=>LogoutCubit(),
-                child: BlocConsumer<LogoutCubit,LogoutStates>(
-                  listener: (context,state){
-                    if(state is LogoutSuccessState){
-                      context.pushNamedAndRemoveUntil(Routes.loginScreen, (route) => false, predicate: (route) => false,);
+                create: (context) => LogoutCubit(),
+                child: BlocConsumer<LogoutCubit, LogoutStates>(
+                  listener: (context, state) {
+                    if (state is LogoutSuccessState) {
+                      context.pushNamedAndRemoveUntil(
+                        Routes.loginScreen,
+                        (route) => false,
+                        predicate: (route) => false,
+                      );
                     }
                   },
-                  builder:(context,state){
+                  builder: (context, state) {
                     var logoutCubit = LogoutCubit.get(context);
                     return DrawerItem(
-                      icon: Assets.settingsIcon,
+                      icon: Assets.logoutIcon,
                       label: "Logout",
                       onPressed: () {
                         logoutCubit.logout(context: context);

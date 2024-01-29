@@ -95,6 +95,7 @@ class LoginScreen extends StatelessWidget {
                       height: 30.h,
                     ),
                     CustomButton(
+                      width: double.maxFinite,
                       text: "LOGIN",
                       color: AppColors.smallTextColor,
                       onPressed: () {

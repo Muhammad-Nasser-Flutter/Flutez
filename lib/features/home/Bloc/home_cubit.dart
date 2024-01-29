@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/features/home/Bloc/home_states.dart';
+import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutez/features/home/models/recommended_track_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,14 +18,15 @@ class HomeCubit extends Cubit<HomeStates> {
 
   PaletteGenerator? _paletteGenerator;
 
-  List recommendedShadows =[];
+  List recommendedShadows = [];
 
   List playlistShadows =
       List.generate(10, (index) => AppColors.scaffoldBackground);
 
   Future<void> updateRecommendedPaletteGenerator() async {
     // Replace 'your_image_path.jpg' with the actual path to your image
-    recommendedShadows = List.generate(recommendedTracks.length, (index) => AppColors.scaffoldBackground);
+    recommendedShadows = List.generate(
+        recommendedTracks.length, (index) => AppColors.scaffoldBackground);
     for (int i = 0; i < recommendedTracks.length; i++) {
       var imageProvider = NetworkImage(recommendedTracks[i].thumbnail);
       PaletteGenerator paletteGenerator =
@@ -66,7 +70,6 @@ class HomeCubit extends Cubit<HomeStates> {
           'X-RapidAPI-Host': 'youtube-music-api3.p.rapidapi.com'
         },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         recommendedTracks = jsonResponse["results"]
@@ -84,5 +87,17 @@ class HomeCubit extends Cubit<HomeStates> {
       debugPrint(err.toString());
       emit(GetRecommendedErrorState());
     }
+  }
+
+  List playlists = [];
+
+  Future<void> getPlaylist() async {
+    FirebaseFirestore.instance.collection("Playlists").snapshots().listen((event) {
+      event.docs.forEach((element) {
+        playlists.add(PlaylistModel.fromJson(element.data()));
+      });
+      emit(GetPlaylistsSuccessState());
+    });
+
   }
 }

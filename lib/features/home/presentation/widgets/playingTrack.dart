@@ -60,7 +60,7 @@ class PlayingTrack extends StatelessWidget {
                             width: 70.r,
                             height: 70.r,
                             child: CachedNetworkImage(
-                              imageUrl: trackCubit.currentTrack!.imageUrl,
+                              imageUrl: trackCubit.currentTrack!.image!,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -72,7 +72,7 @@ class PlayingTrack extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text18(
-                                    text: "${trackCubit.currentTrack?.title}",
+                                    text: "${trackCubit.currentTrack?.trackName}",
                                     maxLines: 1,
                                     overFlow: TextOverflow.ellipsis,
                                   ),

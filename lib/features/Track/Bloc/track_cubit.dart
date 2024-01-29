@@ -4,7 +4,6 @@ import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
-import 'package:flutez/features/Track/Model/track_model.dart';
 import 'package:flutez/features/home/models/recommended_track_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +11,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart' as http;
+
+import '../../home/models/playlist_model.dart';
 
 class TrackCubit extends Cubit<TrackStates> {
   TrackCubit() : super(TrackInitialState());
@@ -81,7 +82,7 @@ class TrackCubit extends Cubit<TrackStates> {
             trackImgUrl: jsonResponse["thumbnails"][4]["url"],
             trackUrl: jsonResponse["audios"]["items"][0]["url"],
             title: track.title!,
-            author: track.author!);
+            author: track.author!, id: 1);
         emit(GetTrackLinkSuccessState());
       } else {
         debugPrint("${response.statusCode}");
@@ -99,13 +100,14 @@ class TrackCubit extends Cubit<TrackStates> {
     required String trackUrl,
     required String title,
     required String author,
+    required int id,
   }) {
     currentTrack = Track(
-      id: "id",
+      id: id,
       artist: author,
-      title: title,
-      imageUrl: trackImgUrl,
-      trackUrl: trackUrl,
+      trackName: title,
+      image: trackImgUrl,
+      trackLink:  trackUrl,
     );
     initHandler(trackUrl);
     play();
@@ -116,7 +118,7 @@ class TrackCubit extends Cubit<TrackStates> {
   Future<void> updatePlayingPaletteGenerator() async {
     // Replace 'your_image_path.jpg' with the actual path to your image
     if(currentTrack != null){
-      var imageProvider = NetworkImage(currentTrack!.imageUrl);
+      var imageProvider = NetworkImage(currentTrack!.image!);
       PaletteGenerator paletteGenerator =
       await PaletteGenerator.fromImageProvider(imageProvider);
 

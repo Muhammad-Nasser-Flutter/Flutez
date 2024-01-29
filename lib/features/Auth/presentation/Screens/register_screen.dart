@@ -124,26 +124,28 @@ class RegisterScreen extends StatelessWidget {
                     SizedBox(
                       height: 40.h,
                     ),
-                    CustomButton(
-                      width: double.maxFinite,
-                      text: "REGISTER",
-                      color: AppColors.smallTextColor,
-                      onPressed: () {
-                        if (authCubit.checkValidity(
-                          email: emailController.text,
-                          pass: passController.text,
-                          userName: userNameController.text,
-                          phone:phoneController.text
-                        )) {
-                          authCubit.register(
+                    Center(
+                      child: CustomButton(
+                        width: double.maxFinite,
+                        text: "REGISTER",
+                        color: AppColors.smallTextColor,
+                        onPressed: () {
+                          if (authCubit.checkValidity(
                             email: emailController.text,
                             pass: passController.text,
                             userName: userNameController.text,
-                            phone: phoneController.text,
-                            context: context,
-                          );
-                        }
-                      },
+                            phone:phoneController.text
+                          )) {
+                            authCubit.register(
+                              email: emailController.text,
+                              pass: passController.text,
+                              userName: userNameController.text,
+                              phone: phoneController.text,
+                              context: context,
+                            );
+                          }
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 10.h,

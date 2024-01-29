@@ -136,7 +136,7 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
                             borderRadius: BorderRadius.circular(5.r),
                           ),
                           child: CachedNetworkImage(
-                            imageUrl: trackCubit.currentTrack!.imageUrl,
+                            imageUrl: trackCubit.currentTrack!.image!,
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -187,7 +187,7 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
                               maxWidth: 260.w
                             ),
                             child: Text22(
-                              text: "${trackCubit.currentTrack?.title}",maxLines: 1,overFlow: TextOverflow.ellipsis,
+                              text: "${trackCubit.currentTrack?.trackName}",maxLines: 1,overFlow: TextOverflow.ellipsis,
                               textColor: Colors.white,
                             ),
                           ),

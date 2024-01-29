@@ -63,7 +63,7 @@ class AppRouter {
         return PageTransition(
           child: BlocProvider(
             child: const HomeScreen(),
-            create: (context) => HomeCubit()..getRecommendedTracks(),
+            create: (context) => HomeCubit()..getRecommendedTracks()..getPlaylist(),
           ),
           type: PageTransitionType.fade,
           alignment: Alignment.center,

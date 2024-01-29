@@ -112,6 +112,15 @@ class AuthCubit extends Cubit<AuthStates> {
       emit(LoginSuccessState());
       customToast(msg: "Logged in Successfully", color: AppColors.smallTextColor);
     }).catchError((error) {
+      if(email.isNotEmpty){
+        if(pass.isNotEmpty){
+          customToast(msg: "Email or password is invalid", color: Colors.red);
+        }else{
+          customToast(msg: "password is must not be empty", color: Colors.red);
+        }
+      }else{
+        customToast(msg: "Email must not be empty", color: Colors.red);
+      }
       emit(LoginErrorState());
     });
   }
