@@ -8,6 +8,7 @@ import 'package:flutez/core/widgets/icon_widget.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
+import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +16,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class PlayingNowScreen extends StatefulWidget {
-  const PlayingNowScreen({super.key});
+  final Track track;
+  const PlayingNowScreen({super.key, required this.track});
 
   @override
   State<PlayingNowScreen> createState() => _PlayingNowScreenState();
@@ -31,7 +33,7 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
     TrackCubit.get(context).updatePlayingPaletteGenerator();
     if (TrackCubit.get(context).audioPlayer == null) {
       TrackCubit.get(context).initHandler(
-          "https://ymd.dlod.link/?u=https%3A%2F%2Fredirector.googlevideo.com%2Fvideoplayback%3Fexpire%3D1704145545%26ei%3DKd6SZeC4HvutsfIP1ISC4A8%26ip%3D209.141.44.95%26id%3Do-ANvD4I33444mLqiFsIFuWi2mqP2STaiCpFQdJ9Am05N8%26itag%3D140%26source%3Dyoutube%26requiressl%3Dyes%26xpc%3DEgVo2aDSNQ%253D%253D%26mh%3DVZ%26mm%3D31%252C29%26mn%3Dsn-nx5s7nee%252Csn-nx57ynse%26ms%3Dau%252Crdu%26mv%3Dm%26mvi%3D4%26pl%3D22%26gcr%3Dus%26initcwndbps%3D127500%26siu%3D1%26vprv%3D1%26svpuc%3D1%26mime%3Daudio%252Fmp4%26ns%3DncxU_eSpZVNAl7X8jSa8NGgQ%26gir%3Dyes%26clen%3D3506059%26dur%3D216.595%26lmt%3D1699039483710674%26mt%3D1704123433%26fvip%3D3%26keepalive%3Dyes%26fexp%3D24007246%26c%3DWEB%26txp%3D4532434%26n%3D39b3ePAy1NoD5Q%26sparams%3Dexpire%252Cei%252Cip%252Cid%252Citag%252Csource%252Crequiressl%252Cxpc%252Cgcr%252Csiu%252Cvprv%252Csvpuc%252Cmime%252Cns%252Cgir%252Cclen%252Cdur%252Clmt%26lsparams%3Dmh%252Cmm%252Cmn%252Cms%252Cmv%252Cmvi%252Cpl%252Cinitcwndbps%26lsig%3DAAO5W4owRAIgBARtmlqS1U_QGbFMlWAt5BU-kwkjOI3mPTFGgola6ncCIDZnJk3P6o1ICsVjUMv2CCuVGoEA7rf5X2UsXGTFwu4f%26sig%3DAJfQdSswRQIgH-vxtHn-h2G08fO80MGb-cDd19PEsMPQ4NT8vvjN6PwCIQDpiD_UCk8gnRgJ4sG-o3i7I3soHeuvHEaCHAIJ1wjy5w%253D%253D%26range%3D0-&p=Ip9LiUpGmxEeKfRQT5EjpKsHrir4pPmIeiAjHclnD18fEZBYIR4D8GwngHjBlB12CFFjlZeLsiTAmopNl-kHI1KsU7ghnUciQieFvGGYor3M4j017gJhPpQpkla4FOisXuTx1pkYUTw2VGX1lw9mYA&s=mOLCb2jncSEFwJ_r-P2DEVo0gbvgPj1To6_YgkTl5aU");
+          widget.track.trackLink!);
     }
   }
 
@@ -127,7 +129,7 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: trackCubit.playingNowShadow??AppColors.scaffoldBackground,
+                                color: Color(int.parse(widget.track.shadowColor!)).withOpacity(0.2),
                                 blurRadius: 45.r,
                                 spreadRadius: -0,
                                 offset: const Offset(0, 0),
@@ -136,7 +138,7 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
                             borderRadius: BorderRadius.circular(5.r),
                           ),
                           child: CachedNetworkImage(
-                            imageUrl: trackCubit.currentTrack!.image!,
+                            imageUrl: widget.track.image!,
                             fit: BoxFit.fill,
                           ),
                         ),

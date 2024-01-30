@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/core/theming/assets.dart';
@@ -5,36 +6,25 @@ import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
+import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:palette_generator/palette_generator.dart';
 
-class LikedSongItem extends StatefulWidget {
-  const LikedSongItem({super.key});
-
-  @override
-  State<LikedSongItem> createState() => _LikedSongItemState();
-}
-
-class _LikedSongItemState extends State<LikedSongItem> {
-
-  @override
-  void initState() {
-    super.initState();
-    // Load your image here and get its dominant color
-  }
-
-
+class LikedSongItem extends StatelessWidget {
+  const LikedSongItem({super.key, required this.model, required this.index});
+  final PlaylistModel model;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TrackCubit,TrackStates>(
-      builder:(context,state){
+    return BlocBuilder<TrackCubit, TrackStates>(
+      builder: (context, state) {
         var trackCubit = TrackCubit.get(context);
         return GestureDetector(
-          onTap: (){
-            context.pushNamed(Routes.playingNowScreen);
+          onTap: () {
+            context.pushNamed(Routes.playingNowScreen,arguments: model.tracks![index]);
           },
           child: Column(
             children: [
@@ -45,7 +35,7 @@ class _LikedSongItemState extends State<LikedSongItem> {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: trackCubit.shadows[0],
+                        color:  Color(int.parse(model.tracks![index].shadowColor!)).withOpacity(0.2),
                         blurRadius: 15.r,
                         spreadRadius: -5,
                         offset: const Offset(0, 20),
@@ -53,8 +43,8 @@ class _LikedSongItemState extends State<LikedSongItem> {
                     ],
                     borderRadius: BorderRadius.circular(5.r),
                   ),
-                  child: Image.asset(
-                    Assets.cover3,
+                  child: CachedNetworkImage(
+                    imageUrl: model.tracks![index].image!,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -63,7 +53,7 @@ class _LikedSongItemState extends State<LikedSongItem> {
                 height: 10.h,
               ),
               Text18(
-                text: "Believer",
+                text:  model.tracks![index].trackName!,
                 weight: FontWeight.w500,
               ),
               SizedBox(
@@ -71,7 +61,7 @@ class _LikedSongItemState extends State<LikedSongItem> {
               ),
               Text12(
                 size: 13.sp,
-                text: "Imagine Dragons",
+                text:model.tracks![index].artist!,
                 weight: FontWeight.w400,
               ),
             ],

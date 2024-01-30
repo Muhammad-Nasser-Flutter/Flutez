@@ -6,7 +6,9 @@ import 'package:flutez/features/Search/Bloc/search_cubit.dart';
 import 'package:flutez/features/Search/presentation/search_screen.dart';
 import 'package:flutez/features/Track/presentation/playing_now_screen.dart';
 import 'package:flutez/features/home/Bloc/home_cubit.dart';
+import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutez/features/home/presentation/home_screen.dart';
+import 'package:flutez/features/home/presentation/widgets/Playlists/playlist_tracks_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -69,6 +71,13 @@ class AppRouter {
           alignment: Alignment.center,
           settings: settings,
         );
+        case Routes.playlistTracks:
+        return PageTransition(
+          child:  PlaylistTracksScreen(model: settings.arguments as PlaylistModel),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
       case Routes.likedSongs:
         return PageTransition(
           child: const LikedSongsScreen(),
@@ -78,7 +87,7 @@ class AppRouter {
         );
       case Routes.playingNowScreen:
         return PageTransition(
-          child: const PlayingNowScreen(),
+          child:  PlayingNowScreen(track: settings.arguments as Track,),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,

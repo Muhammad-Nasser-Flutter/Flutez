@@ -6,25 +6,27 @@ import 'package:flutez/core/widgets/search_icon.dart';
 import 'package:flutez/features/Liked%20Songs/presentation/widgets/liked_song_item.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
+import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LikedSongsScreen extends StatefulWidget {
-  const LikedSongsScreen({super.key});
+class PlaylistTracksScreen extends StatefulWidget {
+  const PlaylistTracksScreen({super.key, required this.model});
+  final PlaylistModel model;
 
   @override
-  State<LikedSongsScreen> createState() => _LikedSongsScreenState();
+  State<PlaylistTracksScreen> createState() => _PlaylistTracksScreenState();
 }
 
-class _LikedSongsScreenState extends State<LikedSongsScreen> {
+class _PlaylistTracksScreenState extends State<PlaylistTracksScreen> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     TrackCubit.get(context).updatePaletteGenerator();
-    
+
   }
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class _LikedSongsScreenState extends State<LikedSongsScreen> {
                 height: 10.h,
               ),
               Text24(
-                text: "Liked Songs",
+                text: widget.model.title!,
                 textColor: Colors.white,
               ),
               SizedBox(
@@ -63,7 +65,7 @@ class _LikedSongsScreenState extends State<LikedSongsScreen> {
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: 8,
+                itemCount: widget.model.tracks!.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 0.8,
@@ -71,7 +73,7 @@ class _LikedSongsScreenState extends State<LikedSongsScreen> {
                   crossAxisSpacing: 20,
                 ),
                 itemBuilder: (context, index) {
-                  // return const LikedSongItem();
+                  return  LikedSongItem(model: widget.model,index: index,);
                 },
               )
             ],
