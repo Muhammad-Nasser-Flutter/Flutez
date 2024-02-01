@@ -8,7 +8,7 @@ import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/home/presentation/widgets/drawer/custom_drawer.dart';
 import 'package:flutez/features/home/presentation/widgets/Playlists/my_playlist_widget.dart';
 import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
-import 'package:flutez/features/home/presentation/widgets/recommended_widget.dart';
+import 'package:flutez/features/home/presentation/widgets/recommended/recommended_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

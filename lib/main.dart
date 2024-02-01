@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'core/Api/my_dio.dart';
 import 'core/bloc_observer.dart';
 import 'core/cache_helper/cache_helper.dart';
@@ -23,6 +24,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform
   );
   Bloc.observer = MyBlocObserver();
+  await JustAudioBackground.init(
+    androidNotificationChannelId: "com.ryanheise.bg_demo.channel.audio",
+    androidNotificationChannelName: "Audio Playback",
+    androidNotificationOngoing: true,
+  );
+
   MyDio.init();
   if (kDebugMode) {
     print(

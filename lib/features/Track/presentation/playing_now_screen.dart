@@ -13,43 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:palette_generator/palette_generator.dart';
 
-class PlayingNowScreen extends StatefulWidget {
+class PlayingNowScreen extends StatelessWidget {
   final Track track;
   const PlayingNowScreen({super.key, required this.track});
 
-  @override
-  State<PlayingNowScreen> createState() => _PlayingNowScreenState();
-}
-
-class _PlayingNowScreenState extends State<PlayingNowScreen> {
-  // PaletteGenerator? _paletteGenerator;
-  // Color? shadowColor = Colors.grey.withOpacity(0.3);
-  @override
-  void initState() {
-    super.initState();
-    // Load your image here and get its dominant color
-    TrackCubit.get(context).updatePlayingPaletteGenerator();
-    if (TrackCubit.get(context).audioPlayer == null) {
-      TrackCubit.get(context).initHandler(
-          widget.track.trackLink!);
-    }
-  }
-
   // Future<void> _updatePaletteGenerator() async {
-  //   // Replace 'your_image_path.jpg' with the actual path to your image
-  //   const imageProvider = AssetImage(Assets.cover3);
-  //
-  //   PaletteGenerator paletteGenerator =
-  //       await PaletteGenerator.fromImageProvider(imageProvider);
-  //
-  //   setState(() {
-  //     _paletteGenerator = paletteGenerator;
-  //     shadowColor = _paletteGenerator?.vibrantColor?.color.withOpacity(0.1);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TrackCubit, TrackStates>(
@@ -88,88 +57,29 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
                     height: 40.h,
                   ),
                   Center(
-                    child: Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        SizedBox(
-                          height: 280.r,
-                          width: double.maxFinite,
-                        ),
-                        Positioned(
-                          left: -180.r,
-                          top: 0,
-                          bottom: 0,
-                          child: Center(
-                            child: Container(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              width: 220.r,
-                              height: 220.r,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.scaffoldBackground,
-                                    blurRadius: 15.r,
-                                    spreadRadius: -5,
-                                    offset: const Offset(0, 20),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(5.r),
-                              ),
-                              child: Image.asset(
-                                Assets.cover3,
-                                fit: BoxFit.cover,
-                              ),
+                    child: Hero(
+                      tag: "${track.image}",
+                      child: Container(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        width: 300.r,
+                        height: 300.r,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(int.parse(track.shadowColor!))
+                                  .withOpacity(0.2),
+                              blurRadius: 45.r,
+                              spreadRadius: -0,
+                              offset: const Offset(0, 0),
                             ),
-                          ),
+                          ],
+                          borderRadius: BorderRadius.circular(5.r),
                         ),
-                        Container(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          width: 260.r,
-                          height: 260.r,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(int.parse(widget.track.shadowColor!)).withOpacity(0.2),
-                                blurRadius: 45.r,
-                                spreadRadius: -0,
-                                offset: const Offset(0, 0),
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                          child: CachedNetworkImage(
-                            imageUrl: widget.track.image!,
-                            fit: BoxFit.fill,
-                          ),
+                        child: CachedNetworkImage(
+                          imageUrl: track.image!,
+                          fit: BoxFit.cover,
                         ),
-                        Positioned(
-                          top: 0,
-                          bottom: 0,
-                          right: -180.r,
-                          child: Center(
-                            child: Container(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              width: 220.r,
-                              height: 220.r,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.scaffoldBackground,
-                                    blurRadius: 15.r,
-                                    spreadRadius: -5,
-                                    offset: const Offset(0, 20),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(5.r),
-                              ),
-                              child: Image.asset(
-                                Assets.cover3,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -185,11 +95,11 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
                       Column(
                         children: [
                           Container(
-                            constraints: BoxConstraints(
-                              maxWidth: 260.w
-                            ),
+                            constraints: BoxConstraints(maxWidth: 260.w),
                             child: Text22(
-                              text: "${trackCubit.currentTrack?.trackName}",maxLines: 1,overFlow: TextOverflow.ellipsis,
+                              text: "${trackCubit.currentTrack?.trackName}",
+                              maxLines: 1,
+                              overFlow: TextOverflow.ellipsis,
                               textColor: Colors.white,
                             ),
                           ),
@@ -217,11 +127,34 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
                     child: Row(
                       children: [
                         IconWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            if(trackCubit.audioPlayer!.volume!=100){
+                              trackCubit.audioPlayer!.setVolume(100);
+                            }else{
+                              trackCubit.audioPlayer!.setVolume(0);
+
+                            }
+                          },
                           iconAsset: Assets.volumeIcon,
                           size: 22.r,
                         ),
-                        const Spacer(),
+                        Expanded(
+                          child: ProgressBar(
+                            barHeight: 4,
+                            baseBarColor: const Color(0xFF555b6a),
+                            bufferedBarColor: Colors.grey,
+                            progressBarColor: Colors.white,
+                            thumbColor: Colors.white,
+                            thumbGlowRadius: 20,
+                            thumbRadius: 9,
+                            progress: Duration(seconds: int.parse(trackCubit.audioPlayer!.volume.round().toString())),
+                            total: const Duration(seconds: 100),
+                            onSeek: (Duration d){
+                              trackCubit.audioPlayer!.setVolume(double.parse(d.inSeconds.toString()));
+                            },
+                          ),
+                        ),
+                        // const Spacer(),
                         IconWidget(
                           onPressed: () {},
                           iconAsset: Assets.repeatIcon,
@@ -285,8 +218,8 @@ class _PlayingNowScreenState extends State<PlayingNowScreen> {
                         iconAsset: positionData?.state.playing == null
                             ? Assets.playIcon
                             : !positionData!.state.playing
-                            ? Assets.playIcon
-                            : Assets.pauseIcon,
+                                ? Assets.playIcon
+                                : Assets.pauseIcon,
                         size: 40.r,
                         color: Colors.white,
                       ),

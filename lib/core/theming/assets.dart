@@ -14,7 +14,6 @@ class Assets {
   static const String heartIcon = "assets/images/heart.svg";
   static const String shuffleIcon = "assets/images/shuffle.svg";
   static const String repeatIcon = "assets/images/repeat.svg";
-  static const String volumeIcon = "assets/images/volume.svg";
   static const String exitIcon = "assets/images/exit.svg";
   static const String contactUsIcon = "assets/images/contact-us.svg";
   static const String fAQIcon = "assets/images/FAQ.svg";
@@ -28,4 +27,6 @@ class Assets {
   static const String mailIcon = "assets/images/mail.svg";
   static const String playIcon = "assets/images/play.svg";
   static const String logo = "assets/images/Flutez LOGO.jpg";
+  static const String volumeIcon = "assets/images/volumeIcon.svg";
+  static const String muteIcon = "assets/images/muteIcon.svg";
 }

@@ -25,7 +25,7 @@ class _PlaylistTracksScreenState extends State<PlaylistTracksScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    TrackCubit.get(context).updatePaletteGenerator();
+    // TrackCubit.get(context).updatePaletteGenerator();
 
   }
   @override
@@ -42,6 +42,10 @@ class _PlaylistTracksScreenState extends State<PlaylistTracksScreen> {
               },
               iconAsset: Assets.arrowBackIcon,
             ),
+            Text24(
+              text: widget.model.title!,
+              textColor: Colors.white,
+            ),
             const SearchWidget()
           ],
         ),
@@ -53,14 +57,7 @@ class _PlaylistTracksScreenState extends State<PlaylistTracksScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 10.h,
-              ),
-              Text24(
-                text: widget.model.title!,
-                textColor: Colors.white,
-              ),
-              SizedBox(
-                height: 10.h,
+                height: 20.h,
               ),
               GridView.builder(
                 shrinkWrap: true,
@@ -68,7 +65,7 @@ class _PlaylistTracksScreenState extends State<PlaylistTracksScreen> {
                 itemCount: widget.model.tracks!.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.8,
+                  childAspectRatio: 0.75,
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 20,
                 ),

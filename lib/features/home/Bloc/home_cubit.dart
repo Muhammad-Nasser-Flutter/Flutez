@@ -1,58 +1,23 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/features/home/Bloc/home_states.dart';
 import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutez/features/home/models/recommended_track_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:http/http.dart' as http;
 
 class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() : super(HomeInitialState());
   static HomeCubit get(context) => BlocProvider.of(context);
 
-  PaletteGenerator? _paletteGenerator;
 
   List recommendedShadows = [];
 
   List playlistShadows =
       List.generate(10, (index) => AppColors.scaffoldBackground);
 
-  Future<void> updateRecommendedPaletteGenerator() async {
-    // Replace 'your_image_path.jpg' with the actual path to your image
-    recommendedShadows = List.generate(
-        recommendedTracks.length, (index) => AppColors.scaffoldBackground);
-    for (int i = 0; i < recommendedTracks.length; i++) {
-      var imageProvider = NetworkImage(recommendedTracks[i].thumbnail);
-      PaletteGenerator paletteGenerator =
-          await PaletteGenerator.fromImageProvider(imageProvider);
-
-      _paletteGenerator = paletteGenerator;
-      recommendedShadows[i] =
-          _paletteGenerator?.vibrantColor?.color.withOpacity(0.1);
-    }
-    print(recommendedShadows.toString());
-    emit(RecommendedShadowsSuccessState());
-  }
-
-  Future<void> updatePlaylistPaletteGenerator() async {
-    // Replace 'your_image_path.jpg' with the actual path to your image
-    const imageProvider = AssetImage(Assets.cover3);
-
-    for (int i = 0; i < 10; i++) {
-      PaletteGenerator paletteGenerator =
-          await PaletteGenerator.fromImageProvider(imageProvider);
-
-      _paletteGenerator = paletteGenerator;
-      playlistShadows[i] =
-          _paletteGenerator?.vibrantColor?.color.withOpacity(0.1);
-    }
-  }
 
   Uri recommendedTracksUri() {
     return Uri.parse(
@@ -77,7 +42,6 @@ class HomeCubit extends Cubit<HomeStates> {
             .toList()
             .take(10)
             .toList();
-        updateRecommendedPaletteGenerator();
         emit(GetRecommendedSuccessState());
       } else {
         debugPrint("no tracks available");
@@ -93,6 +57,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   Future<void> getPlaylist() async {
     FirebaseFirestore.instance.collection("Playlists").snapshots().listen((event) {
+      playlists = [];
       event.docs.forEach((element) {
         playlists.add(PlaylistModel.fromJson(element.data()));
       });

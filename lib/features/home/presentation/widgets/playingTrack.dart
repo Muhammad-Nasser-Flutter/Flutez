@@ -24,7 +24,7 @@ class PlayingTrack extends StatelessWidget {
         var trackCubit = TrackCubit.get(context);
         return GestureDetector(
           onTap: () {
-            context.pushNamed(Routes.playingNowScreen);
+            context.pushNamed(Routes.playingNowScreen,arguments: trackCubit.currentTrack);
           },
           child: Container(
             padding: EdgeInsets.only(

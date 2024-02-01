@@ -7,7 +7,6 @@
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutez/core/routing/app_router.dart';
-import 'package:flutez/packages/audio_handler/lib/src/audio_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -20,7 +20,6 @@ class _MyPlaylistWidgetState extends State<MyPlaylistWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    HomeCubit.get(context).updatePlaylistPaletteGenerator();
   }
   @override
   Widget build(BuildContext context) {

@@ -23,8 +23,6 @@ class _LikedSongsScreenState extends State<LikedSongsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    TrackCubit.get(context).updatePaletteGenerator();
-    
   }
   @override
   Widget build(BuildContext context) {

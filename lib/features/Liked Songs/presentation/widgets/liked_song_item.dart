@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/routing/routes.dart';
-import 'package:flutez/core/theming/assets.dart';
-import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
@@ -10,7 +8,6 @@ import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 class LikedSongItem extends StatelessWidget {
   const LikedSongItem({super.key, required this.model, required this.index});
@@ -24,7 +21,16 @@ class LikedSongItem extends StatelessWidget {
         var trackCubit = TrackCubit.get(context);
         return GestureDetector(
           onTap: () {
-            context.pushNamed(Routes.playingNowScreen,arguments: model.tracks![index]);
+            context.pushNamed(Routes.playingNowScreen,
+                arguments: model.tracks![index]);
+            trackCubit.setCurrentTrack(
+              trackImgUrl: model.tracks![index].image!,
+              trackUrl: model.tracks![index].trackLink!,
+              title: model.tracks![index].trackName!,
+              author: model.tracks![index].artist!,
+              id: model.tracks![index].id!,
+              shadowColor: model.tracks![index].shadowColor!
+            );
           },
           child: Column(
             children: [
@@ -35,17 +41,22 @@ class LikedSongItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color:  Color(int.parse(model.tracks![index].shadowColor!)).withOpacity(0.2),
-                        blurRadius: 15.r,
-                        spreadRadius: -5,
-                        offset: const Offset(0, 20),
+                        color:
+                            Color(int.parse(model.tracks![index].shadowColor!))
+                                .withOpacity(0.2),
+                        blurRadius: 35.r,
+                        spreadRadius: -25,
+                        offset: const Offset(0, 30),
                       ),
                     ],
                     borderRadius: BorderRadius.circular(5.r),
                   ),
-                  child: CachedNetworkImage(
-                    imageUrl: model.tracks![index].image!,
-                    fit: BoxFit.cover,
+                  child: Hero(
+                    tag: "${model.tracks![index].image}",
+                    child: CachedNetworkImage(
+                      imageUrl: model.tracks![index].image!,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -53,7 +64,7 @@ class LikedSongItem extends StatelessWidget {
                 height: 10.h,
               ),
               Text18(
-                text:  model.tracks![index].trackName!,
+                text: model.tracks![index].trackName!,maxLines: 1,overFlow: TextOverflow.ellipsis,
                 weight: FontWeight.w500,
               ),
               SizedBox(
@@ -61,8 +72,8 @@ class LikedSongItem extends StatelessWidget {
               ),
               Text12(
                 size: 13.sp,
-                text:model.tracks![index].artist!,
-                weight: FontWeight.w400,
+                text: model.tracks![index].artist!,
+                weight: FontWeight.w400,maxLines: 1,overFlow: TextOverflow.ellipsis,
               ),
             ],
           ),
