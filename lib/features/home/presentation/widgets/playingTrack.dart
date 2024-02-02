@@ -22,7 +22,7 @@ class PlayingTrack extends StatelessWidget {
     return BlocBuilder<TrackCubit, TrackStates>(
       builder: (context, state) {
         var trackCubit = TrackCubit.get(context);
-        return GestureDetector(
+        return trackCubit.currentTrack == null? const SizedBox():GestureDetector(
           onTap: () {
             context.pushNamed(Routes.playingNowScreen,arguments: trackCubit.currentTrack);
           },

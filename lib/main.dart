@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutez/features/Profile/Bloc/profile_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/firebase_options.dart';
 import 'package:flutter/foundation.dart';
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context)=> TrackCubit()),
+          BlocProvider(create: (context)=> ProfileCubit()..getProfileData()),
         ],
         child: MaterialApp(
           title: 'Flutez',

@@ -33,7 +33,7 @@ migrate_working_dir/
 
 # Symbolication related
 app.*.symbols
-
+android/upload-keystore.jks
 # Obfuscation related
 app.*.map.json
 

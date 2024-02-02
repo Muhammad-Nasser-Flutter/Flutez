@@ -4,11 +4,10 @@ import 'package:flutez/core/cache_helper/cache_helper.dart';
 import 'package:flutez/core/cache_helper/cache_values.dart';
 import 'package:flutez/core/functions/flutter_toast.dart';
 import 'package:flutez/core/theming/colors.dart';
-
+import 'package:flutez/features/Profile/Models/profile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../models/user_model.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'auth_states.dart';
 
 class AuthCubit extends Cubit<AuthStates> {
@@ -24,9 +23,9 @@ class AuthCubit extends Cubit<AuthStates> {
     if (email.contains("@") && email.contains(".com")) {
       if (pass.length > 8) {
         if (userName.length > 3) {
-          if(phone.length == 11){
+          if (phone.length == 11) {
             return true;
-          }else{
+          } else {
             customToast(msg: "name is too short", color: Colors.red);
             return false;
           }
@@ -43,6 +42,8 @@ class AuthCubit extends Cubit<AuthStates> {
       return false;
     }
   }
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   void register({
     required String email,
@@ -79,7 +80,7 @@ class AuthCubit extends Cubit<AuthStates> {
     required String userName,
     required context,
   }) {
-    UserModel userModel = UserModel(
+    ProfileModel userModel = ProfileModel(
       name: userName,
       email: email,
       image: '',
@@ -110,19 +111,47 @@ class AuthCubit extends Cubit<AuthStates> {
         .then((value) {
       CacheHelper.saveData(key: CacheKeys.uId, value: value.user!.uid);
       emit(LoginSuccessState());
-      customToast(msg: "Logged in Successfully", color: AppColors.smallTextColor);
+      customToast(
+          msg: "Logged in Successfully", color: AppColors.smallTextColor);
     }).catchError((error) {
-      if(email.isNotEmpty){
-        if(pass.isNotEmpty){
+      if (email.isNotEmpty) {
+        if (pass.isNotEmpty) {
           customToast(msg: "Email or password is invalid", color: Colors.red);
-        }else{
+        } else {
           customToast(msg: "password is must not be empty", color: Colors.red);
         }
-      }else{
+      } else {
         customToast(msg: "Email must not be empty", color: Colors.red);
       }
       emit(LoginErrorState());
     });
+  }
+
+  Future<void> signInWithGoogle() async {
+    GoogleSignInAccount? account = await _googleSignIn.signIn();
+    if (account != null) {
+      GoogleSignInAuthentication authentication = await account.authentication;
+      OAuthCredential credential = GoogleAuthProvider.credential(
+        idToken: authentication.idToken,
+        accessToken: authentication.accessToken,
+      );
+
+          await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
+            print(value.user!.displayName);
+            var profile = ProfileModel(
+              email: value.user!.email,
+              image: value.user!.photoURL,
+              name: value.user!.displayName,
+              phone: value.user!.phoneNumber,
+              uId: value.user!.uid,
+            );
+            FirebaseFirestore.instance.collection("Users").doc(profile.uId).set(profile.toJson());
+            CacheHelper.saveData(key: CacheKeys.uId, value: value.user!.uid);
+            emit(LoginSuccessState());
+          });
+    }else{
+      emit(LoginErrorState());
+    }
   }
 
   IconData suffix = Icons.visibility_off_outlined;

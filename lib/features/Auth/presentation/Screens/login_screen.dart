@@ -7,6 +7,7 @@ import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theming/assets.dart';
 import '../../Bloc/Auth_cubit.dart';
@@ -24,8 +25,8 @@ class LoginScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
           child: BlocConsumer<AuthCubit, AuthStates>(
-            listener: (context,state){
-              if(state is LoginSuccessState){
+            listener: (context, state) {
+              if (state is LoginSuccessState) {
                 context.pushReplacementNamed(Routes.homeScreen);
               }
             },
@@ -99,7 +100,10 @@ class LoginScreen extends StatelessWidget {
                       text: "LOGIN",
                       color: AppColors.smallTextColor,
                       onPressed: () {
-                        authCubit.login(email: emailController.text, pass: passController.text,  context: context);
+                        authCubit.login(
+                            email: emailController.text,
+                            pass: passController.text,
+                            context: context);
                       },
                     ),
                     SizedBox(
@@ -126,6 +130,45 @@ class LoginScreen extends StatelessWidget {
                         )
                       ],
                     ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Center(
+                      child: InkWell(
+                        onTap: (){
+                          authCubit.signInWithGoogle();
+                        },
+                        child: Container(
+                          width: MediaQuery.sizeOf(context).width * 0.8,
+                          padding: EdgeInsets.all(2.r),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5.r),
+                              color: const Color(0xFF4285f4)),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(10.r),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.r),
+                                    color: Colors.white),
+                                child: SvgPicture.asset(
+                                  Assets.googleIcon,
+                                  width: 35.r,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 25.w,
+                              ),
+                              Text20(
+                                text: "Sign in with Google",
+                                maxLines: 1,
+                                overFlow: TextOverflow.ellipsis,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               );

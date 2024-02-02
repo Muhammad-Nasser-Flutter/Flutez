@@ -44,7 +44,10 @@ class TrackCubit extends Cubit<TrackStates> {
           playerState,
         ),
       );
-
+  void changeVolume(double d){
+    audioPlayer!.setVolume(d);
+    emit(SetVolumeState());
+  }
   // PaletteGenerator? _paletteGenerator;
   // List shadows = List.generate(8, (index) => AppColors.scaffoldBackground);
 

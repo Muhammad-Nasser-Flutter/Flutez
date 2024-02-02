@@ -77,12 +77,7 @@ class _PlaylistTracksScreenState extends State<PlaylistTracksScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BlocBuilder<TrackCubit, TrackStates>(
-        builder: (context, state) {
-          var trackCubit = TrackCubit.get(context);
-          return  trackCubit.currentTrack == null?const SizedBox():const PlayingTrack();
-        },
-      ),
+      bottomNavigationBar:const PlayingTrack(),
     );
   }
 }

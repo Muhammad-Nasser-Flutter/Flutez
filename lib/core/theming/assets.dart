@@ -29,4 +29,6 @@ class Assets {
   static const String logo = "assets/images/Flutez LOGO.jpg";
   static const String volumeIcon = "assets/images/volumeIcon.svg";
   static const String muteIcon = "assets/images/muteIcon.svg";
+  static const String handShakeIcon = "assets/images/hand-shake.svg";
+  static const String googleIcon = "assets/images/google-Icon.svg";
 }

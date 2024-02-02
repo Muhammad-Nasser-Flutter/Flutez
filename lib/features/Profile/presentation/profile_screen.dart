@@ -6,8 +6,12 @@ import 'package:flutez/features/Profile/presentation/widgets/profile_widget.dart
 import 'package:flutez/features/home/presentation/widgets/drawer/drawer_item.dart';
 import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../Track/Bloc/track_cubit.dart';
+import '../../Track/Bloc/track_states.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -83,7 +87,7 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const PlayingTrack(),
+      bottomNavigationBar:const PlayingTrack(),
 
     );
   }

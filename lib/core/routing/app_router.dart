@@ -8,13 +8,12 @@ import 'package:flutez/features/Track/presentation/playing_now_screen.dart';
 import 'package:flutez/features/home/Bloc/home_cubit.dart';
 import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutez/features/home/presentation/home_screen.dart';
-import 'package:flutez/features/home/presentation/widgets/Playlists/playlist_tracks_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
-
 import '../../features/Auth/presentation/Screens/login_screen.dart';
 import '../../features/Auth/presentation/Screens/register_screen.dart';
+import '../../features/Playlists/playlist_tracks_screen.dart';
 
 class AppRouter {
   Route generateRoute(RouteSettings settings) {

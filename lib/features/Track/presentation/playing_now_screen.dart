@@ -127,32 +127,38 @@ class PlayingNowScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         IconWidget(
-                          onPressed: () {
-                            if(trackCubit.audioPlayer!.volume!=100){
-                              trackCubit.audioPlayer!.setVolume(100);
-                            }else{
-                              trackCubit.audioPlayer!.setVolume(0);
-
-                            }
-                          },
-                          iconAsset: Assets.volumeIcon,
+                          onPressed: () {},
+                          iconAsset: trackCubit.audioPlayer!.volume > 0
+                              ? Assets.volumeIcon
+                              : Assets.muteIcon,
                           size: 22.r,
                         ),
                         Expanded(
                           child: ProgressBar(
-                            barHeight: 4,
+                            timeLabelLocation: TimeLabelLocation.none,
+                            barHeight: 3,
                             baseBarColor: const Color(0xFF555b6a),
                             bufferedBarColor: Colors.grey,
                             progressBarColor: Colors.white,
                             thumbColor: Colors.white,
                             thumbGlowRadius: 20,
-                            thumbRadius: 9,
-                            progress: Duration(seconds: int.parse(trackCubit.audioPlayer!.volume.round().toString())),
+                            thumbRadius: 7,
+                            progress: Duration(
+                              seconds: int.parse(
+                                (trackCubit.audioPlayer!.volume * 100)
+                                    .round()
+                                    .toString(),
+                              ),
+                            ),
                             total: const Duration(seconds: 100),
-                            onSeek: (Duration d){
-                              trackCubit.audioPlayer!.setVolume(double.parse(d.inSeconds.toString()));
+                            onSeek: (Duration d) {
+                              trackCubit.changeVolume(
+                                  double.parse((d.inSeconds / 100).toString()));
                             },
                           ),
+                        ),
+                        SizedBox(
+                          width: 50.w,
                         ),
                         // const Spacer(),
                         IconWidget(
