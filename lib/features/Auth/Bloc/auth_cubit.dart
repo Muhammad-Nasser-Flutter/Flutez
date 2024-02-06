@@ -136,20 +136,30 @@ class AuthCubit extends Cubit<AuthStates> {
         accessToken: authentication.accessToken,
       );
 
-          await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
-            print(value.user!.displayName);
-            var profile = ProfileModel(
-              email: value.user!.email,
-              image: value.user!.photoURL,
-              name: value.user!.displayName,
-              phone: value.user!.phoneNumber,
-              uId: value.user!.uid,
-            );
-            FirebaseFirestore.instance.collection("Users").doc(profile.uId).set(profile.toJson());
-            CacheHelper.saveData(key: CacheKeys.uId, value: value.user!.uid);
-            emit(LoginSuccessState());
-          });
-    }else{
+      await FirebaseAuth.instance.signInWithCredential(credential).then(
+        (value) async {
+          var profile = ProfileModel(
+            email: value.user!.email,
+            image: value.user!.photoURL,
+            name: value.user!.displayName,
+            phone: value.user!.phoneNumber,
+            uId: value.user!.uid,
+          );
+          DocumentSnapshot snapshot = await FirebaseFirestore.instance
+              .collection("Users")
+              .doc(profile.uId)
+              .get();
+          if (!snapshot.exists) {
+            FirebaseFirestore.instance
+                .collection("Users")
+                .doc(profile.uId)
+                .set(profile.toJson());
+          }
+          CacheHelper.saveData(key: CacheKeys.uId, value: value.user!.uid);
+          emit(LoginSuccessState());
+        },
+      );
+    } else {
       emit(LoginErrorState());
     }
   }

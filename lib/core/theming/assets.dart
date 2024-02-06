@@ -12,6 +12,7 @@ class Assets {
   static const String playingTrackIcon = "assets/images/playingTrackIcon.png";
   static const String arrowBackIcon = "assets/images/arrow_back.svg";
   static const String heartIcon = "assets/images/heart.svg";
+  static const String heartFillIcon = "assets/images/heart-fill.svg";
   static const String shuffleIcon = "assets/images/shuffle.svg";
   static const String repeatIcon = "assets/images/repeat.svg";
   static const String exitIcon = "assets/images/exit.svg";

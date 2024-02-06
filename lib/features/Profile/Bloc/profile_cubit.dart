@@ -8,8 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileCubit extends Cubit<ProfileStates> {
   ProfileCubit() : super(ProfileInitialState());
+
   static ProfileCubit get(context) => BlocProvider.of(context);
   ProfileModel? user;
+
   Future<void> getProfileData() async {
     String uId = CacheHelper.getData(key: CacheKeys.uId);
     FirebaseFirestore.instance
@@ -26,4 +28,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
       emit(GetProfileDataErrorState());
     });
   }
+
+
 }

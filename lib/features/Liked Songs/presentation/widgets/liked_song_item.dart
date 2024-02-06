@@ -21,15 +21,17 @@ class LikedSongItem extends StatelessWidget {
         var trackCubit = TrackCubit.get(context);
         return GestureDetector(
           onTap: () {
-            context.pushNamed(Routes.playingNowScreen,
-                arguments: model.tracks![index]);
+            context.pushNamed(
+              Routes.playingNowScreen,
+              arguments: model.tracks![index],
+            );
             trackCubit.setCurrentTrack(
               trackImgUrl: model.tracks![index].image!,
               trackUrl: model.tracks![index].trackLink!,
               title: model.tracks![index].trackName!,
               author: model.tracks![index].artist!,
               id: model.tracks![index].id!,
-              shadowColor: model.tracks![index].shadowColor!
+              shadowColor: model.tracks![index].shadowColor!,
             );
           },
           child: Column(
@@ -64,7 +66,9 @@ class LikedSongItem extends StatelessWidget {
                 height: 10.h,
               ),
               Text18(
-                text: model.tracks![index].trackName!,maxLines: 1,overFlow: TextOverflow.ellipsis,
+                text: model.tracks![index].trackName!,
+                maxLines: 1,
+                overFlow: TextOverflow.ellipsis,
                 weight: FontWeight.w500,
               ),
               SizedBox(
@@ -73,7 +77,9 @@ class LikedSongItem extends StatelessWidget {
               Text12(
                 size: 13.sp,
                 text: model.tracks![index].artist!,
-                weight: FontWeight.w400,maxLines: 1,overFlow: TextOverflow.ellipsis,
+                weight: FontWeight.w400,
+                maxLines: 1,
+                overFlow: TextOverflow.ellipsis,
               ),
             ],
           ),
