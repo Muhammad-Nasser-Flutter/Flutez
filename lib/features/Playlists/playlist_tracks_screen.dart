@@ -67,7 +67,7 @@ class _PlaylistTracksScreenState extends State<PlaylistTracksScreen> {
                   crossAxisSpacing: 20,
                 ),
                 itemBuilder: (context, index) {
-                  return  TrackItem(model: widget.model.tracks![index],index: index,);
+                  return  TrackItem(model: widget.model.tracks![index],index: index, playlistModel: widget.model,);
                 },
               )
             ],

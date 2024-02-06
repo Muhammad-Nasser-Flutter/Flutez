@@ -98,16 +98,16 @@ class PlayingTrack extends StatelessWidget {
                           ),
                           IconWidget(
                             onPressed: () {
-                              if (!positionData!.state.playing) {
+                              if (!positionData!.playerState.playing) {
                                 trackCubit.audioPlayer!.play();
-                              } else if (positionData.state.processingState !=
+                              } else if (positionData.playerState.processingState !=
                                   ProcessingState.completed) {
                                 trackCubit.audioPlayer!.pause();
                               }
                             },
-                            iconAsset: positionData?.state.playing == null
+                            iconAsset: positionData?.playerState.playing == null
                                 ? Assets.playIcon
-                                : !positionData!.state.playing
+                                : !positionData!.playerState.playing
                                     ? Assets.playIcon
                                     : Assets.pauseIcon,
                             size: 20.r,

@@ -10,8 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TrackItem extends StatelessWidget {
-  const TrackItem({super.key, required this.model, required this.index});
+  const TrackItem({super.key, required this.model, required this.index, required this.playlistModel});
   final Track model;
+  final PlaylistModel playlistModel;
   final int index;
 
   @override
@@ -32,6 +33,8 @@ class TrackItem extends StatelessWidget {
               author: model.artist!,
               id: model.id!,
               shadowColor: model.shadowColor!,
+              playlist: playlistModel,
+              index: index
             );
           },
           child: Column(

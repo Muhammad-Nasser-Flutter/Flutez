@@ -1,9 +1,10 @@
 import 'package:just_audio/just_audio.dart';
 
 class PositionData {
-  const PositionData(this.position, this.bufferedPosition, this.duration, this.state);
+  PositionData(this.position, this.bufferedPosition, this.duration, this.playerState,this.sequenceState,);
   final Duration position;
   final Duration bufferedPosition;
   final Duration duration;
-  final PlayerState state;
+  final PlayerState playerState;
+  SequenceState? sequenceState;
 }

@@ -11,41 +11,60 @@ class TrackCubit extends Cubit<TrackStates> {
   static TrackCubit get(context) => BlocProvider.of(context);
 
   AudioPlayer? audioPlayer;
-
-  void initHandler(Track track) async {
-    audioPlayer = AudioPlayer()
-      ..setAudioSource(
+  List<AudioSource> list = [];
+  void initHandler(Track track, PlaylistModel playlist,int index) async {
+    Track item = playlist.tracks!.removeAt(index);
+    playlist.tracks!.insert(0, item);
+    for (var element in playlist.tracks!) {
+      list.add(
         AudioSource.uri(
-          Uri.parse(track.trackLink!),
+          Uri.parse(element.trackLink!),
           tag: MediaItem(
-            id: track.id.toString(),
-            title: track.trackName!,
-            artist: track.artist!,
-            artUri: Uri.parse(track.image!),
+            id: element.id.toString(),
+            title: element.trackName.toString(),
+            artist: element.artist.toString(),
+            artUri: Uri.parse(element.image.toString()),
           ),
         ),
       );
+    }
+    audioPlayer = AudioPlayer()
+      ..setAudioSource(
+        // AudioSource.uri(
+        //   Uri.parse(track.trackLink!),
+        //   tag: MediaItem(
+        //     id: track.id.toString(),
+        //     title: track.trackName!,
+        //     artist: track.artist!,
+        //     artUri: Uri.parse(track.image!),
+        //   ),
+        // ),
+        ConcatenatingAudioSource(children: list),
+      );
+
     emit(InitAudioHandlerSuccessState());
   }
 
   void play() => audioPlayer!.play();
   void pause() => audioPlayer!.pause();
 
-  Stream<PositionData> get positionDataStream => Rx.combineLatest4<Duration,
-          Duration, Duration?, PlayerState, PositionData>(
+  Stream<PositionData> get positionDataStream => Rx.combineLatest5<Duration,
+          Duration, Duration?, PlayerState,SequenceState? ,PositionData>(
         audioPlayer!.positionStream,
         audioPlayer!.bufferedPositionStream,
         audioPlayer!.durationStream,
         audioPlayer!.playerStateStream,
-        (position, bufferedPosition, duration, playerState) => PositionData(
+        audioPlayer!.sequenceStateStream,
+        (position, bufferedPosition, duration, playerState,sequenceState) => PositionData(
           position,
           bufferedPosition,
           duration ?? Duration.zero,
           playerState,
+          sequenceState,
         ),
       );
 
-  void changeVolume(double d){
+  void changeVolume(double d) {
     audioPlayer!.setVolume(d);
     emit(SetVolumeState());
   }
@@ -58,8 +77,10 @@ class TrackCubit extends Cubit<TrackStates> {
     required String title,
     required String author,
     required int id,
+    required playlist,
+    required int index,
   }) {
-    if(currentTrack?.trackLink != trackUrl ){
+    if (currentTrack?.trackLink != trackUrl) {
       if (currentTrack != null) {
         removeCurrentTrack();
       }
@@ -71,11 +92,8 @@ class TrackCubit extends Cubit<TrackStates> {
         trackLink: trackUrl,
         shadowColor: shadowColor,
       );
-
-      initHandler(currentTrack!);
+      initHandler(currentTrack!, playlist,index);
       play();
-    }else{
-      print(2);
     }
     emit(SetTrackState());
   }
@@ -85,19 +103,13 @@ class TrackCubit extends Cubit<TrackStates> {
     audioPlayer!.stop();
   }
 
-  // Color? playingNowShadow;
-  // Future<void> updatePlayingPaletteGenerator() async {
-  //   // Replace 'your_image_path.jpg' with the actual path to your image
-  //   if (currentTrack != null) {
-  //     var imageProvider = NetworkImage(currentTrack!.image!);
-  //     PaletteGenerator paletteGenerator =
-  //         await PaletteGenerator.fromImageProvider(imageProvider);
-  //
-  //     _paletteGenerator = paletteGenerator;
-  //     playingNowShadow =
-  //         _paletteGenerator?.vibrantColor?.color.withOpacity(0.1);
-  //   }
-  //
-  //   emit(ShadowsSuccessState());
-  // }
+  void seekToNextTrack() async {
+    audioPlayer?.seekToNext();
+    emit(SetTrackState());
+  }
+
+  void seekToPrevTrack()  {
+    audioPlayer?.seekToPrevious();
+    emit(SetTrackState());
+  }
 }

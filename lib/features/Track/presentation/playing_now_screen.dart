@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
@@ -18,8 +19,8 @@ import '../../Favorites/Bloc/favorites_cubit.dart';
 import '../../Favorites/Bloc/favorites_states.dart';
 
 class PlayingNowScreen extends StatelessWidget {
-  final Track track;
-  const PlayingNowScreen({super.key, required this.track});
+  Track track;
+  PlayingNowScreen({super.key, required this.track});
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +55,7 @@ class PlayingNowScreen extends StatelessWidget {
               stream: trackCubit.positionDataStream,
               builder: (context, snapshot) {
                 final positionData = snapshot.data;
+                final mediaItem = positionData?.sequenceState?.currentSource!.tag as MediaItem;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -62,7 +64,7 @@ class PlayingNowScreen extends StatelessWidget {
                     ),
                     Center(
                       child: Hero(
-                        tag: "${track.image}",
+                        tag: "${trackCubit.currentTrack?.image}",
                         child: Container(
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           width: 300.r,
@@ -70,7 +72,7 @@ class PlayingNowScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Color(int.parse(track.shadowColor!))
+                                color: AppColors.trackShadowColor
                                     .withOpacity(0.2),
                                 blurRadius: 45.r,
                                 spreadRadius: -0,
@@ -80,7 +82,7 @@ class PlayingNowScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5.r),
                           ),
                           child: CachedNetworkImage(
-                            imageUrl: track.image!,
+                            imageUrl: mediaItem.artUri.toString(),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -101,14 +103,14 @@ class PlayingNowScreen extends StatelessWidget {
                             Container(
                               constraints: BoxConstraints(maxWidth: 260.w),
                               child: Text22(
-                                text: "${trackCubit.currentTrack?.trackName}",
+                                text: mediaItem.title,
                                 maxLines: 1,
                                 overFlow: TextOverflow.ellipsis,
                                 textColor: Colors.white,
                               ),
                             ),
                             Text16(
-                              text: "${trackCubit.currentTrack?.artist}",
+                              text: "${mediaItem.artist}",
                               weight: FontWeight.w300,
                             ),
                           ],
@@ -120,15 +122,17 @@ class PlayingNowScreen extends StatelessWidget {
                               var favCubit = FavoritesCubit.get(context);
                               return IconWidget(
                                 onPressed: () {
-                                  if (favCubit.inFav(track)) {
-                                    favCubit.removeFromFav(track);
-                                  } else {
-                                    favCubit.addToFav(track);
-                                  }
+                                  // if (favCubit.inFav(trackCubit.currentTrack!)) {
+                                  //   favCubit.removeFromFav(trackCubit.currentTrack!);
+                                  // } else {
+                                  //   favCubit.addToFav(trackCubit.currentTrack!);
+                                  // }
                                 },
-                                iconAsset: favCubit.inFav(track)
-                                    ? Assets.heartFillIcon
-                                    : Assets.heartIcon,
+                                iconAsset:
+                                // favCubit.inFav(trackCubit.currentTrack!)
+                                //     ? Assets.heartFillIcon
+                                //     :
+                                Assets.heartIcon,
                                 size: 22.r,
                               );
                             },
@@ -145,9 +149,9 @@ class PlayingNowScreen extends StatelessWidget {
                         children: [
                           IconWidget(
                             onPressed: () {
-                              if(trackCubit.audioPlayer!.volume > 0){
+                              if (trackCubit.audioPlayer!.volume > 0) {
                                 trackCubit.changeVolume(0);
-                              }else{
+                              } else {
                                 trackCubit.changeVolume(1);
                               }
                             },
@@ -175,8 +179,8 @@ class PlayingNowScreen extends StatelessWidget {
                               ),
                               total: const Duration(seconds: 100),
                               onSeek: (Duration d) {
-                                trackCubit.changeVolume(
-                                    double.parse((d.inSeconds / 100).toString()));
+                                trackCubit.changeVolume(double.parse(
+                                    (d.inSeconds / 100).toString()));
                               },
                             ),
                           ),
@@ -219,7 +223,8 @@ class PlayingNowScreen extends StatelessWidget {
                         ),
                         progress: positionData?.position ?? Duration.zero,
                         total: positionData?.duration ?? Duration.zero,
-                        buffered: positionData?.bufferedPosition ?? Duration.zero,
+                        buffered:
+                            positionData?.bufferedPosition ?? Duration.zero,
                         onSeek: trackCubit.audioPlayer!.seek,
                       ),
                     ),
@@ -228,7 +233,10 @@ class PlayingNowScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            trackCubit.seekToPrevTrack();
+
+                          },
                           iconAsset: Assets.previousIcon,
                           size: 35.r,
                         ),
@@ -237,16 +245,16 @@ class PlayingNowScreen extends StatelessWidget {
                         ),
                         IconWidget(
                           onPressed: () {
-                            if (!positionData!.state.playing) {
+                            if (!positionData!.playerState.playing) {
                               trackCubit.audioPlayer!.play();
-                            } else if (positionData.state.processingState !=
+                            } else if (positionData.playerState.processingState !=
                                 ProcessingState.completed) {
                               trackCubit.audioPlayer!.pause();
                             }
                           },
-                          iconAsset: positionData?.state.playing == null
+                          iconAsset: positionData?.playerState.playing == null
                               ? Assets.playIcon
-                              : !positionData!.state.playing
+                              : !positionData!.playerState.playing
                                   ? Assets.playIcon
                                   : Assets.pauseIcon,
                           size: 40.r,
@@ -256,7 +264,9 @@ class PlayingNowScreen extends StatelessWidget {
                           width: 10.w,
                         ),
                         IconWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            trackCubit.seekToNextTrack();
+                          },
                           iconAsset: Assets.nextIcon,
                           size: 35.r,
                         ),
