@@ -7,7 +7,7 @@ import 'package:flutez/core/widgets/icon_widget.dart';
 import 'package:flutez/features/Search/Bloc/search_cubit.dart';
 import 'package:flutez/features/Search/Bloc/search_states.dart';
 import 'package:flutez/features/Search/presentation/widgets/search_item.dart';
-import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
+import 'package:flutez/features/Track/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

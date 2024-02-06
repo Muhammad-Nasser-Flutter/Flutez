@@ -4,7 +4,7 @@ import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
 import 'package:flutez/features/Profile/presentation/widgets/profile_widget.dart';
 import 'package:flutez/features/home/presentation/widgets/drawer/drawer_item.dart';
-import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
+import 'package:flutez/features/Track/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

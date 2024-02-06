@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:redacted/redacted.dart';
 
 import '../../Favorites/Bloc/favorites_cubit.dart';
 import '../../Favorites/Bloc/favorites_states.dart';
@@ -55,7 +56,8 @@ class PlayingNowScreen extends StatelessWidget {
               stream: trackCubit.positionDataStream,
               builder: (context, snapshot) {
                 final positionData = snapshot.data;
-                final mediaItem = positionData?.sequenceState?.currentSource!.tag as MediaItem;
+                final mediaItem =
+                    positionData?.sequenceState?.currentSource?.tag;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -72,8 +74,8 @@ class PlayingNowScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.trackShadowColor
-                                    .withOpacity(0.2),
+                                color:
+                                    AppColors.trackShadowColor.withOpacity(0.2),
                                 blurRadius: 45.r,
                                 spreadRadius: -0,
                                 offset: const Offset(0, 0),
@@ -81,10 +83,12 @@ class PlayingNowScreen extends StatelessWidget {
                             ],
                             borderRadius: BorderRadius.circular(5.r),
                           ),
-                          child: CachedNetworkImage(
-                            imageUrl: mediaItem.artUri.toString(),
-                            fit: BoxFit.cover,
-                          ),
+                          child: mediaItem != null
+                              ? CachedNetworkImage(
+                                  imageUrl: mediaItem.artUri.toString(),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
                         ),
                       ),
                     ),
@@ -102,17 +106,29 @@ class PlayingNowScreen extends StatelessWidget {
                           children: [
                             Container(
                               constraints: BoxConstraints(maxWidth: 260.w),
-                              child: Text22(
+                              child: mediaItem!=null?
+                              Text22(
                                 text: mediaItem.title,
                                 maxLines: 1,
                                 overFlow: TextOverflow.ellipsis,
                                 textColor: Colors.white,
-                              ),
+                              ):
+                              Text22(
+                                text:"mediaItem.title",
+                                maxLines: 1,
+                                overFlow: TextOverflow.ellipsis,
+                                textColor: Colors.white,
+                              ).redacted(context: context, redact: true),
                             ),
+                            mediaItem!=null?
                             Text16(
                               text: "${mediaItem.artist}",
                               weight: FontWeight.w300,
-                            ),
+                            ):
+                            Text16(
+                              text: "mediaItem.artist",
+                              weight: FontWeight.w300,
+                            ).redacted(context: context, redact: true),
                           ],
                         ),
                         Padding(
@@ -129,10 +145,10 @@ class PlayingNowScreen extends StatelessWidget {
                                   // }
                                 },
                                 iconAsset:
-                                // favCubit.inFav(trackCubit.currentTrack!)
-                                //     ? Assets.heartFillIcon
-                                //     :
-                                Assets.heartIcon,
+                                    // favCubit.inFav(trackCubit.currentTrack!)
+                                    //     ? Assets.heartFillIcon
+                                    //     :
+                                    Assets.heartIcon,
                                 size: 22.r,
                               );
                             },
@@ -235,7 +251,6 @@ class PlayingNowScreen extends StatelessWidget {
                         IconWidget(
                           onPressed: () {
                             trackCubit.seekToPrevTrack();
-
                           },
                           iconAsset: Assets.previousIcon,
                           size: 35.r,
@@ -247,7 +262,8 @@ class PlayingNowScreen extends StatelessWidget {
                           onPressed: () {
                             if (!positionData!.playerState.playing) {
                               trackCubit.audioPlayer!.play();
-                            } else if (positionData.playerState.processingState !=
+                            } else if (positionData
+                                    .playerState.processingState !=
                                 ProcessingState.completed) {
                               trackCubit.audioPlayer!.pause();
                             }

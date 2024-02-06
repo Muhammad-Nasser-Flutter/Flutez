@@ -12,10 +12,15 @@ class TrackCubit extends Cubit<TrackStates> {
 
   AudioPlayer? audioPlayer;
   List<AudioSource> list = [];
+
   void initHandler(Track track, PlaylistModel playlist,int index) async {
-    Track item = playlist.tracks!.removeAt(index);
-    playlist.tracks!.insert(0, item);
-    for (var element in playlist.tracks!) {
+    list = [];
+    // to make the chosen track the first item played
+    PlaylistModel test = playlist;
+    Track item = test.tracks!.removeAt(index);
+    test.tracks!.insert(0, item);
+    // adding them to the playlist
+    for (var element in test.tracks!) {
       list.add(
         AudioSource.uri(
           Uri.parse(element.trackLink!),
@@ -30,18 +35,8 @@ class TrackCubit extends Cubit<TrackStates> {
     }
     audioPlayer = AudioPlayer()
       ..setAudioSource(
-        // AudioSource.uri(
-        //   Uri.parse(track.trackLink!),
-        //   tag: MediaItem(
-        //     id: track.id.toString(),
-        //     title: track.trackName!,
-        //     artist: track.artist!,
-        //     artUri: Uri.parse(track.image!),
-        //   ),
-        // ),
         ConcatenatingAudioSource(children: list),
       );
-
     emit(InitAudioHandlerSuccessState());
   }
 

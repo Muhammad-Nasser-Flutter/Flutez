@@ -7,7 +7,7 @@ import 'package:flutez/features/Favorites/Bloc/favorites_cubit.dart';
 import 'package:flutez/features/Favorites/Bloc/favorites_states.dart';
 import 'package:flutez/features/Favorites/presentation/widgets/liked_song_item.dart';
 import 'package:flutez/features/home/models/playlist_model.dart';
-import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
+import 'package:flutez/features/Track/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

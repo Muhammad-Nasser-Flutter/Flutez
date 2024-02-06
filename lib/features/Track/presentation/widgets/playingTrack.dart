@@ -35,6 +35,8 @@ class PlayingTrack extends StatelessWidget {
                 stream: trackCubit.positionDataStream,
                 builder: (context, snapshot) {
                   final positionData = snapshot.data;
+                  final mediaItem =
+                      positionData?.sequenceState?.currentSource?.tag;
                   return Column(
                     children: [
                       ProgressBar(
@@ -60,7 +62,7 @@ class PlayingTrack extends StatelessWidget {
                             width: 70.r,
                             height: 70.r,
                             child: CachedNetworkImage(
-                              imageUrl: trackCubit.currentTrack!.image!,
+                              imageUrl: mediaItem.artUri.toString(),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -72,7 +74,7 @@ class PlayingTrack extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text18(
-                                    text: "${trackCubit.currentTrack?.trackName}",
+                                    text: "${mediaItem.title}",
                                     maxLines: 1,
                                     overFlow: TextOverflow.ellipsis,
                                   ),
@@ -80,7 +82,7 @@ class PlayingTrack extends StatelessWidget {
                                     height: 3.h,
                                   ),
                                   Text12(
-                                    text: "${trackCubit.currentTrack?.artist}",
+                                    text: "${mediaItem.artist}",
                                     maxLines: 1,
                                     overFlow: TextOverflow.ellipsis,
                                   ),
@@ -90,7 +92,9 @@ class PlayingTrack extends StatelessWidget {
                           ),
                           const Spacer(),
                           IconWidget(
-                            onPressed: () {},
+                            onPressed: () {
+                              trackCubit.seekToPrevTrack();
+                            },
                             iconAsset: Assets.previousIcon,
                           ),
                           SizedBox(
@@ -117,7 +121,9 @@ class PlayingTrack extends StatelessWidget {
                             width: 2.w,
                           ),
                           IconWidget(
-                            onPressed: () {},
+                            onPressed: () {
+                              trackCubit.seekToNextTrack();
+                            },
                             iconAsset: Assets.nextIcon,
                           ),
                           SizedBox(

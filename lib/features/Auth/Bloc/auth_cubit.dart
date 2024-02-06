@@ -128,40 +128,49 @@ class AuthCubit extends Cubit<AuthStates> {
   }
 
   Future<void> signInWithGoogle() async {
-    GoogleSignInAccount? account = await _googleSignIn.signIn();
-    if (account != null) {
-      GoogleSignInAuthentication authentication = await account.authentication;
-      OAuthCredential credential = GoogleAuthProvider.credential(
-        idToken: authentication.idToken,
-        accessToken: authentication.accessToken,
-      );
-
-      await FirebaseAuth.instance.signInWithCredential(credential).then(
-        (value) async {
-          var profile = ProfileModel(
-            email: value.user!.email,
-            image: value.user!.photoURL,
-            name: value.user!.displayName,
-            phone: value.user!.phoneNumber,
-            uId: value.user!.uid,
-          );
-          DocumentSnapshot snapshot = await FirebaseFirestore.instance
-              .collection("Users")
-              .doc(profile.uId)
-              .get();
-          if (!snapshot.exists) {
+    try{
+      GoogleSignInAccount? account = await _googleSignIn.signIn();
+      if (account != null) {
+        print(3);
+        GoogleSignInAuthentication authentication = await account.authentication;
+        OAuthCredential credential = GoogleAuthProvider.credential(
+          idToken: authentication.idToken,
+          accessToken: authentication.accessToken,
+        );
+        print(4);
+        await FirebaseAuth.instance.signInWithCredential(credential).then(
+              (value) async {
+            var profile = ProfileModel(
+              email: value.user!.email,
+              image: value.user!.photoURL,
+              name: value.user!.displayName,
+              phone: value.user!.phoneNumber,
+              uId: value.user!.uid,
+            );
             FirebaseFirestore.instance
                 .collection("Users")
                 .doc(profile.uId)
-                .set(profile.toJson());
-          }
-          CacheHelper.saveData(key: CacheKeys.uId, value: value.user!.uid);
-          emit(LoginSuccessState());
-        },
-      );
-    } else {
+                .get()
+                .then((value) {
+              if (!value.exists) {
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(profile.uId)
+                    .set(profile.toJson());
+              }
+            });
+            CacheHelper.saveData(key: CacheKeys.uId, value: value.user!.uid);
+            emit(LoginSuccessState());
+          },
+        );
+      } else {
+        emit(LoginErrorState());
+      }
+    }catch(e){
       emit(LoginErrorState());
+      print(e.toString());
     }
+
   }
 
   IconData suffix = Icons.visibility_off_outlined;
