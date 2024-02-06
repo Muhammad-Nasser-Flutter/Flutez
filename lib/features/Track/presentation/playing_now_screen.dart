@@ -5,8 +5,6 @@ import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
-import 'package:flutez/features/Liked%20Songs/Bloc/favorites_cubit.dart';
-import 'package:flutez/features/Liked%20Songs/Bloc/favorites_states.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
@@ -16,11 +14,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
 
+import '../../Favorites/Bloc/favorites_cubit.dart';
+import '../../Favorites/Bloc/favorites_states.dart';
+
 class PlayingNowScreen extends StatelessWidget {
   final Track track;
   const PlayingNowScreen({super.key, required this.track});
 
-  // Future<void> _updatePaletteGenerator() async {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -144,7 +144,13 @@ class PlayingNowScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           IconWidget(
-                            onPressed: () {},
+                            onPressed: () {
+                              if(trackCubit.audioPlayer!.volume > 0){
+                                trackCubit.changeVolume(0);
+                              }else{
+                                trackCubit.changeVolume(1);
+                              }
+                            },
                             iconAsset: trackCubit.audioPlayer!.volume > 0
                                 ? Assets.volumeIcon
                                 : Assets.muteIcon,

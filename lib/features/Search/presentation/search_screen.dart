@@ -1,16 +1,12 @@
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
-import 'package:flutez/core/widgets/custom_button.dart';
 import 'package:flutez/core/widgets/custom_text_form_field.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
-import 'package:flutez/features/Liked%20Songs/presentation/widgets/liked_song_item.dart';
 import 'package:flutez/features/Search/Bloc/search_cubit.dart';
 import 'package:flutez/features/Search/Bloc/search_states.dart';
 import 'package:flutez/features/Search/presentation/widgets/search_item.dart';
-import 'package:flutez/features/Track/Bloc/track_cubit.dart';
-import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/home/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

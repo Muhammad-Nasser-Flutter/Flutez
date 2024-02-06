@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutez/core/cache_helper/cache_helper.dart';
 import 'package:flutez/core/cache_helper/cache_values.dart';
-import 'package:flutez/features/Liked%20Songs/Bloc/favorites_states.dart';
 import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'favorites_states.dart';
 
 class FavoritesCubit extends Cubit<FavoritesStates> {
   FavoritesCubit() : super(FavoritesInitial());
@@ -58,6 +59,7 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
       emit(RemoveFavoriteErrorState());
     });
   }
+
   bool inFav(Track track){
     for (var element in favorites) {
       if(element.trackLink == track.trackLink ){

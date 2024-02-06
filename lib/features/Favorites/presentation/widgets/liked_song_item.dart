@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LikedSongItem extends StatelessWidget {
-  const LikedSongItem({super.key, required this.model, required this.index});
-  final PlaylistModel model;
+class TrackItem extends StatelessWidget {
+  const TrackItem({super.key, required this.model, required this.index});
+  final Track model;
   final int index;
 
   @override
@@ -23,15 +23,15 @@ class LikedSongItem extends StatelessWidget {
           onTap: () {
             context.pushNamed(
               Routes.playingNowScreen,
-              arguments: model.tracks![index],
+              arguments: model,
             );
             trackCubit.setCurrentTrack(
-              trackImgUrl: model.tracks![index].image!,
-              trackUrl: model.tracks![index].trackLink!,
-              title: model.tracks![index].trackName!,
-              author: model.tracks![index].artist!,
-              id: model.tracks![index].id!,
-              shadowColor: model.tracks![index].shadowColor!,
+              trackImgUrl: model.image!,
+              trackUrl: model.trackLink!,
+              title: model.trackName!,
+              author: model.artist!,
+              id: model.id!,
+              shadowColor: model.shadowColor!,
             );
           },
           child: Column(
@@ -44,7 +44,7 @@ class LikedSongItem extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color:
-                            Color(int.parse(model.tracks![index].shadowColor!))
+                            Color(int.parse(model.shadowColor!))
                                 .withOpacity(0.2),
                         blurRadius: 35.r,
                         spreadRadius: -25,
@@ -54,9 +54,9 @@ class LikedSongItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5.r),
                   ),
                   child: Hero(
-                    tag: "${model.tracks![index].image}",
+                    tag: "${model.image}",
                     child: CachedNetworkImage(
-                      imageUrl: model.tracks![index].image!,
+                      imageUrl: model.image!,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -66,7 +66,7 @@ class LikedSongItem extends StatelessWidget {
                 height: 10.h,
               ),
               Text18(
-                text: model.tracks![index].trackName!,
+                text: model.trackName!,
                 maxLines: 1,
                 overFlow: TextOverflow.ellipsis,
                 weight: FontWeight.w500,
@@ -76,7 +76,7 @@ class LikedSongItem extends StatelessWidget {
               ),
               Text12(
                 size: 13.sp,
-                text: model.tracks![index].artist!,
+                text: model.artist!,
                 weight: FontWeight.w400,
                 maxLines: 1,
                 overFlow: TextOverflow.ellipsis,

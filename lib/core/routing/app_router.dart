@@ -1,6 +1,6 @@
 import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/features/Auth/Bloc/Auth_cubit.dart';
-import 'package:flutez/features/Liked%20Songs/presentation/liked_songs_screen.dart';
+import 'package:flutez/features/Favorites/Bloc/favorites_cubit.dart';
 import 'package:flutez/features/Profile/presentation/profile_screen.dart';
 import 'package:flutez/features/Search/Bloc/search_cubit.dart';
 import 'package:flutez/features/Search/presentation/search_screen.dart';
@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../features/Auth/presentation/Screens/login_screen.dart';
 import '../../features/Auth/presentation/Screens/register_screen.dart';
+import '../../features/Favorites/presentation/favorites_screen.dart';
 import '../../features/Playlists/playlist_tracks_screen.dart';
 
 class AppRouter {
@@ -64,29 +65,37 @@ class AppRouter {
         return PageTransition(
           child: BlocProvider(
             child: const HomeScreen(),
-            create: (context) => HomeCubit()..getRecommendedTracks()..getPlaylist(),
+            create: (context) => HomeCubit()
+              ..getRecommendedTracks()
+              ..getPlaylist(),
           ),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,
         );
-        case Routes.playlistTracks:
+      case Routes.playlistTracks:
         return PageTransition(
-          child:  PlaylistTracksScreen(model: settings.arguments as PlaylistModel),
+          child:
+              PlaylistTracksScreen(model: settings.arguments as PlaylistModel),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,
         );
       case Routes.likedSongs:
         return PageTransition(
-          child: const LikedSongsScreen(),
+          child: BlocProvider(
+            create: (context) => FavoritesCubit()..getFavorites(),
+            child: const FavoritesScreen(),
+          ),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,
         );
       case Routes.playingNowScreen:
         return PageTransition(
-          child:  PlayingNowScreen(track: settings.arguments as Track,),
+          child: PlayingNowScreen(
+            track: settings.arguments as Track,
+          ),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,
@@ -107,30 +116,6 @@ class AppRouter {
           alignment: Alignment.center,
           settings: settings,
         );
-      // case Routes.notificationsScreen:
-      //   return PageTransition(
-      //     child: const NotificationsScreen(),
-      //     type: PageTransitionType.fade,
-      //     alignment: Alignment.center,
-      //     settings: settings,
-      //   );
-      // case Routes.editProfile:
-      //   return PageTransition(
-      //     child: EditProfileScreen(),
-      //     type: PageTransitionType.fade,
-      //     alignment: Alignment.center,
-      //     settings: settings,
-      //   );
-      // case Routes.bookRoom:
-      //   return PageTransition(
-      //     child: BlocProvider(
-      //       create: (context) => BookCubit(),
-      //       child: BookRoomScreen(),
-      //     ),
-      //     type: PageTransitionType.fade,
-      //     alignment: Alignment.center,
-      //     settings: settings,
-      //   );
       default:
         return PageTransition(
           child: Scaffold(
