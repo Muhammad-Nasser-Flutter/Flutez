@@ -128,18 +128,17 @@ class AuthCubit extends Cubit<AuthStates> {
   }
 
   Future<void> signInWithGoogle() async {
-    try{
+    try {
       GoogleSignInAccount? account = await _googleSignIn.signIn();
       if (account != null) {
-        print(3);
-        GoogleSignInAuthentication authentication = await account.authentication;
+        GoogleSignInAuthentication authentication =
+            await account.authentication;
         OAuthCredential credential = GoogleAuthProvider.credential(
           idToken: authentication.idToken,
           accessToken: authentication.accessToken,
         );
-        print(4);
         await FirebaseAuth.instance.signInWithCredential(credential).then(
-              (value) async {
+          (value) async {
             var profile = ProfileModel(
               email: value.user!.email,
               image: value.user!.photoURL,
@@ -166,11 +165,10 @@ class AuthCubit extends Cubit<AuthStates> {
       } else {
         emit(LoginErrorState());
       }
-    }catch(e){
+    } catch (e) {
       emit(LoginErrorState());
       print(e.toString());
     }
-
   }
 
   IconData suffix = Icons.visibility_off_outlined;

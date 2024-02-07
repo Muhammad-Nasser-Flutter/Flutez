@@ -3,11 +3,11 @@ import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
 import 'package:flutez/core/widgets/search_icon.dart';
-import 'package:flutez/features/home/models/playlist_model.dart';
+import 'package:flutez/features/Playlists/models/playlist_model.dart';
 import 'package:flutez/features/Track/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../Favorites/presentation/widgets/liked_song_item.dart';
+import '../../Track/presentation/widgets/track_item.dart';
 
 class PlaylistTracksScreen extends StatefulWidget {
   const PlaylistTracksScreen({super.key, required this.model});

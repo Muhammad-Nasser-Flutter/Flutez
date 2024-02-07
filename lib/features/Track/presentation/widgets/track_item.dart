@@ -4,10 +4,12 @@ import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
-import 'package:flutez/features/home/models/playlist_model.dart';
+import 'package:flutez/features/Playlists/models/playlist_model.dart';
+import 'package:flutez/features/Track/presentation/Shimmers/image_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../Model/track_model.dart';
 
 class TrackItem extends StatelessWidget {
   const TrackItem({super.key, required this.model, required this.index, required this.playlistModel});
@@ -59,6 +61,12 @@ class TrackItem extends StatelessWidget {
                   child: Hero(
                     tag: "${model.image}",
                     child: CachedNetworkImage(
+                      placeholder: (context,s){
+                        return ImageShimmer(height:190.h,width: 190.w,);
+                      },
+                      errorWidget: (context,s,a){
+                        return ImageShimmer(height:190.h,width: 190.w,);
+                      },
                       imageUrl: model.image!,
                       fit: BoxFit.cover,
                     ),

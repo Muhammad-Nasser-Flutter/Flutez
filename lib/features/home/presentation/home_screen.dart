@@ -4,7 +4,7 @@ import 'package:flutez/features/Track/presentation/widgets/playingTrack.dart';
 import 'package:flutez/features/home/presentation/widgets/recommended/recommended_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../Playlists/my_playlist_widget.dart';
+import '../../Playlists/Presentation/widgets/my_playlist_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

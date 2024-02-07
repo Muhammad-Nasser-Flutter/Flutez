@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutez/core/cache_helper/cache_helper.dart';
 import 'package:flutez/core/cache_helper/cache_values.dart';
-import 'package:flutez/features/home/models/playlist_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../Track/Model/track_model.dart';
 import 'favorites_states.dart';
 
 class FavoritesCubit extends Cubit<FavoritesStates> {
@@ -43,12 +42,12 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
     });
   }
 
-  Future<void> removeFromFav(Track track) async {
+  Future<void> removeFromFav(link) async {
     FirebaseFirestore.instance
         .collection("Users")
         .doc(CacheHelper.getData(key: CacheKeys.uId))
         .collection("Favorites")
-        .where("trackLink",isEqualTo:track.trackLink ).get().then((value) {
+        .where("trackLink",isEqualTo:link ).get().then((value) {
           for (var element in value.docs) {
             element.reference.delete();
           }
@@ -61,11 +60,16 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
   }
 
   bool inFav(Track track){
-    for (var element in favorites) {
-      if(element.trackLink == track.trackLink ){
-        return true;
-      }
+    if(favorites.contains(track)){
+      return true;
+    }else{
+      return false;
     }
-    return false;
+    // for (var element in favorites) {
+    //   if(element == track){
+    //     return true;
+    //   }
+    // }
+    // return false;
   }
 }

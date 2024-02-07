@@ -3,7 +3,7 @@ import 'package:flutez/features/home/Bloc/home_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/widgets/custom_texts.dart';
+import '../../../../../../../core/widgets/custom_texts.dart';
 import 'home_playlist_item_widget.dart';
 
 class MyPlaylistWidget extends StatefulWidget {

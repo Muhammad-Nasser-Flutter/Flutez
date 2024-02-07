@@ -6,7 +6,7 @@ import 'package:flutez/features/Search/Bloc/search_cubit.dart';
 import 'package:flutez/features/Search/presentation/search_screen.dart';
 import 'package:flutez/features/Track/presentation/playing_now_screen.dart';
 import 'package:flutez/features/home/Bloc/home_cubit.dart';
-import 'package:flutez/features/home/models/playlist_model.dart';
+import 'package:flutez/features/Playlists/models/playlist_model.dart';
 import 'package:flutez/features/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +14,8 @@ import 'package:page_transition/page_transition.dart';
 import '../../features/Auth/presentation/Screens/login_screen.dart';
 import '../../features/Auth/presentation/Screens/register_screen.dart';
 import '../../features/Favorites/presentation/favorites_screen.dart';
-import '../../features/Playlists/playlist_tracks_screen.dart';
+import '../../features/Playlists/Presentation/playlist_tracks_screen.dart';
+import '../../features/Track/Model/track_model.dart';
 
 class AppRouter {
   Route generateRoute(RouteSettings settings) {
@@ -42,25 +43,6 @@ class AppRouter {
           alignment: Alignment.center,
           settings: settings,
         );
-      // case Routes.mainLayoutScreen:
-      //   return PageTransition(
-      //     child: BlocProvider(
-      //       create: (context) => MainLayoutCubit(),
-      //       child: const MainLayoutScreen(),
-      //     ),
-      //     type: PageTransitionType.fade,
-      //     alignment: Alignment.center,
-      //     settings: settings,
-      //   );
-      // case Routes.onBoarding:
-      //   return PageTransition(
-      //     child: BlocProvider(
-      //         create: (context) => OnBoardingCubit(),
-      //         child: const OnBoardingScreen()),
-      //     type: PageTransitionType.fade,
-      //     alignment: Alignment.center,
-      //     settings: settings,
-      //   );
       case Routes.homeScreen:
         return PageTransition(
           child: BlocProvider(

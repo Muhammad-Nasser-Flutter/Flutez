@@ -9,15 +9,15 @@ import 'package:flutez/core/widgets/icon_widget.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
-import 'package:flutez/features/home/models/playlist_model.dart';
+import 'package:flutez/features/Track/presentation/Shimmers/image_shimmer.dart';
+import 'package:flutez/features/Track/presentation/Shimmers/text_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:redacted/redacted.dart';
-
 import '../../Favorites/Bloc/favorites_cubit.dart';
 import '../../Favorites/Bloc/favorites_states.dart';
+import '../Model/track_model.dart';
 
 class PlayingNowScreen extends StatelessWidget {
   Track track;
@@ -66,7 +66,9 @@ class PlayingNowScreen extends StatelessWidget {
                     ),
                     Center(
                       child: Hero(
-                        tag: "${trackCubit.currentTrack?.image}",
+                        tag: mediaItem != null
+                            ? "${mediaItem.artUri}"
+                            : "${track.image}",
                         child: Container(
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           width: 300.r,
@@ -88,7 +90,7 @@ class PlayingNowScreen extends StatelessWidget {
                                   imageUrl: mediaItem.artUri.toString(),
                                   fit: BoxFit.cover,
                                 )
-                              : null,
+                              : ImageShimmer(width: 300.r, height: 300.r),
                         ),
                       ),
                     ),
@@ -100,35 +102,31 @@ class PlayingNowScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: 40.w,
+                          width: 40.r,
+                          height: 40.r,
                         ),
                         Column(
                           children: [
                             Container(
                               constraints: BoxConstraints(maxWidth: 260.w),
-                              child: mediaItem!=null?
-                              Text22(
-                                text: mediaItem.title,
-                                maxLines: 1,
-                                overFlow: TextOverflow.ellipsis,
-                                textColor: Colors.white,
-                              ):
-                              Text22(
-                                text:"mediaItem.title",
-                                maxLines: 1,
-                                overFlow: TextOverflow.ellipsis,
-                                textColor: Colors.white,
-                              ).redacted(context: context, redact: true),
+                              child: mediaItem != null
+                                  ? Text22(
+                                      text: mediaItem.title,
+                                      maxLines: 1,
+                                      overFlow: TextOverflow.ellipsis,
+                                      textColor: Colors.white,
+                                    )
+                                  : const TextShimmer(width: 0.5),
                             ),
-                            mediaItem!=null?
-                            Text16(
-                              text: "${mediaItem.artist}",
-                              weight: FontWeight.w300,
-                            ):
-                            Text16(
-                              text: "mediaItem.artist",
-                              weight: FontWeight.w300,
-                            ).redacted(context: context, redact: true),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            mediaItem != null
+                                ? Text16(
+                                    text: "${mediaItem.artist}",
+                                    weight: FontWeight.w300,
+                                  )
+                                : const TextShimmer(width: 0.3),
                           ],
                         ),
                         Padding(
@@ -136,19 +134,34 @@ class PlayingNowScreen extends StatelessWidget {
                           child: BlocBuilder<FavoritesCubit, FavoritesStates>(
                             builder: (context, state) {
                               var favCubit = FavoritesCubit.get(context);
+                              var playing;
+                              if (mediaItem != null) {
+                                playing = Track(
+                                  artist: mediaItem.artist,
+                                  trackName: mediaItem.title,
+                                  image: mediaItem.artUri.toString(),
+                                  trackLink: mediaItem.album,
+                                );
+                              }
+
                               return IconWidget(
                                 onPressed: () {
-                                  // if (favCubit.inFav(trackCubit.currentTrack!)) {
-                                  //   favCubit.removeFromFav(trackCubit.currentTrack!);
-                                  // } else {
-                                  //   favCubit.addToFav(trackCubit.currentTrack!);
-                                  // }
+                                  if (favCubit.inFav(playing)) {
+                                    favCubit.removeFromFav(playing.trackLink);
+                                  }else{
+                                    favCubit.addToFav(playing);
+                                  }
+                                  if (favCubit.inFav(trackCubit.currentTrack!)) {
+                                    favCubit.removeFromFav(trackCubit.currentTrack!);
+                                  } else {
+                                    favCubit.addToFav(trackCubit.currentTrack!);
+                                  }
                                 },
-                                iconAsset:
-                                    // favCubit.inFav(trackCubit.currentTrack!)
-                                    //     ? Assets.heartFillIcon
-                                    //     :
-                                    Assets.heartIcon,
+                                iconAsset: playing != null
+                                    ? favCubit.inFav(playing)
+                                        ? Assets.heartFillIcon
+                                        : Assets.heartIcon
+                                    : Assets.heartIcon,
                                 size: 22.r,
                               );
                             },

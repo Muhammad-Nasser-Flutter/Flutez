@@ -4,11 +4,11 @@ import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/features/home/Bloc/home_cubit.dart';
 import 'package:flutez/features/home/Bloc/home_states.dart';
-import 'package:flutez/features/home/models/playlist_model.dart';
+import 'package:flutez/features/Playlists/models/playlist_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/widgets/custom_texts.dart';
+import '../../../../../../../core/widgets/custom_texts.dart';
 
 class HomePlayListItemWidget extends StatelessWidget {
   const HomePlayListItemWidget({super.key, required this.model});

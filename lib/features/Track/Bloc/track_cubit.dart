@@ -4,7 +4,8 @@ import 'package:flutez/features/Track/Model/position_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../home/models/playlist_model.dart';
+import '../../Playlists/models/playlist_model.dart';
+import '../Model/track_model.dart';
 
 class TrackCubit extends Cubit<TrackStates> {
   TrackCubit() : super(TrackInitialState());
@@ -29,6 +30,7 @@ class TrackCubit extends Cubit<TrackStates> {
             title: element.trackName.toString(),
             artist: element.artist.toString(),
             artUri: Uri.parse(element.image.toString()),
+            album: element.trackLink,
           ),
         ),
       );
@@ -36,7 +38,7 @@ class TrackCubit extends Cubit<TrackStates> {
     audioPlayer = AudioPlayer()
       ..setAudioSource(
         ConcatenatingAudioSource(children: list),
-      );
+      )..play();
     emit(InitAudioHandlerSuccessState());
   }
 
@@ -88,7 +90,6 @@ class TrackCubit extends Cubit<TrackStates> {
         shadowColor: shadowColor,
       );
       initHandler(currentTrack!, playlist,index);
-      play();
     }
     emit(SetTrackState());
   }
