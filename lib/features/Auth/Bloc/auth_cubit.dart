@@ -85,7 +85,6 @@ class AuthCubit extends Cubit<AuthStates> {
       email: email,
       image: '',
       uId: uId,
-      phone: phone,
     );
     FirebaseFirestore.instance
         .collection("Users")
@@ -143,7 +142,6 @@ class AuthCubit extends Cubit<AuthStates> {
               email: value.user!.email,
               image: value.user!.photoURL,
               name: value.user!.displayName,
-              phone: value.user!.phoneNumber,
               uId: value.user!.uid,
             );
             FirebaseFirestore.instance

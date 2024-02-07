@@ -1,40 +1,29 @@
 class Track {
   String? image;
   String? artist;
-  int? nextId;
   String? trackLink;
   String? trackName;
-  int? id;
-  String? shadowColor;
 
   Track(
       {this.image,
-        this.nextId,
         this.trackLink,
         this.trackName,
         this.artist,
-        this.id,
-        this.shadowColor});
+      });
 
   Track.fromJson(Map<String, dynamic> json) {
     image = json['image'];
     artist = json['artist'];
-    nextId = json['nextId'];
     trackLink = json['trackLink'];
     trackName = json['trackName'];
-    id = json['id'];
-    shadowColor = json['shadowColor'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     data['image'] = image;
     data['artist'] = artist;
-    data['nextId'] = nextId;
     data['trackLink'] = trackLink;
     data['trackName'] = trackName;
-    data['id'] = id;
-    data['shadowColor'] = shadowColor;
     return data;
   }
 

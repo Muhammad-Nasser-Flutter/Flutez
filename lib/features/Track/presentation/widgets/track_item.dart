@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/routing/routes.dart';
+import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
@@ -28,16 +29,17 @@ class TrackItem extends StatelessWidget {
               Routes.playingNowScreen,
               arguments: model,
             );
-            trackCubit.setCurrentTrack(
-              trackImgUrl: model.image!,
-              trackUrl: model.trackLink!,
-              title: model.trackName!,
-              author: model.artist!,
-              id: model.id!,
-              shadowColor: model.shadowColor!,
-              playlist: playlistModel,
-              index: index
-            );
+            if(trackCubit.audioPlayer?.sequenceState?.currentSource?.tag.album != model.trackLink){
+              trackCubit.setCurrentTrack(
+                  trackImgUrl: model.image!,
+                  trackUrl: model.trackLink!,
+                  title: model.trackName!,
+                  author: model.artist!,
+                  playlist: playlistModel,
+                  index: index
+              );
+            }
+
           },
           child: Column(
             children: [
@@ -49,7 +51,7 @@ class TrackItem extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color:
-                            Color(int.parse(model.shadowColor!))
+                            AppColors.trackShadowColor
                                 .withOpacity(0.2),
                         blurRadius: 35.r,
                         spreadRadius: -25,

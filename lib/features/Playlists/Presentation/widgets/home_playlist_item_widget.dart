@@ -12,13 +12,13 @@ import '../../../../../../../core/widgets/custom_texts.dart';
 
 class HomePlayListItemWidget extends StatelessWidget {
   const HomePlayListItemWidget({super.key, required this.model});
-  final PlaylistModel model ;
+  final PlaylistModel model;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        context.pushNamed(Routes.playlistTracks,arguments: model);
+      onTap: () {
+        context.pushNamed(Routes.playlistTracks, arguments: model);
       },
       child: Column(
         children: [
@@ -30,7 +30,7 @@ class HomePlayListItemWidget extends StatelessWidget {
                 color: Colors.green,
                 boxShadow: [
                   BoxShadow(
-                    color:Color(int.parse(model.shadowColor!)).withOpacity(0.05),
+                    color: AppColors.trackShadowColor.withOpacity(0.05),
                     blurRadius: 15.r,
                     spreadRadius: -5,
                     offset: const Offset(0, 20),
@@ -38,7 +38,10 @@ class HomePlayListItemWidget extends StatelessWidget {
                 ],
                 borderRadius: BorderRadius.circular(15.r),
               ),
-              child: CachedNetworkImage(imageUrl: model.image!,fit: BoxFit.fill,),
+              child: CachedNetworkImage(
+                imageUrl: model.image!,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           SizedBox(

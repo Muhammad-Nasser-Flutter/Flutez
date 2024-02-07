@@ -151,11 +151,6 @@ class PlayingNowScreen extends StatelessWidget {
                                   }else{
                                     favCubit.addToFav(playing);
                                   }
-                                  if (favCubit.inFav(trackCubit.currentTrack!)) {
-                                    favCubit.removeFromFav(trackCubit.currentTrack!);
-                                  } else {
-                                    favCubit.addToFav(trackCubit.currentTrack!);
-                                  }
                                 },
                                 iconAsset: playing != null
                                     ? favCubit.inFav(playing)

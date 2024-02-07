@@ -17,7 +17,7 @@ class TrackCubit extends Cubit<TrackStates> {
   void initHandler(Track track, PlaylistModel playlist,int index) async {
     list = [];
     // to make the chosen track the first item played
-    PlaylistModel test = playlist;
+    PlaylistModel test = PlaylistModel.fromJson(playlist.toJson());
     Track item = test.tracks!.removeAt(index);
     test.tracks!.insert(0, item);
     // adding them to the playlist
@@ -26,11 +26,10 @@ class TrackCubit extends Cubit<TrackStates> {
         AudioSource.uri(
           Uri.parse(element.trackLink!),
           tag: MediaItem(
-            id: element.id.toString(),
             title: element.trackName.toString(),
             artist: element.artist.toString(),
             artUri: Uri.parse(element.image.toString()),
-            album: element.trackLink,
+            album: element.trackLink, id:  element.trackLink.toString(),
           ),
         ),
       );
@@ -70,10 +69,8 @@ class TrackCubit extends Cubit<TrackStates> {
   void setCurrentTrack({
     required String trackImgUrl,
     required String trackUrl,
-    required String shadowColor,
     required String title,
     required String author,
-    required int id,
     required playlist,
     required int index,
   }) {
@@ -82,12 +79,10 @@ class TrackCubit extends Cubit<TrackStates> {
         removeCurrentTrack();
       }
       currentTrack = Track(
-        id: id,
         artist: author,
         trackName: title,
         image: trackImgUrl,
         trackLink: trackUrl,
-        shadowColor: shadowColor,
       );
       initHandler(currentTrack!, playlist,index);
     }
