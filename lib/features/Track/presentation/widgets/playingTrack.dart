@@ -2,9 +2,7 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/routing/routes.dart';
-import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
-import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
@@ -14,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:shimmer/shimmer.dart';
 import '../../../../core/theming/assets.dart';
 import '../../../../core/widgets/custom_texts.dart';
 
@@ -70,38 +67,43 @@ class PlayingTrack extends StatelessWidget {
                                       SizedBox(
                                         width: 70.r,
                                         height: 70.r,
-                                        child: CachedNetworkImage(
-                                          imageUrl: mediaItem.artUri.toString(),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 5.w),
-                                        constraints:
-                                            BoxConstraints(maxWidth: 160.w),
-                                        child: IntrinsicHeight(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text18(
-                                                text: "${mediaItem.title}",
-                                                maxLines: 1,
-                                                overFlow: TextOverflow.ellipsis,
-                                              ),
-                                              SizedBox(
-                                                height: 3.h,
-                                              ),
-                                              Text12(
-                                                text: "${mediaItem.artist}",
-                                                maxLines: 1,
-                                                overFlow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
+                                        child: Hero(
+                                          tag: mediaItem.artUri.toString(),
+                                          child: CachedNetworkImage(
+                                            placeholder: (context,object){
+                                              return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
+                                              },
+                                            imageUrl: mediaItem.artUri.toString(),
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
-                                      const Spacer(),
+                                      Expanded(
+                                        child: Container(
+                                          margin: EdgeInsets.only(left: 15.w),
+                                          child: IntrinsicHeight(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text18(
+                                                  text: "${mediaItem.title}",
+                                                  maxLines: 1,
+                                                  overFlow: TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(
+                                                  height: 3.h,
+                                                ),
+                                                Text12(
+                                                  text: "${mediaItem.artist}",
+                                                  maxLines: 1,
+                                                  overFlow: TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                       IconWidget(
                                         onPressed: () {
                                           trackCubit.seekToPrevTrack();

@@ -21,18 +21,21 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.only(left: 20.w),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const RecommendedWidget(),
-              SizedBox(
-                height: 20.h,
-              ),
-              const MyPlaylistWidget(),
-            ],
+      body: PopScope(
+        canPop: false,
+        child: Padding(
+          padding: EdgeInsets.only(left: 20.w),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const RecommendedWidget(),
+                SizedBox(
+                  height: 20.h,
+                ),
+                const MyPlaylistWidget(),
+              ],
+            ),
           ),
         ),
       ),

@@ -17,6 +17,7 @@ import 'core/routing/app_router.dart';
 import 'core/routing/routes.dart';
 import 'core/theming/themes.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -30,7 +31,7 @@ void main() async {
     androidNotificationChannelName: "Audio Playback",
     androidNotificationOngoing: true,
   );
-
+  configLoading();
   MyDio.init();
   if (kDebugMode) {
     print(

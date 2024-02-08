@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../Track/presentation/Shimmers/image_shimmer.dart';
+
 class SearchItem extends StatelessWidget {
   final SearchModel searchModel;
   const SearchItem({super.key, required this.searchModel});
@@ -46,6 +48,9 @@ class SearchItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5.r),
                   ),
                   child: CachedNetworkImage(
+                    placeholder: (context,object){
+                      return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
+                    },
                     imageUrl: searchModel.thumbnails![0].url!,
                     fit: BoxFit.fill,
                   ),

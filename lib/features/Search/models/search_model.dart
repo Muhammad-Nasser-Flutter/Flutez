@@ -42,7 +42,7 @@ class SearchModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['type'] = type;
     data['id'] = id;
     data['title'] = title;
@@ -92,7 +92,7 @@ class Channel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['type'] = type;
     data['id'] = id;
     data['name'] = name;
@@ -119,7 +119,7 @@ class Avatar {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['url'] = url;
     data['width'] = width;
     data['height'] = height;
@@ -143,7 +143,7 @@ class Thumbnails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['url'] = url;
     data['width'] = width;
     data['height'] = height;

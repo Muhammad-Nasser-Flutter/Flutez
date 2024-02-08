@@ -19,9 +19,9 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
         .snapshots()
         .listen((value) {
       favorites = [];
-      value.docs.forEach((element) {
+      for (var element in value.docs) {
         favorites.add(Track.fromJson(element.data()));
-      });
+      }
       emit(GetFavoritesSuccessState());
     }).onError((error) {
       print(error.toString());

@@ -2,11 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/core/theming/colors.dart';
-import 'package:flutez/features/home/Bloc/home_cubit.dart';
-import 'package:flutez/features/home/Bloc/home_states.dart';
+import 'package:flutez/features/Track/presentation/Shimmers/image_shimmer.dart';
 import 'package:flutez/features/Playlists/models/playlist_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../../core/widgets/custom_texts.dart';
 
@@ -27,7 +25,6 @@ class HomePlayListItemWidget extends StatelessWidget {
               clipBehavior: Clip.antiAliasWithSaveLayer,
               width: 190.w,
               decoration: BoxDecoration(
-                color: Colors.green,
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.trackShadowColor.withOpacity(0.05),
@@ -39,6 +36,9 @@ class HomePlayListItemWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15.r),
               ),
               child: CachedNetworkImage(
+                placeholder: (context,object){
+                  return const ImageShimmer(width:double.maxFinite, height: double.maxFinite);
+                },
                 imageUrl: model.image!,
                 fit: BoxFit.fill,
               ),

@@ -70,7 +70,9 @@ class RegisterScreen extends StatelessWidget {
                       controller: userNameController,
                       borderWidth: 1,
                       keyboardType: TextInputType.name,
-                      validator: (s) {},
+                      validator: (s) {
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 20.h,
@@ -84,7 +86,9 @@ class RegisterScreen extends StatelessWidget {
                       controller: emailController,
                       borderWidth: 1,
                       keyboardType: TextInputType.emailAddress,
-                      validator: (s) {},
+                      validator: (s) {
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 20.h,
@@ -105,7 +109,9 @@ class RegisterScreen extends StatelessWidget {
                           authCubit.changePasswordVisibility();
                         },
                       ),
-                      validator: (s) {},
+                      validator: (s) {
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 20.h,
@@ -119,7 +125,9 @@ class RegisterScreen extends StatelessWidget {
                       controller: phoneController,
                       borderWidth: 1,
                       keyboardType: TextInputType.phone,
-                      validator: (s) {},
+                      validator: (s) {
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 40.h,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'colors.dart';
 
@@ -52,3 +53,13 @@ final ThemeData darkTheme = ThemeData(
   colorScheme:
       ColorScheme.fromSwatch().copyWith(background: const Color(0xff10151C)),
 );
+
+void configLoading() {
+  EasyLoading.instance
+    ..indicatorType = EasyLoadingIndicatorType.wave
+    ..loadingStyle = EasyLoadingStyle.light
+    ..indicatorSize = 35.0
+    ..radius = 10.0
+    ..userInteractions = false
+    ..dismissOnTap = false;
+}

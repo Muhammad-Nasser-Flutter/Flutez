@@ -27,7 +27,6 @@ class PlaylistModel {
     }
     return data;
   }
-  PlaylistModel.clone(PlaylistModel original) : image = original.image, title = original.title,tracks = original.tracks;
 }
 
 

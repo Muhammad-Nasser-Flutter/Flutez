@@ -1,17 +1,12 @@
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/theming/assets.dart';
-import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
 import 'package:flutez/features/Profile/presentation/widgets/profile_widget.dart';
-import 'package:flutez/features/home/presentation/widgets/drawer/drawer_item.dart';
 import 'package:flutez/features/Track/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../Track/Bloc/track_cubit.dart';
-import '../../Track/Bloc/track_states.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

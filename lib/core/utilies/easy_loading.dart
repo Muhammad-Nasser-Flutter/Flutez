@@ -1,9 +1,10 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import 'package:flutter_easyloading/src/widgets/indicator.dart';
 void showLoading({
-  EasyLoadingMaskType maskType = EasyLoadingMaskType.clear,
+  EasyLoadingMaskType maskType = EasyLoadingMaskType.black,
 }) {
-  EasyLoading.show(maskType: maskType);
+
+  EasyLoading.show(maskType: maskType,status: "Loading..");
 }
 
 void hideLoading() {

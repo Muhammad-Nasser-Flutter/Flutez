@@ -63,11 +63,8 @@ class TrackItem extends StatelessWidget {
                   child: Hero(
                     tag: "${model.image}",
                     child: CachedNetworkImage(
-                      placeholder: (context,s){
-                        return ImageShimmer(height:190.h,width: 190.w,);
-                      },
-                      errorWidget: (context,s,a){
-                        return ImageShimmer(height:190.h,width: 190.w,);
+                      placeholder: (context,object){
+                        return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
                       },
                       imageUrl: model.image!,
                       fit: BoxFit.cover,

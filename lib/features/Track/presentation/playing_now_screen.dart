@@ -1,4 +1,3 @@
-import 'package:audio_service/audio_service.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
@@ -66,9 +65,9 @@ class PlayingNowScreen extends StatelessWidget {
                     ),
                     Center(
                       child: Hero(
-                        tag: mediaItem != null
-                            ? "${mediaItem.artUri}"
-                            : "${track.image}",
+                        tag: mediaItem == null
+                            ? "${track.image}"
+                            : "${mediaItem.artUri}",
                         child: Container(
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           width: 300.r,
@@ -87,6 +86,11 @@ class PlayingNowScreen extends StatelessWidget {
                           ),
                           child: mediaItem != null
                               ? CachedNetworkImage(
+                                  placeholder: (context, object) {
+                                    return const ImageShimmer(
+                                        width: double.maxFinite,
+                                        height: double.maxFinite);
+                                  },
                                   imageUrl: mediaItem.artUri.toString(),
                                   fit: BoxFit.cover,
                                 )
@@ -134,7 +138,7 @@ class PlayingNowScreen extends StatelessWidget {
                           child: BlocBuilder<FavoritesCubit, FavoritesStates>(
                             builder: (context, state) {
                               var favCubit = FavoritesCubit.get(context);
-                              var playing;
+                              Track? playing;
                               if (mediaItem != null) {
                                 playing = Track(
                                   artist: mediaItem.artist,
@@ -146,9 +150,9 @@ class PlayingNowScreen extends StatelessWidget {
 
                               return IconWidget(
                                 onPressed: () {
-                                  if (favCubit.inFav(playing)) {
+                                  if (favCubit.inFav(playing!)) {
                                     favCubit.removeFromFav(playing.trackLink);
-                                  }else{
+                                  } else {
                                     favCubit.addToFav(playing);
                                   }
                                 },

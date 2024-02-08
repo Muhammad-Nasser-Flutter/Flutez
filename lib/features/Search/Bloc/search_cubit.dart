@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutez/features/Search/Bloc/search_states.dart';
 import 'package:flutez/features/Search/models/search_model.dart';

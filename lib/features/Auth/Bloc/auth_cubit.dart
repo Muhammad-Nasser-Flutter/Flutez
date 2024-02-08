@@ -4,9 +4,11 @@ import 'package:flutez/core/cache_helper/cache_helper.dart';
 import 'package:flutez/core/cache_helper/cache_values.dart';
 import 'package:flutez/core/functions/flutter_toast.dart';
 import 'package:flutez/core/theming/colors.dart';
+import 'package:flutez/core/utilies/easy_loading.dart';
 import 'package:flutez/features/Profile/Models/profile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'auth_states.dart';
 
@@ -129,9 +131,10 @@ class AuthCubit extends Cubit<AuthStates> {
   Future<void> signInWithGoogle() async {
     try {
       GoogleSignInAccount? account = await _googleSignIn.signIn();
-      if (account != null) {
+      // if (account != null) {
         GoogleSignInAuthentication authentication =
-            await account.authentication;
+            await account!.authentication;
+        showLoading();
         OAuthCredential credential = GoogleAuthProvider.credential(
           idToken: authentication.idToken,
           accessToken: authentication.accessToken,
@@ -160,10 +163,11 @@ class AuthCubit extends Cubit<AuthStates> {
             emit(LoginSuccessState());
           },
         );
-      } else {
-        emit(LoginErrorState());
-      }
+      // } else {
+      //   emit(LoginErrorState());
+      // }
     } catch (e) {
+
       emit(LoginErrorState());
       print(e.toString());
     }

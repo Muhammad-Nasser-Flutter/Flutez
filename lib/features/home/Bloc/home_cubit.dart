@@ -58,9 +58,9 @@ class HomeCubit extends Cubit<HomeStates> {
   Future<void> getPlaylist() async {
     FirebaseFirestore.instance.collection("Playlists").snapshots().listen((event) {
       playlists = [];
-      event.docs.forEach((element) {
+      for (var element in event.docs) {
         playlists.add(PlaylistModel.fromJson(element.data()));
-      });
+      }
       emit(GetPlaylistsSuccessState());
     });
 

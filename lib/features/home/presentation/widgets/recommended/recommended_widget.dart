@@ -1,3 +1,4 @@
+import 'package:flutez/features/Track/presentation/Shimmers/recommended_shimmer.dart';
 import 'package:flutez/features/home/Bloc/home_cubit.dart';
 import 'package:flutez/features/home/Bloc/home_states.dart';
 import 'package:flutez/features/home/presentation/widgets/recommended/recommended_item_widget.dart';
@@ -23,22 +24,39 @@ class RecommendedWidget extends StatelessWidget {
         ),
         SizedBox(
           height: 280.h,
-          child: BlocBuilder<HomeCubit,HomeStates>(
-            builder:(context,state){
+          child: BlocBuilder<HomeCubit, HomeStates>(
+            builder: (context, state) {
               var homeCubit = HomeCubit.get(context);
-              return ListView.separated(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return RecommendedItemWidget(recommendedTrack: homeCubit.recommendedTracks[index],index:index);
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    width: 15.w,
-                  );
-                },
-                itemCount: homeCubit.recommendedTracks.length,
-              );
+              return homeCubit.recommendedTracks.isNotEmpty
+                  ? ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return RecommendedItemWidget(
+                            recommendedTrack:
+                                homeCubit.recommendedTracks[index],
+                            index: index);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          width: 15.w,
+                        );
+                      },
+                      itemCount: homeCubit.recommendedTracks.length,
+                    )
+                  : ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return const RecommendedItemShimmer();
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          width: 15.w,
+                        );
+                      },
+                      itemCount: 5,
+                    );
             },
           ),
         ),

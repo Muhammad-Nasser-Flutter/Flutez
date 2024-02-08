@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/theming/colors.dart';
-import 'package:flutez/features/Track/Bloc/track_cubit.dart';
+import 'package:flutez/features/Track/presentation/Shimmers/image_shimmer.dart';
 import 'package:flutez/features/home/Bloc/home_cubit.dart';
 import 'package:flutez/features/home/Bloc/home_states.dart';
 import 'package:flutez/features/home/models/recommended_track_model.dart';
@@ -19,11 +19,9 @@ class RecommendedItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        // TrackCubit.get(context).getTrackLink(recommendedTrack);
       },
       child: BlocBuilder<HomeCubit, HomeStates>(
         builder: (context, state) {
-          var homeCubit = HomeCubit.get(context);
           return SizedBox(
             width: 200.w,
             child: Column(
@@ -33,18 +31,22 @@ class RecommendedItemWidget extends StatelessWidget {
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     width: 190.w,
                     decoration: BoxDecoration(
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //     // color: homeCubit.recommendedShadows[index] ??
-                      //     //     AppColors.scaffoldBackground,
-                      //     blurRadius: 15.r,
-                      //     spreadRadius: -5,
-                      //     offset: const Offset(0, 20),
-                      //   ),
-                      // ],
+                      boxShadow: [
+                        BoxShadow(
+                          color:
+                          AppColors.trackShadowColor
+                              .withOpacity(0.2),
+                          blurRadius: 35.r,
+                          spreadRadius: -25,
+                          offset: const Offset(0, 30),
+                        ),
+                      ],
                       borderRadius: BorderRadius.circular(15.r),
                     ),
                     child: CachedNetworkImage(
+                      placeholder: (context,object){
+                        return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
+                      },
                       imageUrl: recommendedTrack.thumbnail!,
                       fit: BoxFit.fill,
                     ),

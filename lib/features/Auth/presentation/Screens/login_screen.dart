@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theming/assets.dart';
+import '../../../../core/utilies/easy_loading.dart';
 import '../../Bloc/Auth_cubit.dart';
 import '../../Bloc/auth_states.dart';
 
@@ -28,7 +29,10 @@ class LoginScreen extends StatelessWidget {
           child: BlocConsumer<AuthCubit, AuthStates>(
             listener: (context, state) {
               if (state is LoginSuccessState) {
+                hideLoading();
                 context.pushReplacementNamed(Routes.homeScreen);
+              } else if(state is LoginErrorState){
+                hideLoading();
               }
             },
             builder: (context, state) {
@@ -70,7 +74,9 @@ class LoginScreen extends StatelessWidget {
                       controller: emailController,
                       borderWidth: 1,
                       keyboardType: TextInputType.emailAddress,
-                      validator: (s) {},
+                      validator: (s) {
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 20.h,
@@ -91,7 +97,9 @@ class LoginScreen extends StatelessWidget {
                           authCubit.changePasswordVisibility();
                         },
                       ),
-                      validator: (s) {},
+                      validator: (s) {
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 30.h,
