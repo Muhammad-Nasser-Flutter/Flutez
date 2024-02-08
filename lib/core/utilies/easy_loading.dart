@@ -1,5 +1,4 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_easyloading/src/widgets/indicator.dart';
 void showLoading({
   EasyLoadingMaskType maskType = EasyLoadingMaskType.black,
 }) {

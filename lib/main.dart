@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutez/core/utilies/audio_init.dart';
 import 'package:flutez/features/Profile/Bloc/profile_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/firebase_options.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'core/Api/my_dio.dart';
 import 'core/bloc_observer.dart';
 import 'core/cache_helper/cache_helper.dart';
@@ -26,11 +26,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform
   );
   Bloc.observer = MyBlocObserver();
-  await JustAudioBackground.init(
-    androidNotificationChannelId: "com.ryanheise.bg_demo.channel.audio",
-    androidNotificationChannelName: "Audio Playback",
-    androidNotificationOngoing: true,
-  );
+  initAudio();
   configLoading();
   MyDio.init();
   if (kDebugMode) {

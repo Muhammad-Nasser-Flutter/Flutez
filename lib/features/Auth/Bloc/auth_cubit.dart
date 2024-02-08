@@ -8,7 +8,6 @@ import 'package:flutez/core/utilies/easy_loading.dart';
 import 'package:flutez/features/Profile/Models/profile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'auth_states.dart';
 
