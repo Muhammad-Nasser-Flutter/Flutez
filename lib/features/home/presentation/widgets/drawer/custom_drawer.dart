@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/core/theming/assets.dart';
@@ -6,6 +7,7 @@ import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
 import 'package:flutez/features/Profile/Bloc/profile_cubit.dart';
 import 'package:flutez/features/Profile/Bloc/profile_states.dart';
+import 'package:flutez/features/Track/presentation/Shimmers/image_shimmer.dart';
 import 'package:flutez/features/home/presentation/widgets/drawer/LogoutCubit/states.dart';
 import 'package:flutez/features/home/presentation/widgets/drawer/drawer_item.dart';
 import 'package:flutter/material.dart';
@@ -62,10 +64,21 @@ class CustomDrawer extends StatelessWidget {
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                           ),
-                          child: Image.asset(
-                            Assets.cover1,
-                            fit: BoxFit.cover,
-                          ),
+                          child: profileCubit.user != null
+                              ? CachedNetworkImage(
+                                  placeholder: (context, object) {
+                                    return const ImageShimmer(
+                                      width: double.maxFinite,
+                                      height: double.maxFinite,
+                                    );
+                                  },
+                                  imageUrl: profileCubit.user!.image!,
+                                  fit: BoxFit.cover,
+                                )
+                              : const ImageShimmer(
+                                  width: double.maxFinite,
+                                  height: double.maxFinite,
+                                ),
                         ),
                         InkWell(
                           onTap: () {},
@@ -82,11 +95,14 @@ class CustomDrawer extends StatelessWidget {
                       Expanded(
                         child: Text26(
                           text: "Hello ${profileCubit.user?.name}",
-                          overFlow: TextOverflow.ellipsis,maxLines: 1,
+                          overFlow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ),
-                      SvgPicture.asset(Assets.handShakeIcon,width: 40.r,)
-
+                      SvgPicture.asset(
+                        Assets.handShakeIcon,
+                        width: 40.r,
+                      )
                     ],
                   ),
                   SizedBox(

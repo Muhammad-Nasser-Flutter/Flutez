@@ -67,15 +67,12 @@ class PlayingTrack extends StatelessWidget {
                                       SizedBox(
                                         width: 70.r,
                                         height: 70.r,
-                                        child: Hero(
-                                          tag: mediaItem.artUri.toString(),
-                                          child: CachedNetworkImage(
-                                            placeholder: (context,object){
-                                              return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
-                                              },
-                                            imageUrl: mediaItem.artUri.toString(),
-                                            fit: BoxFit.cover,
-                                          ),
+                                        child: CachedNetworkImage(
+                                          placeholder: (context,object){
+                                            return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
+                                            },
+                                          imageUrl: mediaItem.artUri.toString(),
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                       Expanded(
