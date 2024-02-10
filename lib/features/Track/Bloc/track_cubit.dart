@@ -129,13 +129,12 @@ class TrackCubit extends Cubit<TrackStates> {
   }
 
   void mute() {
-    FirebaseFirestore.instance.collection("Playlists").get().then((value) {
-      for (var playlist in value.docs) {
-        playlist.data()["tracks"].forEach((track){
-          FirebaseFirestore.instance.collection("AllTracks").add(track);
-        });
-      }
-    }).then((value) => debugPrint("added Successfully"));
+    if(audioPlayer!.volume!=0){
+      audioPlayer!.setVolume(0);
+      customToast(msg: "Muted", color: AppColors.smallTextColor);
+    }else{
+      audioPlayer!.setVolume(1);
+    }
   }
 
   void changeShuffleMode() {
