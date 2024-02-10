@@ -1,7 +1,7 @@
 import 'package:flutez/core/widgets/search_icon.dart';
 import 'package:flutez/features/home/presentation/widgets/drawer/custom_drawer.dart';
 import 'package:flutez/features/Track/presentation/widgets/playingTrack.dart';
-import 'package:flutez/features/home/presentation/widgets/recommended/recommended_widget.dart';
+import 'package:flutez/features/Recommended/Presentation/widgets/recommended_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../Playlists/Presentation/widgets/my_playlist_widget.dart';

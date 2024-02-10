@@ -10,41 +10,38 @@ class RecommendedItemShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200.w,
-      child: Column(
-        children: [
-          Expanded(
-            child: Container(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              width: 190.w,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                    AppColors.trackShadowColor
-                        .withOpacity(0.2),
-                    blurRadius: 35.r,
-                    spreadRadius: -25,
-                    offset: const Offset(0, 30),
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(15.r),
-              ),
-              child: ImageShimmer(width: 190.w, height: double.maxFinite),
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            width: 190.w,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color:
+                  AppColors.trackShadowColor
+                      .withOpacity(0.2),
+                  blurRadius: 35.r,
+                  spreadRadius: -25,
+                  offset: const Offset(0, 30),
+                ),
+              ],
+              borderRadius: BorderRadius.circular(15.r),
             ),
+            child: ImageShimmer(width: 190.w, height: double.maxFinite),
           ),
-          SizedBox(
-            height: 10.h,
-          ),
-          const TextShimmer(width: 0.4),
-          SizedBox(
-            height: 5.h,
-          ),
-          const TextShimmer(width: 0.2),
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        const TextShimmer(width: 0.4),
+        SizedBox(
+          height: 5.h,
+        ),
+        const TextShimmer(width: 0.2),
 
-        ],
-      ),
+      ],
     );
   }
 }

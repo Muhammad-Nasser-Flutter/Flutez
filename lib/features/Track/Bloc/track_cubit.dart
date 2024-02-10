@@ -1,9 +1,14 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutez/core/functions/flutter_toast.dart';
+import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
+import '../../../core/theming/assets.dart';
 import '../../Playlists/models/playlist_model.dart';
 import '../Model/track_model.dart';
 
@@ -14,7 +19,7 @@ class TrackCubit extends Cubit<TrackStates> {
   AudioPlayer? audioPlayer;
   List<AudioSource> list = [];
 
-  void initHandler(Track track, PlaylistModel playlist,int index) async {
+  void initHandler(Track track, PlaylistModel playlist, int index) async {
     list = [];
     // to make the chosen track the first item played
     PlaylistModel test = PlaylistModel.fromJson(playlist.toJson());
@@ -29,7 +34,8 @@ class TrackCubit extends Cubit<TrackStates> {
             title: element.trackName.toString(),
             artist: element.artist.toString(),
             artUri: Uri.parse(element.image.toString()),
-            album: element.trackLink, id:  element.trackLink.toString(),
+            album: element.trackLink,
+            id: element.trackLink.toString(),
           ),
         ),
       );
@@ -37,7 +43,9 @@ class TrackCubit extends Cubit<TrackStates> {
     audioPlayer = AudioPlayer()
       ..setAudioSource(
         ConcatenatingAudioSource(children: list),
-      )..play();
+      )
+      ..play()
+      ..setLoopMode(LoopMode.all);
     emit(InitAudioHandlerSuccessState());
   }
 
@@ -45,13 +53,14 @@ class TrackCubit extends Cubit<TrackStates> {
   void pause() => audioPlayer!.pause();
 
   Stream<PositionData> get positionDataStream => Rx.combineLatest5<Duration,
-          Duration, Duration?, PlayerState,SequenceState? ,PositionData>(
+          Duration, Duration?, PlayerState, SequenceState?, PositionData>(
         audioPlayer!.positionStream,
         audioPlayer!.bufferedPositionStream,
         audioPlayer!.durationStream,
         audioPlayer!.playerStateStream,
         audioPlayer!.sequenceStateStream,
-        (position, bufferedPosition, duration, playerState,sequenceState) => PositionData(
+        (position, bufferedPosition, duration, playerState, sequenceState) =>
+            PositionData(
           position,
           bufferedPosition,
           duration ?? Duration.zero,
@@ -71,7 +80,7 @@ class TrackCubit extends Cubit<TrackStates> {
     required String trackUrl,
     required String title,
     required String author,
-    required playlist,
+    required PlaylistModel playlist,
     required int index,
   }) {
     if (currentTrack?.trackLink != trackUrl) {
@@ -84,7 +93,7 @@ class TrackCubit extends Cubit<TrackStates> {
         image: trackImgUrl,
         trackLink: trackUrl,
       );
-      initHandler(currentTrack!, playlist,index);
+      initHandler(currentTrack!, playlist, index);
     }
     emit(SetTrackState());
   }
@@ -94,13 +103,71 @@ class TrackCubit extends Cubit<TrackStates> {
     audioPlayer!.stop();
   }
 
-  void seekToNextTrack() async {
+  void seekToNextTrack() {
     audioPlayer?.seekToNext();
     emit(SetTrackState());
   }
 
-  void seekToPrevTrack()  {
+  void seekToPrevTrack() {
     audioPlayer?.seekToPrevious();
     emit(SetTrackState());
   }
+
+  void changeLoopMode() {
+    switch (audioPlayer?.loopMode.name) {
+      case "all":
+        audioPlayer?.setLoopMode(LoopMode.one);
+        customToast(msg: "Loop current track enabled", color: AppColors.smallTextColor);
+      case "one":
+        audioPlayer?.setLoopMode(LoopMode.off);
+        customToast(msg: "Loop off", color: AppColors.smallTextColor);
+      case "off":
+        audioPlayer?.setLoopMode(LoopMode.all);
+        customToast(msg: "Loop all enabled", color: AppColors.smallTextColor);
+    }
+    emit(ChangeLoopModeState());
+  }
+
+  void mute() {
+    FirebaseFirestore.instance.collection("Playlists").get().then((value) {
+      for (var playlist in value.docs) {
+        playlist.data()["tracks"].forEach((track){
+          FirebaseFirestore.instance.collection("AllTracks").add(track);
+        });
+      }
+    }).then((value) => debugPrint("added Successfully"));
+  }
+
+  void changeShuffleMode() {
+    if (audioPlayer!.shuffleModeEnabled) {
+      audioPlayer?.setShuffleModeEnabled(false);
+      customToast(msg: "Shuffle mode off", color: AppColors.smallTextColor);
+
+    } else {
+      audioPlayer?.setShuffleModeEnabled(true);
+      customToast(msg: "Shuffle mode on", color: AppColors.smallTextColor);
+
+    }
+  }
+
+  String loopIcon() {
+    switch (audioPlayer?.loopMode.name) {
+      case "all":
+        return Assets.repeatIcon;
+      case "one":
+        return Assets.repeatCurrentSongIcon;
+      default:
+        return Assets.repeatOffIcon;
+    }
+  }
+
+  String volumeIcon() {
+    switch (audioPlayer?.volume) {
+      case == 0:
+        return Assets.muteIcon;
+      default:
+        return Assets.volumeIcon;
+    }
+  }
+
 }

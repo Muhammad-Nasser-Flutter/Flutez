@@ -45,12 +45,7 @@ class AppRouter {
         );
       case Routes.homeScreen:
         return PageTransition(
-          child: BlocProvider(
-            child: const HomeScreen(),
-            create: (context) => HomeCubit()
-              ..getRecommendedTracks()
-              ..getPlaylist(),
-          ),
+          child: const HomeScreen(),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,

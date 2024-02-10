@@ -1,58 +1,68 @@
-import 'package:flutez/features/home/Bloc/home_cubit.dart';
-import 'package:flutez/features/home/Bloc/home_states.dart';
+import 'package:flutez/features/Playlists/Bloc/playlist_cubit.dart';
+import 'package:flutez/features/Playlists/Bloc/playlist_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../../core/widgets/custom_texts.dart';
+import '../../../Track/presentation/Shimmers/recommended_shimmer.dart';
 import 'home_playlist_item_widget.dart';
 
-class MyPlaylistWidget extends StatefulWidget {
+class MyPlaylistWidget extends StatelessWidget {
   const MyPlaylistWidget({super.key});
 
   @override
-  State<MyPlaylistWidget> createState() => _MyPlaylistWidgetState();
-}
-
-class _MyPlaylistWidgetState extends State<MyPlaylistWidget> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit,HomeStates>(
-      builder:(context,state){
-        var homeCubit = HomeCubit.get(context);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text24(
-              text: "My Playlists",
-              weight: FontWeight.w700,
-            ),
-            SizedBox(
-              height: 15.h,
-            ),
-            SizedBox(
-              height: 250.h,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return  HomePlayListItemWidget(model: homeCubit.playlists[index],);
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    width: 15.w,
-                  );
-                },
-                itemCount: homeCubit.playlists.length,
+    return BlocProvider(
+      create: (context) => PlaylistCubit()..getPlaylist(),
+      child: BlocBuilder<PlaylistCubit, PlaylistStates>(
+        builder: (context, state) {
+          var playlistCubit = PlaylistCubit.get(context);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text24(
+                text: "My Playlists",
+                weight: FontWeight.w700,
               ),
-            ),
-          ],
-        );
-      },
+              SizedBox(
+                height: 15.h,
+              ),
+              SizedBox(
+                height: 250.h,
+                child:playlistCubit.playlists.isNotEmpty?
+                ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return HomePlayListItemWidget(
+                      model: playlistCubit.playlists[index],
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      width: 15.w,
+                    );
+                  },
+                  itemCount: playlistCubit.playlists.length,
+                ):
+                ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return const RecommendedItemShimmer();
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      width: 15.w,
+                    );
+                  },
+                  itemCount: 5,
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

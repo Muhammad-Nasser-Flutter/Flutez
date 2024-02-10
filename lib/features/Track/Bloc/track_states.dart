@@ -11,4 +11,5 @@ class GetTrackLinkSuccessState extends TrackStates{}
 class GetTrackLinkErrorState extends TrackStates{}
 
 class SetTrackState extends TrackStates{}
+class ChangeLoopModeState extends TrackStates{}
 class SetVolumeState extends TrackStates{}

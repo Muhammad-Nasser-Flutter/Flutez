@@ -177,15 +177,9 @@ class PlayingNowScreen extends StatelessWidget {
                         children: [
                           IconWidget(
                             onPressed: () {
-                              if (trackCubit.audioPlayer!.volume > 0) {
-                                trackCubit.changeVolume(0);
-                              } else {
-                                trackCubit.changeVolume(1);
-                              }
+                              trackCubit.mute();
                             },
-                            iconAsset: trackCubit.audioPlayer!.volume > 0
-                                ? Assets.volumeIcon
-                                : Assets.muteIcon,
+                            iconAsset: trackCubit.volumeIcon(),
                             size: 22.r,
                           ),
                           Expanded(
@@ -217,12 +211,17 @@ class PlayingNowScreen extends StatelessWidget {
                           ),
                           // const Spacer(),
                           IconWidget(
-                            onPressed: () {},
-                            iconAsset: Assets.repeatIcon,
+                            onPressed: () {
+                              trackCubit.changeLoopMode();
+                              debugPrint(trackCubit.audioPlayer!.loopMode.name);
+                            },
+                            iconAsset: trackCubit.loopIcon(),
                             size: 22.r,
                           ),
                           IconWidget(
-                            onPressed: () {},
+                            onPressed: () {
+                              trackCubit.changeShuffleMode();
+                            },
                             iconAsset: Assets.shuffleIcon,
                             size: 22.r,
                           ),

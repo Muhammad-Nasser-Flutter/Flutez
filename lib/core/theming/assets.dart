@@ -32,4 +32,6 @@ class Assets {
   static const String muteIcon = "assets/images/muteIcon.svg";
   static const String handShakeIcon = "assets/images/hand-shake.svg";
   static const String googleIcon = "assets/images/google-Icon.svg";
+  static const String repeatCurrentSongIcon = "assets/images/repeat_once.svg";
+  static const String repeatOffIcon = "assets/images/repeat_off.svg";
 }

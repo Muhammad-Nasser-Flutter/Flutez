@@ -69,7 +69,7 @@ class SearchScreen extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           if (controller.text.isNotEmpty) {
-                            searchCubit.searchTracks(controller.text);
+                            searchCubit.searchTracks(text: controller.text);
                           }
                         },
                         child: Container(
@@ -90,18 +90,22 @@ class SearchScreen extends StatelessWidget {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: searchCubit.searches.length,
+                    itemCount:
+                        state is SearchSuccessState ? state.searches.length : 0,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.8,
+                      childAspectRatio: 0.75,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 20,
                     ),
                     itemBuilder: (context, index) {
-                      return SearchItem(
-                        searchModel: searchCubit.searches[index],
-                      );
+                      return state is SearchSuccessState
+                          ? SearchItem(
+                              searchModel: state.searches[index],
+                              index: index,
+                            )
+                          : null;
                     },
                   ),
                 ],
