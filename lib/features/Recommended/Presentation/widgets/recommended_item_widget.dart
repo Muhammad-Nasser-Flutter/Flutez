@@ -57,13 +57,16 @@ class RecommendedItemWidget extends StatelessWidget {
                     ],
                     borderRadius: BorderRadius.circular(15.r),
                   ),
-                  child: CachedNetworkImage(
-                    placeholder: (context, object) {
-                      return const ImageShimmer(
-                          width: double.maxFinite, height: double.maxFinite);
-                    },
-                    imageUrl: recommendedTrack.image!,
-                    fit: BoxFit.cover,
+                  child: Hero(
+                    tag: "${recommendedTrack.image}",
+                    child: CachedNetworkImage(
+                      placeholder: (context, object) {
+                        return const ImageShimmer(
+                            width: double.maxFinite, height: double.maxFinite);
+                      },
+                      imageUrl: recommendedTrack.image!,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
