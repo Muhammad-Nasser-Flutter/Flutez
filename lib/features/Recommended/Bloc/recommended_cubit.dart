@@ -11,10 +11,12 @@ class RecommendedCubit extends Cubit<RecommendedStates> {
   List<Track> recommendedTracks = [];
   Future<void> getRecommendedTracks() async {
     FirebaseFirestore.instance.collection("AllTracks").get().then((value) {
-      value.docs.shuffle();
+      List<QueryDocumentSnapshot> x = value.docs;
+      x.shuffle();
       recommendedTracks = [];
       for (int i = 0; i < 10; i++) {
-        recommendedTracks.add(Track.fromJson(value.docs[i].data()));
+        recommendedTracks
+            .add(Track.fromJson(x[i].data() as Map<String, dynamic>));
       }
       emit(GetRecommendedSuccessState());
     }).catchError((error) {

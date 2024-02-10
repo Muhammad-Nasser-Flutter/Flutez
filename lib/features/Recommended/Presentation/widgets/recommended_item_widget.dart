@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/features/Playlists/models/playlist_model.dart';
 import 'package:flutez/features/Recommended/Bloc/recommended_cubit.dart';
@@ -9,6 +10,7 @@ import 'package:flutez/features/Track/presentation/Shimmers/image_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/routing/routes.dart';
 import '../../../../core/widgets/custom_texts.dart';
 
 class RecommendedItemWidget extends StatelessWidget {
@@ -24,12 +26,17 @@ class RecommendedItemWidget extends StatelessWidget {
         var trackCubit = TrackCubit.get(context);
         return InkWell(
           onTap: () {
+            context.pushNamed(
+              Routes.playingNowScreen,
+              arguments: recommendedTrack,
+            );
             trackCubit.setCurrentTrack(
               trackImgUrl: recommendedTrack.image!,
               trackUrl: recommendedTrack.trackLink!,
               title: recommendedTrack.trackName!,
               author: recommendedTrack.artist!,
-              playlist: PlaylistModel(tracks: RecommendedCubit.get(context).recommendedTracks),
+              playlist: PlaylistModel(
+                  tracks: RecommendedCubit.get(context).recommendedTracks),
               index: index,
             );
           },
