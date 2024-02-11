@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutez/core/utilies/audio_init.dart';
 import 'package:flutez/features/Profile/Bloc/profile_cubit.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'core/Api/my_dio.dart';
 import 'core/bloc_observer.dart';
 import 'core/cache_helper/cache_helper.dart';
 import 'core/cache_helper/cache_values.dart';
@@ -20,7 +18,6 @@ import 'core/theming/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
   await CacheHelper.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
@@ -28,25 +25,14 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   initAudio();
   configLoading();
-  MyDio.init();
   if (kDebugMode) {
     print(
       "User Token : ${CacheHelper.getData(key: CacheKeys.uId)}",
     );
   }
   runApp(
-    EasyLocalization(
-      saveLocale: true,
-      useFallbackTranslations: true,
-      fallbackLocale: const Locale('en', 'UK'),
-      supportedLocales: const [
-        Locale('ar', 'EG'),
-        Locale('en', 'UK'),
-      ],
-      path: 'assets/languages',
-      child: MyApp(
-        appRouter: AppRouter(),
-      ),
+    MyApp(
+      appRouter: AppRouter(),
     ),
   );
 }
@@ -69,9 +55,6 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Flutez',
           debugShowCheckedModeBanner: false,
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.dark,
