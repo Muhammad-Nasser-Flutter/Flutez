@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
@@ -13,10 +15,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   SearchScreen({super.key});
 
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
   var controller = TextEditingController();
+  Timer? _debounceTimer;
+
+  @override
+  void dispose() {
+    if (_debounceTimer != null) {
+      _debounceTimer!.cancel(); // Cancel the timer when the widget is disposed
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,42 +65,50 @@ class SearchScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          borderWidth: 1,
-                          controller: controller,
-                          hintText: "Search desired track ..",
-                          padding: EdgeInsets.symmetric(horizontal: 15.w),
-                          maxLines: 1,
-                          textStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400),
-                        ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    child: CustomTextFormField(
+                      borderWidth: 1,
+                      controller: controller,
+                      hintText: "Search desired track ..",
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      maxLines: 1,
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
                       ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          if (controller.text.isNotEmpty) {
-                            searchCubit.searchTracks(text: controller.text);
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: AppColors.smallTextColor,
-                              borderRadius: BorderRadius.circular(12.r),
-                              border:
-                                  Border.all(width: 1, color: Colors.white)),
-                          padding: const EdgeInsets.all(14.0),
-                          child: SvgPicture.asset(Assets.searchIcon),
-                        ),
-                      ),
-                    ],
+                      onChanged: (s) {
+                        if (_debounceTimer != null) {
+                          _debounceTimer!.cancel(); // Cancel the previous timer
+                        }
+                        _debounceTimer =
+                            Timer(const Duration(milliseconds: 800), () {
+                          searchCubit.searchTracks(text: controller.text);
+                        });
+                      },
+                    ),
                   ),
+                  // SizedBox(
+                  //   width: 10.w,
+                  // ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     if (controller.text.isNotEmpty) {
+                  //       searchCubit.searchTracks(text: controller.text);
+                  //     }
+                  //   },
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //         color: AppColors.smallTextColor,
+                  //         borderRadius: BorderRadius.circular(12.r),
+                  //         border:
+                  //             Border.all(width: 1, color: Colors.white)),
+                  //     padding: const EdgeInsets.all(14.0),
+                  //     child: SvgPicture.asset(Assets.searchIcon),
+                  //   ),
+                  // ),
+
                   SizedBox(
                     height: 30.h,
                   ),
