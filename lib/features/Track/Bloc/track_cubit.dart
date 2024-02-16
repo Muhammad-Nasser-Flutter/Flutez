@@ -105,12 +105,12 @@ class TrackCubit extends Cubit<TrackStates> {
 
   void seekToNextTrack() {
     audioPlayer?.seekToNext();
-    emit(SetTrackState());
+    emit(SeekToNextState());
   }
 
   void seekToPrevTrack() {
     audioPlayer?.seekToPrevious();
-    emit(SetTrackState());
+    emit(SeekToPrevState());
   }
 
   void changeLoopMode() {
