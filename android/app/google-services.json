@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "662697512266",
+    "project_id": "flutez-18e07",
+    "storage_bucket": "flutez-18e07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662697512266:android:7e670ca3c88db96ed885b3",
+        "android_client_info": {
+          "package_name": "com.example.flutez"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662697512266-do531lipm93fk4liaj70biafmbiejb51.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutez",
+            "certificate_hash": "1edde703a91db0190ce8d0d6c2702b11bff3c845"
+          }
+        },
+        {
+          "client_id": "662697512266-s3a4ngicljge3hboadbh0v4vtl7vh25d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutez",
+            "certificate_hash": "c8dd6ee06464cba0244162b2f0ee44a696873e78"
+          }
+        },
+        {
+          "client_id": "662697512266-umf660a2n56eudfr605ph173da71meg3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuj81XpjiroX4ufl3Jhs6qsPGYcUKx2Eg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "662697512266-qfuo8eq0lgain4qspu24hggjlrfefu3h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "662697512266-44i2j8icbomp1k3cq68i12af2smnk3bt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutez"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
