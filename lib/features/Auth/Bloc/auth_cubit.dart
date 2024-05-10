@@ -8,6 +8,7 @@ import 'package:flutez/core/utilies/easy_loading.dart';
 import 'package:flutez/features/Profile/Models/profile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'auth_states.dart';
 
@@ -127,17 +128,35 @@ class AuthCubit extends Cubit<AuthStates> {
     });
   }
 
-  Future<void> signInWithGoogle() async {
-    try {
-      GoogleSignInAccount? account = await _googleSignIn.signIn();
-      // if (account != null) {
-        GoogleSignInAuthentication authentication =
-            await account!.authentication;
-        showLoading();
-        OAuthCredential credential = GoogleAuthProvider.credential(
-          idToken: authentication.idToken,
-          accessToken: authentication.accessToken,
-        );
+  Map<String, dynamic>? userData;
+  AccessToken? accessToken;
+  void facebookCheckIfUserIsLoggedIn(context) async {
+    final token = await FacebookAuth.instance.accessToken;
+    if (accessToken != null) {
+      accessToken = token;
+      userData = await FacebookAuth.instance.getUserData();
+      print(userData.toString());
+      emit(FacebookLoginCheckedSuccessState());
+    } else {
+      facebookLogin(context);
+      emit(FacebookLoginCheckedErrorState());
+    }
+  }
+
+  void facebookLogin(context) async {
+    final LoginResult result = await FacebookAuth.instance.login(permissions: [
+      "email",
+      "public_profile",
+      // "user_gender"
+    ]);
+    if (result.status == LoginStatus.success) {
+      accessToken = result.accessToken;
+      userData = await FacebookAuth.instance.getUserData();
+      print(userData.toString());
+      final OAuthCredential credential = FacebookAuthProvider.credential(
+        result.accessToken!.token,
+      );
+      try {
         await FirebaseAuth.instance.signInWithCredential(credential).then(
           (value) async {
             var profile = ProfileModel(
@@ -162,11 +181,58 @@ class AuthCubit extends Cubit<AuthStates> {
             emit(LoginSuccessState());
           },
         );
+      } catch (err) {
+        customToast(
+            msg: "There's an another registered account with this email",
+            color: AppColors.smallTextColor);
+        emit(FacebookLoginErrorState());
+      }
+      emit(FacebookLoginSuccessState());
+    } else {
+      customToast(
+          msg: result.message.toString(), color: AppColors.smallTextColor);
+      emit(FacebookLoginErrorState());
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      GoogleSignInAccount? account = await _googleSignIn.signIn();
+      // if (account != null) {
+      GoogleSignInAuthentication authentication = await account!.authentication;
+      showLoading();
+      OAuthCredential credential = GoogleAuthProvider.credential(
+        idToken: authentication.idToken,
+        accessToken: authentication.accessToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential).then(
+        (value) async {
+          var profile = ProfileModel(
+            email: value.user!.email,
+            image: value.user!.photoURL,
+            name: value.user!.displayName,
+            uId: value.user!.uid,
+          );
+          FirebaseFirestore.instance
+              .collection("Users")
+              .doc(profile.uId)
+              .get()
+              .then((value) {
+            if (!value.exists) {
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(profile.uId)
+                  .set(profile.toJson());
+            }
+          });
+          CacheHelper.saveData(key: CacheKeys.uId, value: value.user!.uid);
+          emit(LoginSuccessState());
+        },
+      );
       // } else {
       //   emit(LoginErrorState());
       // }
     } catch (e) {
-
       emit(LoginErrorState());
       print(e.toString());
     }
