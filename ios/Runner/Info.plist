@@ -52,5 +52,36 @@
 		</dict>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>UIBackgroundModes</key>
+        <array>
+          <string>audio</string>
+        </array>
+        <key>CFBundleURLTypes</key>
+            	<array>
+            		<dict>
+            			<key>CFBundleTypeRole</key>
+            			<string>Editor</string>
+            			<key>CFBundleURLSchemes</key>
+            			<array>
+            				<string>com.googleusercontent.apps.662697512266-44i2j8icbomp1k3cq68i12af2smnk3bt</string>
+            			</array>
+            		</dict>
+            		<dict/>
+            	</array>
+            	<key>CFBundleVersion</key>
+            	<string>$(FLUTTER_BUILD_NUMBER)</string>
+            	<key>GIDClientID</key>
+            	<string>662697512266-44i2j8icbomp1k3cq68i12af2smnk3bt.apps.googleusercontent.com</string>
+            	<key>LSRequiresIPhoneOS</key>
+            	<true/>
+            	<key>NSAppTransportSecurity</key>
+            	<dict>
+            		<key>NSAllowsArbitraryLoads</key>
+            		<true/>
+            	</dict>
+            	<key>NSCameraUsageDescription</key>
+            	<string>We need access to the camera for taking photos</string>
+            	<key>NSPhotoLibraryUsageDescription</key>
+            	<string>We need access to your photo library to upload photos</string>
 	</dict>
 </plist>

@@ -43,9 +43,15 @@ class TrackCubit extends Cubit<TrackStates> {
     audioPlayer = AudioPlayer()
       ..setAudioSource(
         ConcatenatingAudioSource(children: list),
-      )
-      ..play()
-      ..setLoopMode(LoopMode.all);
+      );
+    debugPrint("before play");
+    await audioPlayer?.play();
+    debugPrint("after play");
+    debugPrint("before loop mode");
+
+    await audioPlayer?.setLoopMode(LoopMode.all);
+    debugPrint("after loop mode");
+
     emit(InitAudioHandlerSuccessState());
   }
 
