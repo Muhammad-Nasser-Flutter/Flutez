@@ -205,30 +205,29 @@ class AuthCubit extends Cubit<AuthStates> {
         idToken: authentication.idToken,
         accessToken: authentication.accessToken,
       );
-      await FirebaseAuth.instance.signInWithCredential(credential).then(
-        (value) async {
-          var profile = ProfileModel(
-            email: value.user!.email,
-            image: value.user!.photoURL,
-            name: value.user!.displayName,
-            uId: value.user!.uid,
-          );
-          FirebaseFirestore.instance
-              .collection("Users")
-              .doc(profile.uId)
-              .get()
-              .then((value) {
-            if (!value.exists) {
-              FirebaseFirestore.instance
-                  .collection("Users")
-                  .doc(profile.uId)
-                  .set(profile.toJson());
-            }
-          });
-          CacheHelper.saveData(key: CacheKeys.uId, value: value.user!.uid);
-          emit(LoginSuccessState());
-        },
+      print("object");
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      var profile = ProfileModel(
+        email: userCredential.user!.email,
+        image: userCredential.user!.photoURL,
+        name: userCredential.user!.displayName,
+        uId: userCredential.user!.uid,
       );
+
+      final user = await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(profile.uId)
+          .get();
+      if (!user.exists) {
+        await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(profile.uId)
+            .set(profile.toJson());
+      }
+      CacheHelper.saveData(key: CacheKeys.uId, value: userCredential.user!.uid);
+      emit(LoginSuccessState());
+
       // } else {
       //   emit(LoginErrorState());
       // }
