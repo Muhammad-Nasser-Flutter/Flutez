@@ -1,12 +1,10 @@
+import 'dart:io';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
-import 'package:flutez/features/Downloads/Bloc/cubit/downloaded_tracks_cubit.dart';
-import 'package:flutez/features/Downloads/models/downloaded_track_model.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
@@ -17,12 +15,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../Favorites/Bloc/favorites_cubit.dart';
-import '../../Favorites/Bloc/favorites_states.dart';
-import '../Model/track_model.dart';
 
-class PlayingNowScreen extends StatelessWidget {
-  final Track track;
-  const PlayingNowScreen({super.key, required this.track});
+class OfflinePlayingNowScreen extends StatelessWidget {
+  const OfflinePlayingNowScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,130 +62,55 @@ class PlayingNowScreen extends StatelessWidget {
                       height: 40.h,
                     ),
                     Center(
-                      child: Hero(
-                        tag: mediaItem == null ? "${track.image}" : "${mediaItem.artUri}",
-                        child: Container(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          width: 300.r,
-                          height: 300.r,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.trackShadowColor.withOpacity(0.2),
-                                blurRadius: 45.r,
-                                spreadRadius: -0,
-                                offset: const Offset(0, 0),
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                          child: mediaItem != null
-                              ? CachedNetworkImage(
-                                  placeholder: (context, object) {
-                                    return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
-                                  },
-                                  imageUrl: mediaItem.artUri.toString(),
-                                  fit: BoxFit.cover,
-                                )
-                              : ImageShimmer(width: 300.r, height: 300.r),
+                      child: Container(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        width: 300.r,
+                        height: 300.r,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.trackShadowColor.withOpacity(0.2),
+                              blurRadius: 45.r,
+                              spreadRadius: -0,
+                              offset: const Offset(0, 0),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(5.r),
                         ),
+                        child: mediaItem != null
+                            ? Image.file(
+                                File(mediaItem.album.toString()),
+                                fit: BoxFit.cover,
+                              )
+                            : ImageShimmer(width: 300.r, height: 300.r),
                       ),
                     ),
                     SizedBox(
                       height: 30.h,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  constraints: BoxConstraints(maxWidth: 260.w),
-                                  child: mediaItem != null
-                                      ? Text22(
-                                          text: mediaItem.title,
-                                          maxLines: 1,
-                                          overFlow: TextOverflow.ellipsis,
-                                          textColor: Colors.white,
-                                        )
-                                      : const TextShimmer(width: 0.5),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                mediaItem != null
-                                    ? Text16(
-                                        text: "${mediaItem.artist}",
-                                        weight: FontWeight.w300,
-                                      )
-                                    : const TextShimmer(width: 0.3),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 30.w,
-                          ),
-                          if(mediaItem != null)
-                          BlocBuilder<DownloadedTracksCubit, List<DownloadedTrackModel>>(
-                            builder: (context, state) {
-                              bool inDownloads = state.any((element) => element.title == (mediaItem.title??""));
-                              return IconButton(
-                                onPressed: () {
-                                  if (!inDownloads) {
-                                    context.read<DownloadedTracksCubit>().addTrackToDownloadedTracks(
-                                          id: mediaItem.id,
-                                          artist: mediaItem.artist,
-                                          imageUrl: mediaItem.artUri.toString(),
-                                          trackName: mediaItem.title,
-                                          trackUrl: mediaItem.album,
-                                        );
-                                  } else {
-                                    /// remove from downloads
-                                  }
-                                },
-                                icon: Icon(
-                                  !inDownloads ? Icons.download : Icons.download_done,
-                                  color: Colors.white,
-                                ),
-                              );
-                            },
-                          ),
-                          BlocBuilder<FavoritesCubit, FavoritesStates>(
-                            builder: (context, state) {
-                              var favCubit = FavoritesCubit.get(context);
-                              Track? playing;
-                              if (mediaItem != null) {
-                                playing = Track(
-                                  artist: mediaItem.artist,
-                                  trackName: mediaItem.title,
-                                  image: mediaItem.artUri.toString(),
-                                  trackLink: mediaItem.album,
-                                );
-                              }
-
-                              return IconWidget(
-                                onPressed: () {
-                                  if (favCubit.inFav(playing!)) {
-                                    favCubit.removeFromFav(playing.trackLink);
-                                  } else {
-                                    favCubit.addToFav(playing);
-                                  }
-                                },
-                                iconAsset: playing != null
-                                    ? favCubit.inFav(playing)
-                                        ? Assets.heartFillIcon
-                                        : Assets.heartIcon
-                                    : Assets.heartIcon,
-                                size: 22.r,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                    Column(
+                      children: [
+                        Container(
+                          constraints: BoxConstraints(maxWidth: 260.w),
+                          child: mediaItem != null
+                              ? Text22(
+                                  text: mediaItem.title,
+                                  maxLines: 1,
+                                  overFlow: TextOverflow.ellipsis,
+                                  textColor: Colors.white,
+                                )
+                              : const TextShimmer(width: 0.5),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        mediaItem != null
+                            ? Text16(
+                                text: "${mediaItem.artist}",
+                                weight: FontWeight.w300,
+                              )
+                            : const TextShimmer(width: 0.3),
+                      ],
                     ),
                     SizedBox(
                       height: 20.h,

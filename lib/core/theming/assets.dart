@@ -22,6 +22,8 @@ class Assets {
   static const String moonIcon = "assets/images/moon.svg";
   static const String settingsIcon = "assets/images/settings.svg";
   static const String userIcon = "assets/images/user.svg";
+  static const String downloadIcon = "assets/images/downloadIcon.svg";
+
   static const String editImageIcon = "assets/images/edit.svg";
   static const String logoutIcon = "assets/images/logout-icon.svg";
   static const String editProfileIcon = "assets/images/edit-profile-icon.svg";

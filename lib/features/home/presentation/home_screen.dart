@@ -1,4 +1,5 @@
 import 'package:flutez/core/widgets/search_icon.dart';
+import 'package:flutez/features/home/presentation/widgets/downloaded_tracks_widgets/downloaded_tracks_section.dart';
 import 'package:flutez/features/home/presentation/widgets/drawer/custom_drawer.dart';
 import 'package:flutez/features/Track/presentation/widgets/playingTrack.dart';
 import 'package:flutez/features/Recommended/Presentation/widgets/recommended_widget.dart';
@@ -34,6 +35,10 @@ class HomeScreen extends StatelessWidget {
                   height: 20.h,
                 ),
                 const MyPlaylistWidget(),
+                SizedBox(
+                  height: 20.h,
+                ),
+                const DownloadedTracksSection()
               ],
             ),
           ),

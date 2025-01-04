@@ -1,3 +1,4 @@
+import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,8 +20,14 @@ class DrawerItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SvgPicture.asset(icon,width: 22.r,),
-            SizedBox(width: 20.w,),
+            SvgPicture.asset(
+              icon,
+              width: 22.r,
+              color: AppColors.smallTextColor,
+            ),
+            SizedBox(
+              width: 20.w,
+            ),
             Text20(text: label),
           ],
         ),

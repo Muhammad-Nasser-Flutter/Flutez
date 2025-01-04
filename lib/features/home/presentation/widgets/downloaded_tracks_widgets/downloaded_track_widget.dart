@@ -1,42 +1,38 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
+
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/routing/routes.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
+import 'package:flutez/features/Downloads/Bloc/cubit/downloaded_tracks_cubit.dart';
+import 'package:flutez/features/Downloads/models/downloaded_track_model.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
-import 'package:flutez/features/Playlists/models/playlist_model.dart';
 import 'package:flutez/features/Track/presentation/Shimmers/image_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../Model/track_model.dart';
 
-class TrackItem extends StatelessWidget {
-  const TrackItem({super.key, required this.model, required this.index, required this.playlistModel});
-  final Track model;
-  final PlaylistModel playlistModel;
+class DownloadedTrackWidget extends StatelessWidget {
+  final DownloadedTrackModel downloadedTrackModel;
   final int index;
+  const DownloadedTrackWidget({super.key, required this.downloadedTrackModel, required this.index});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TrackCubit, TrackStates>(
       builder: (context, state) {
         var trackCubit = TrackCubit.get(context);
-        return GestureDetector(
+        return InkWell(
           onTap: () {
             context.pushNamed(
-              Routes.playingNowScreen,
-              arguments: model,
+              Routes.playingNowOfflineScreen,
             );
-            if (trackCubit.audioPlayer?.sequenceState?.currentSource?.tag.album != model.trackLink) {
-              trackCubit.setCurrentTrack(
-                playlist: playlistModel.tracks!.isNotEmpty
-                    ? playlistModel.tracks!
-                    : [model] ,
-                index: index,
-              );
-            }
+            trackCubit.setCurrentTrack(
+              playlist: context.read<DownloadedTracksCubit>().state,
+              index: index,
+              isOffline: true
+            );
           },
           child: Column(
             children: [
@@ -53,15 +49,12 @@ class TrackItem extends StatelessWidget {
                         offset: const Offset(0, 30),
                       ),
                     ],
-                    borderRadius: BorderRadius.circular(5.r),
+                    borderRadius: BorderRadius.circular(15.r),
                   ),
                   child: Hero(
-                    tag: "${model.image}",
-                    child: CachedNetworkImage(
-                      placeholder: (context, object) {
-                        return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
-                      },
-                      imageUrl: model.image!,
+                    tag: downloadedTrackModel.localImagePath,
+                    child: Image.file(
+                      File(downloadedTrackModel.localImagePath),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -71,7 +64,7 @@ class TrackItem extends StatelessWidget {
                 height: 10.h,
               ),
               Text18(
-                text: model.trackName!,
+                text: downloadedTrackModel.title,
                 maxLines: 1,
                 overFlow: TextOverflow.ellipsis,
                 weight: FontWeight.w500,
@@ -80,12 +73,11 @@ class TrackItem extends StatelessWidget {
                 height: 5.h,
               ),
               Text12(
-                size: 13.sp,
-                text: model.artist!,
-                weight: FontWeight.w400,
+                text: downloadedTrackModel.artist,
                 maxLines: 1,
                 overFlow: TextOverflow.ellipsis,
-              ),
+                weight: FontWeight.w400,
+              )
             ],
           ),
         );

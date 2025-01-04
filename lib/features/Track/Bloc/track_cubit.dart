@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutez/core/functions/flutter_toast.dart';
 import 'package:flutez/core/theming/colors.dart';
+import 'package:flutez/features/Downloads/models/downloaded_track_model.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,13 +19,12 @@ class TrackCubit extends Cubit<TrackStates> {
 
   AudioPlayer? audioPlayer;
 
-  void initHandler(PlaylistModel playlist, int index) async {
+  void handleOnlinePlaylist(List<Track> playlist, int index) async {
     // to make the chosen track the first item played
-    PlaylistModel test = PlaylistModel.fromJson(playlist.toJson());
     // Track item = test.tracks!.removeAt(index);
     // test.tracks!.insert(0, item);
     // adding them to the playlist
-    List<AudioSource> list = test.tracks!
+    List<AudioSource> list = playlist
         .map(
           (e) => AudioSource.uri(
             Uri.parse(e.trackLink!),
@@ -42,6 +43,32 @@ class TrackCubit extends Cubit<TrackStates> {
       ConcatenatingAudioSource(children: list),
     );
     await audioPlayer?.seek(Duration.zero, index: index);
+    await audioPlayer?.play();
+    await audioPlayer?.setLoopMode(LoopMode.all);
+  }
+
+  void handleOfflinePlaylist(List<DownloadedTrackModel> playlist, int index) async {
+    // to make the chosen track the first item played
+    // Track item = test.tracks!.removeAt(index);
+    // test.tracks!.insert(0, item);
+    // adding them to the playlist
+    List<AudioSource> list = playlist
+        .map(
+          (e) => AudioSource.file(
+            e.localPath,
+            tag: MediaItem(
+              title: e.title.toString(),
+              artist: e.artist.toString(),
+              artUri: Uri.file(e.localImagePath),
+              album: e.localImagePath,
+              id: e.localPath.toString(),
+            ),
+          ),
+        )
+        .toList();
+    audioPlayer = AudioPlayer();
+    await audioPlayer?.setAudioSource(ConcatenatingAudioSource(children: list), initialIndex: index);
+    // await audioPlayer?.seek(Duration.zero, index: index);
     await audioPlayer?.play();
     await audioPlayer?.setLoopMode(LoopMode.all);
   }
@@ -72,16 +99,39 @@ class TrackCubit extends Cubit<TrackStates> {
 
   Track? currentTrack;
   void setCurrentTrack({
-     required PlaylistModel playlist,
+    required List<dynamic> playlist,
     required int index,
+    bool isOffline = false,
   }) {
-    if (currentTrack?.trackLink != playlist.tracks![index].trackLink) {
-      if (currentTrack != null) {
-        removeCurrentTrack();
+    if (isOffline) {
+      if (currentTrack?.trackLink != playlist[index].localPath) {
+        if (currentTrack != null) {
+          removeCurrentTrack();
+        }
+        currentTrack = Track(
+          trackName: playlist[index].title,
+          artist: playlist[index].artist,
+          image: playlist[index].localImagePath,
+          trackLink: playlist[index].localPath,
+        );
+        handleOfflinePlaylist(
+          playlist as List<DownloadedTrackModel>,
+          index,
+        );
       }
-      currentTrack = playlist.tracks![index];
-      initHandler(playlist, index);
+    } else {
+      if (currentTrack?.trackLink != playlist[index].trackLink) {
+        if (currentTrack != null) {
+          removeCurrentTrack();
+        }
+        currentTrack = playlist[index];
+        handleOnlinePlaylist(
+          playlist as List<Track>,
+          index,
+        );
+      }
     }
+
     emit(SetTrackState());
   }
 

@@ -25,19 +25,17 @@ class SearchItem extends StatelessWidget {
     return BlocBuilder<TrackCubit, TrackStates>(
       builder: (context, state) {
         var trackCubit = TrackCubit.get(context);
-        return BlocBuilder<SearchCubit,SearchStates>(
-          builder:(context,state){
+        return BlocBuilder<SearchCubit, SearchStates>(
+          builder: (context, state) {
             return GestureDetector(
               onTap: () {
                 context.pushNamed(
                   Routes.playingNowScreen,
                   arguments: searchModel,
                 );
-                if(trackCubit.audioPlayer?.sequenceState?.currentSource?.tag.album != searchModel.trackLink && state is SearchSuccessState){
-                  trackCubit.setCurrentTrack(
-                     playlist: PlaylistModel(tracks: state.searches),
-                      index: index
-                  );
+                if (trackCubit.audioPlayer?.sequenceState?.currentSource?.tag.album != searchModel.trackLink &&
+                    state is SearchSuccessState) {
+                  trackCubit.setCurrentTrack(playlist: state.searches, index: index);
                 }
               },
               child: Column(
@@ -58,7 +56,7 @@ class SearchItem extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5.r),
                       ),
                       child: CachedNetworkImage(
-                        placeholder: (context,object){
+                        placeholder: (context, object) {
                           return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
                         },
                         imageUrl: searchModel.image!,

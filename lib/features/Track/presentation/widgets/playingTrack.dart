@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
@@ -27,8 +29,7 @@ class PlayingTrack extends StatelessWidget {
             ? const SizedBox()
             : GestureDetector(
                 onTap: () {
-                  context.pushNamed(Routes.playingNowScreen,
-                      arguments: trackCubit.currentTrack);
+                  context.pushNamed(Routes.playingNowScreen, arguments: trackCubit.currentTrack);
                 },
                 child: Container(
                   padding: EdgeInsets.only(
@@ -39,8 +40,7 @@ class PlayingTrack extends StatelessWidget {
                       stream: trackCubit.positionDataStream,
                       builder: (context, snapshot) {
                         final positionData = snapshot.data;
-                        final mediaItem =
-                            positionData?.sequenceState?.currentSource?.tag;
+                        final mediaItem = positionData?.sequenceState?.currentSource?.tag;
                         return Column(
                           children: [
                             ProgressBar(
@@ -54,23 +54,26 @@ class PlayingTrack extends StatelessWidget {
                               timeLabelLocation: TimeLabelLocation.none,
                               progress: positionData?.position ?? Duration.zero,
                               total: positionData?.duration ?? Duration.zero,
-                              buffered: positionData?.bufferedPosition ??
-                                  Duration.zero,
+                              buffered: positionData?.bufferedPosition ?? Duration.zero,
                               onSeek: trackCubit.audioPlayer!.seek,
                             ),
                             mediaItem != null
                                 ? Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       SizedBox(
                                         width: 70.r,
                                         height: 70.r,
                                         child: CachedNetworkImage(
-                                          placeholder: (context,object){
-                                            return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
-                                            },
+                                          placeholder: (context, object) {
+                                            return const ImageShimmer(
+                                                width: double.maxFinite, height: double.maxFinite);
+                                          },
+                                          errorWidget: (context, url, error) => Image.file(
+                                            File(mediaItem.album.toString()),
+                                            fit: BoxFit.cover,
+                                          ),
                                           imageUrl: mediaItem.artUri.toString(),
                                           fit: BoxFit.cover,
                                         ),
@@ -80,8 +83,7 @@ class PlayingTrack extends StatelessWidget {
                                           margin: EdgeInsets.only(left: 15.w),
                                           child: IntrinsicHeight(
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text18(
                                                   text: "${mediaItem.title}",
@@ -112,18 +114,14 @@ class PlayingTrack extends StatelessWidget {
                                       ),
                                       IconWidget(
                                         onPressed: () {
-                                          if (!positionData!
-                                              .playerState.playing) {
+                                          if (!positionData!.playerState.playing) {
                                             trackCubit.audioPlayer!.play();
-                                          } else if (positionData.playerState
-                                                  .processingState !=
+                                          } else if (positionData.playerState.processingState !=
                                               ProcessingState.completed) {
                                             trackCubit.audioPlayer!.pause();
                                           }
                                         },
-                                        iconAsset: positionData
-                                                    ?.playerState.playing ==
-                                                null
+                                        iconAsset: positionData?.playerState.playing == null
                                             ? Assets.playIcon
                                             : !positionData!.playerState.playing
                                                 ? Assets.playIcon
@@ -147,8 +145,7 @@ class PlayingTrack extends StatelessWidget {
                                   )
                                 : Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       ImageShimmer(
                                         width: 70.r,
@@ -158,8 +155,7 @@ class PlayingTrack extends StatelessWidget {
                                         width: 10.w,
                                       ),
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           const TextShimmer(width: 0.5),
                                           SizedBox(

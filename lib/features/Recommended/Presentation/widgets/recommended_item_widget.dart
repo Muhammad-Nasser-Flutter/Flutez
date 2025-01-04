@@ -16,8 +16,7 @@ import '../../../../core/widgets/custom_texts.dart';
 class RecommendedItemWidget extends StatelessWidget {
   final Track recommendedTrack;
   final int index;
-  const RecommendedItemWidget(
-      {super.key, required this.recommendedTrack, required this.index});
+  const RecommendedItemWidget({super.key, required this.recommendedTrack, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +30,7 @@ class RecommendedItemWidget extends StatelessWidget {
               arguments: recommendedTrack,
             );
             trackCubit.setCurrentTrack(
-              // trackImgUrl: recommendedTrack.image!,
-              // trackUrl: recommendedTrack.trackLink!,
-              // title: recommendedTrack.trackName!,
-              // artist: recommendedTrack.artist!,
-              playlist: PlaylistModel(
-                  tracks: RecommendedCubit.get(context).recommendedTracks),
+              playlist: RecommendedCubit.get(context).recommendedTracks  ,
               index: index,
             );
           },
@@ -61,8 +55,7 @@ class RecommendedItemWidget extends StatelessWidget {
                     tag: "${recommendedTrack.image}",
                     child: CachedNetworkImage(
                       placeholder: (context, object) {
-                        return const ImageShimmer(
-                            width: double.maxFinite, height: double.maxFinite);
+                        return const ImageShimmer(width: double.maxFinite, height: double.maxFinite);
                       },
                       imageUrl: recommendedTrack.image!,
                       fit: BoxFit.cover,
