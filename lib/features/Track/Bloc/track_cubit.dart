@@ -1,5 +1,4 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutez/core/functions/flutter_toast.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
@@ -17,56 +16,47 @@ class TrackCubit extends Cubit<TrackStates> {
   static TrackCubit get(context) => BlocProvider.of(context);
 
   AudioPlayer? audioPlayer;
-  List<AudioSource> list = [];
 
-  void initHandler(Track track, PlaylistModel playlist, int index) async {
-    list = [];
+  void initHandler(PlaylistModel playlist, int index) async {
     // to make the chosen track the first item played
     PlaylistModel test = PlaylistModel.fromJson(playlist.toJson());
-    Track item = test.tracks!.removeAt(index);
-    test.tracks!.insert(0, item);
+    // Track item = test.tracks!.removeAt(index);
+    // test.tracks!.insert(0, item);
     // adding them to the playlist
-    for (var element in test.tracks!) {
-      list.add(
-        AudioSource.uri(
-          Uri.parse(element.trackLink!),
-          tag: MediaItem(
-            title: element.trackName.toString(),
-            artist: element.artist.toString(),
-            artUri: Uri.parse(element.image.toString()),
-            album: element.trackLink,
-            id: element.trackLink.toString(),
+    List<AudioSource> list = test.tracks!
+        .map(
+          (e) => AudioSource.uri(
+            Uri.parse(e.trackLink!),
+            tag: MediaItem(
+              title: e.trackName.toString(),
+              artist: e.artist.toString(),
+              artUri: Uri.parse(e.image.toString()),
+              album: e.trackLink,
+              id: e.trackLink.toString(),
+            ),
           ),
-        ),
-      );
-    }
-    audioPlayer = AudioPlayer()
-      ..setAudioSource(
-        ConcatenatingAudioSource(children: list),
-      );
-    debugPrint("before play");
+        )
+        .toList();
+    audioPlayer = AudioPlayer();
+    await audioPlayer?.setAudioSource(
+      ConcatenatingAudioSource(children: list),
+    );
+    await audioPlayer?.seek(Duration.zero, index: index);
     await audioPlayer?.play();
-    debugPrint("after play");
-    debugPrint("before loop mode");
-
     await audioPlayer?.setLoopMode(LoopMode.all);
-    debugPrint("after loop mode");
-
-    emit(InitAudioHandlerSuccessState());
   }
 
   void play() => audioPlayer!.play();
   void pause() => audioPlayer!.pause();
 
-  Stream<PositionData> get positionDataStream => Rx.combineLatest5<Duration,
-          Duration, Duration?, PlayerState, SequenceState?, PositionData>(
+  Stream<PositionData> get positionDataStream =>
+      Rx.combineLatest5<Duration, Duration, Duration?, PlayerState, SequenceState?, PositionData>(
         audioPlayer!.positionStream,
         audioPlayer!.bufferedPositionStream,
         audioPlayer!.durationStream,
         audioPlayer!.playerStateStream,
         audioPlayer!.sequenceStateStream,
-        (position, bufferedPosition, duration, playerState, sequenceState) =>
-            PositionData(
+        (position, bufferedPosition, duration, playerState, sequenceState) => PositionData(
           position,
           bufferedPosition,
           duration ?? Duration.zero,
@@ -82,24 +72,15 @@ class TrackCubit extends Cubit<TrackStates> {
 
   Track? currentTrack;
   void setCurrentTrack({
-    required String trackImgUrl,
-    required String trackUrl,
-    required String title,
-    required String author,
-    required PlaylistModel playlist,
+     required PlaylistModel playlist,
     required int index,
   }) {
-    if (currentTrack?.trackLink != trackUrl) {
+    if (currentTrack?.trackLink != playlist.tracks![index].trackLink) {
       if (currentTrack != null) {
         removeCurrentTrack();
       }
-      currentTrack = Track(
-        artist: author,
-        trackName: title,
-        image: trackImgUrl,
-        trackLink: trackUrl,
-      );
-      initHandler(currentTrack!, playlist, index);
+      currentTrack = playlist.tracks![index];
+      initHandler(playlist, index);
     }
     emit(SetTrackState());
   }
@@ -135,10 +116,10 @@ class TrackCubit extends Cubit<TrackStates> {
   }
 
   void mute() {
-    if(audioPlayer!.volume!=0){
+    if (audioPlayer!.volume != 0) {
       audioPlayer!.setVolume(0);
       customToast(msg: "Muted", color: AppColors.smallTextColor);
-    }else{
+    } else {
       audioPlayer!.setVolume(1);
     }
   }
@@ -147,11 +128,9 @@ class TrackCubit extends Cubit<TrackStates> {
     if (audioPlayer!.shuffleModeEnabled) {
       audioPlayer?.setShuffleModeEnabled(false);
       customToast(msg: "Shuffle mode off", color: AppColors.smallTextColor);
-
     } else {
       audioPlayer?.setShuffleModeEnabled(true);
       customToast(msg: "Shuffle mode on", color: AppColors.smallTextColor);
-
     }
   }
 
@@ -174,5 +153,4 @@ class TrackCubit extends Cubit<TrackStates> {
         return Assets.volumeIcon;
     }
   }
-
 }

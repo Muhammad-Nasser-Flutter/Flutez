@@ -31,10 +31,6 @@ class TrackItem extends StatelessWidget {
             );
             if(trackCubit.audioPlayer?.sequenceState?.currentSource?.tag.album != model.trackLink){
               trackCubit.setCurrentTrack(
-                  trackImgUrl: model.image!,
-                  trackUrl: model.trackLink!,
-                  title: model.trackName!,
-                  author: model.artist!,
                   playlist: playlistModel,
                   index: index
               );

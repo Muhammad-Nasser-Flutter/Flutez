@@ -35,11 +35,7 @@ class SearchItem extends StatelessWidget {
                 );
                 if(trackCubit.audioPlayer?.sequenceState?.currentSource?.tag.album != searchModel.trackLink && state is SearchSuccessState){
                   trackCubit.setCurrentTrack(
-                      trackImgUrl: searchModel.image!,
-                      trackUrl: searchModel.trackLink!,
-                      title: searchModel.trackName!,
-                      author: searchModel.artist!,
-                      playlist: PlaylistModel(tracks: state.searches),
+                     playlist: PlaylistModel(tracks: state.searches),
                       index: index
                   );
                 }

@@ -31,10 +31,10 @@ class RecommendedItemWidget extends StatelessWidget {
               arguments: recommendedTrack,
             );
             trackCubit.setCurrentTrack(
-              trackImgUrl: recommendedTrack.image!,
-              trackUrl: recommendedTrack.trackLink!,
-              title: recommendedTrack.trackName!,
-              author: recommendedTrack.artist!,
+              // trackImgUrl: recommendedTrack.image!,
+              // trackUrl: recommendedTrack.trackLink!,
+              // title: recommendedTrack.trackName!,
+              // artist: recommendedTrack.artist!,
               playlist: PlaylistModel(
                   tracks: RecommendedCubit.get(context).recommendedTracks),
               index: index,

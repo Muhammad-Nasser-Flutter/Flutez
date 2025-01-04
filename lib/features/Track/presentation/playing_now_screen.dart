@@ -19,8 +19,8 @@ import '../../Favorites/Bloc/favorites_states.dart';
 import '../Model/track_model.dart';
 
 class PlayingNowScreen extends StatelessWidget {
-  Track track;
-  PlayingNowScreen({super.key, required this.track});
+  final Track track;
+  const PlayingNowScreen({super.key, required this.track});
 
   @override
   Widget build(BuildContext context) {
