@@ -42,7 +42,7 @@ class Text12 extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: size ?? 12.sp,
+        fontSize: size ?? 12.r,
         fontWeight: weight ?? FontWeight.w400,
         color: textColor ??AppColors.smallTextColor,
             // (Theme.of(context).brightness == Brightness.light
@@ -101,7 +101,7 @@ class Text14 extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: size ?? 14.sp,
+        fontSize: size ?? 14.r,
         fontWeight: weight ?? FontWeight.w500,
         color: textColor ??AppColors.smallTextColor,
             // (Theme.of(context).brightness == Brightness.light
@@ -155,7 +155,7 @@ class Text16 extends StatelessWidget {
       softWrap: true,
       text,
       style: TextStyle(
-        fontSize: size ?? 16.sp,
+        fontSize: size ?? 16.r,
         fontWeight: weight ?? FontWeight.w500,
         color: textColor ??AppColors.smallTextColor,
             // (Theme.of(context).brightness == Brightness.light
@@ -205,7 +205,7 @@ class Text18 extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: size ?? 18.sp,
+        fontSize: size ?? 18.r,
         fontWeight: weight ?? FontWeight.w500,
         color: textColor ??AppColors.bigTextColor,
             // (Theme.of(context).brightness == Brightness.light
@@ -255,7 +255,7 @@ class Text20 extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: size ?? 20.sp,
+        fontSize: size ?? 20.r,
         fontWeight: weight ?? FontWeight.w500,
         color: textColor ??
             (Theme.of(context).brightness == Brightness.light
@@ -305,7 +305,7 @@ class Text22 extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: size ?? 22.sp,
+        fontSize: size ?? 22.r,
         fontWeight: weight ?? FontWeight.w500,
         color: textColor ??AppColors.bigTextColor,
             // (Theme.of(context).brightness == Brightness.light
@@ -355,7 +355,7 @@ class Text24 extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: size ?? 24.sp,
+        fontSize: size ?? 24.r,
         fontWeight: weight ?? FontWeight.w500,
         color: textColor ??AppColors.bigTextColor,
             // (Theme.of(context).brightness == Brightness.light
@@ -405,7 +405,7 @@ class Text26 extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: size ?? 26.sp,
+        fontSize: size ?? 26.r,
         fontWeight: weight ?? FontWeight.w500,
         color: textColor ??AppColors.bigTextColor,
             // (Theme.of(context).brightness == Brightness.light
@@ -455,7 +455,7 @@ class Text28 extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: size ?? 28.sp,
+        fontSize: size ?? 28.r,
         fontWeight: weight ?? FontWeight.w500,
         color: textColor ??AppColors.bigTextColor,
             // (Theme.of(context).brightness == Brightness.light

@@ -73,17 +73,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       hintText: "Search desired track ..",
                       padding: EdgeInsets.symmetric(horizontal: 15.w),
                       maxLines: 1,
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      textColor: Colors.white,
+                      textSize: 16.sp,
+                      textWeight: FontWeight.w400,
                       onChanged: (s) {
                         if (_debounceTimer != null) {
                           _debounceTimer!.cancel(); // Cancel the previous timer
                         }
-                        _debounceTimer =
-                            Timer(const Duration(milliseconds: 800), () {
+                        _debounceTimer = Timer(const Duration(milliseconds: 800), () {
                           searchCubit.searchTracks(text: controller.text);
                         });
                       },
@@ -115,10 +112,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount:
-                        state is SearchSuccessState ? state.searches.length : 0,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    itemCount: state is SearchSuccessState ? state.searches.length : 0,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.75,
                       mainAxisSpacing: 20,

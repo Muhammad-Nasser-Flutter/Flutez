@@ -61,7 +61,13 @@ class MyApp extends StatelessWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.dark,
-        initialRoute: CacheHelper.isLoggedIn() ?  CacheHelper.isOffline?Routes.downloadsScreen:Routes.homeScreen: Routes.loginScreen,
+          initialRoute: CacheHelper.isDesktop(context)
+              ? Routes.desktopHomeScreen
+              : CacheHelper.isLoggedIn()
+                  ? CacheHelper.isOffline
+                      ? Routes.downloadsScreen
+                      : Routes.homeScreen
+                  : Routes.loginScreen,
           onGenerateRoute: appRouter.generateRoute,
           builder: EasyLoading.init(),
         ),

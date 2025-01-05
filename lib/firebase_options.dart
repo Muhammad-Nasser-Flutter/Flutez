@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -63,6 +54,40 @@ class DefaultFirebaseOptions {
     messagingSenderId: '662697512266',
     projectId: 'flutez-18e07',
     storageBucket: 'flutez-18e07.appspot.com',
+    androidClientId: '662697512266-do531lipm93fk4liaj70biafmbiejb51.apps.googleusercontent.com',
+    iosClientId: '662697512266-44i2j8icbomp1k3cq68i12af2smnk3bt.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutez',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDclAGhlQltzJadaYEgy1Lr7h_VU5Qbsks',
+    appId: '1:662697512266:web:79769770ad632487d885b3',
+    messagingSenderId: '662697512266',
+    projectId: 'flutez-18e07',
+    authDomain: 'flutez-18e07.firebaseapp.com',
+    storageBucket: 'flutez-18e07.appspot.com',
+    measurementId: 'G-XV24B2Q4VY',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyAtcqdGwbUeaUzUf_CNaeJzJLtD10klSHU',
+    appId: '1:662697512266:ios:a9cabb3c22a135f5d885b3',
+    messagingSenderId: '662697512266',
+    projectId: 'flutez-18e07',
+    storageBucket: 'flutez-18e07.appspot.com',
+    androidClientId: '662697512266-do531lipm93fk4liaj70biafmbiejb51.apps.googleusercontent.com',
+    iosClientId: '662697512266-44i2j8icbomp1k3cq68i12af2smnk3bt.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutez',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyDclAGhlQltzJadaYEgy1Lr7h_VU5Qbsks',
+    appId: '1:662697512266:web:fb51b913dd47f60bd885b3',
+    messagingSenderId: '662697512266',
+    projectId: 'flutez-18e07',
+    authDomain: 'flutez-18e07.firebaseapp.com',
+    storageBucket: 'flutez-18e07.appspot.com',
+    measurementId: 'G-JMT8NR72RJ',
+  );
+
 }

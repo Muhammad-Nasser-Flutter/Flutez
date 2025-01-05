@@ -7,6 +7,7 @@ import 'package:flutez/features/Search/Bloc/search_cubit.dart';
 import 'package:flutez/features/Search/presentation/search_screen.dart';
 import 'package:flutez/features/Track/presentation/offline_playing_now_screen.dart';
 import 'package:flutez/features/Track/presentation/playing_now_screen.dart';
+import 'package:flutez/features/desktop_home_screen/Presentation/desktop_home_screen.dart';
 import 'package:flutez/features/home/Bloc/home_cubit.dart';
 import 'package:flutez/features/Playlists/models/playlist_model.dart';
 import 'package:flutez/features/home/presentation/home_screen.dart';
@@ -106,7 +107,17 @@ class AppRouter {
         );
       case Routes.searchScreen:
         return PageTransition(
-          child: BlocProvider(create: (BuildContext context) => SearchCubit(), child: SearchScreen()),
+          child: BlocProvider(
+            create: (BuildContext context) => SearchCubit(),
+            child: SearchScreen(),
+          ),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
+      case Routes.desktopHomeScreen:
+        return PageTransition(
+          child: DesktopHomeScreen(),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,

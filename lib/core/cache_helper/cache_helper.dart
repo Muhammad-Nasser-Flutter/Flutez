@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutez/core/routing/routes.dart';
+import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,7 +43,10 @@ class CacheHelper {
         ) ??
         "en";
   }
-
+  static bool isDesktop(BuildContext context) {
+    var isDesktop = MediaQuery.sizeOf(context).width >= 600;
+    return isDesktop;
+  }
   static void changeLanguageToAr() async {
     await CacheHelper.saveData(key: CacheKeys.currentLanguage, value: "ar");
   }

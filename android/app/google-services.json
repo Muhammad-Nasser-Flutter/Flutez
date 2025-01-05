@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "662697512266-p9gmh7p7jpp7u2i1t1s0rivbucie8iai.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutez",
+            "certificate_hash": "80ee27d5fc53d7727def5704a5afc8a18a57aa3e"
+          }
+        },
+        {
           "client_id": "662697512266-s3a4ngicljge3hboadbh0v4vtl7vh25d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

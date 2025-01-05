@@ -9,7 +9,6 @@ class Assets {
   static const String cover1 = "assets/images/Cover1.png";
   static const String cover2 = "assets/images/Cover2.png";
   static const String cover3 = "assets/images/Cover3.png";
-  static const String playingTrackIcon = "assets/images/playingTrackIcon.png";
   static const String arrowBackIcon = "assets/images/arrow_back.svg";
   static const String heartIcon = "assets/images/heart.svg";
   static const String heartFillIcon = "assets/images/heart-fill.svg";
