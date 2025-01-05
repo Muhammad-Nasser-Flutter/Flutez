@@ -51,6 +51,12 @@ class DownloadsScreen extends StatelessWidget {
               ),
               BlocBuilder<DownloadedTracksCubit, List<DownloadedTrackModel>>(
                 builder: (context, state) {
+                  if (state.isEmpty) {
+                    return SizedBox(
+                      height: 400.h,
+                      child: Center(child: Text18(text: "No downloads available !")),
+                    );
+                  }
                   return GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

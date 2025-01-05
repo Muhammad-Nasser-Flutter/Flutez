@@ -130,33 +130,61 @@ class PlayingNowScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: 30.w,
+                            width: 20.w,
                           ),
-                          if(mediaItem != null)
-                          BlocBuilder<DownloadedTracksCubit, List<DownloadedTrackModel>>(
-                            builder: (context, state) {
-                              bool inDownloads = state.any((element) => element.title == (mediaItem.title??""));
-                              return IconButton(
-                                onPressed: () {
-                                  if (!inDownloads) {
-                                    context.read<DownloadedTracksCubit>().addTrackToDownloadedTracks(
-                                          id: mediaItem.id,
-                                          artist: mediaItem.artist,
-                                          imageUrl: mediaItem.artUri.toString(),
-                                          trackName: mediaItem.title,
-                                          trackUrl: mediaItem.album,
-                                        );
-                                  } else {
-                                    /// remove from downloads
-                                  }
-                                },
-                                icon: Icon(
-                                  !inDownloads ? Icons.download : Icons.download_done,
-                                  color: Colors.white,
-                                ),
-                              );
-                            },
-                          ),
+                          if (mediaItem != null)
+                            BlocBuilder<DownloadedTracksCubit, List<DownloadedTrackModel>>(
+                              builder: (context, state) {
+                                bool inDownloads = state.any((element) => element.title == (mediaItem.title ?? ""));
+                                return IconWidget(
+                                  onPressed: () async {
+                                    if (!inDownloads) {
+                                      context.read<DownloadedTracksCubit>().addTrackToDownloadedTracks(
+                                            id: mediaItem.id,
+                                            artist: mediaItem.artist,
+                                            imageUrl: mediaItem.artUri.toString(),
+                                            trackName: mediaItem.title,
+                                            trackUrl: mediaItem.album,
+                                          );
+                                    } else {
+                                      /// remove from downloads
+                                      ///
+                                      bool? result = await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text('Delete Track'),
+                                                content: const Text('Are you sure you want to delete this track?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () => Navigator.of(context).pop(false),
+                                                    child: const Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () => Navigator.of(context).pop(true),
+                                                    child: const Text('Delete'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ) ??
+                                          false;
+                                      if (result) {
+                                        if (context.mounted) {
+                                          context.read<DownloadedTracksCubit>().removeTrackFromDownloadedTracks(
+                                                trackName: mediaItem.title,
+                                                audioPlayer: trackCubit.audioPlayer!,
+                                              );
+                                        }
+                                      }
+                                    }
+                                  },
+                                  iconAsset: inDownloads ? Assets.downloadedIcon : Assets.downloadIcon,
+                                  color: AppColors.smallTextColor,
+                                  size: 22.r,
+                                );
+                              },
+                            ),
                           BlocBuilder<FavoritesCubit, FavoritesStates>(
                             builder: (context, state) {
                               var favCubit = FavoritesCubit.get(context);

@@ -5,6 +5,8 @@ import 'package:flutez/core/theming/assets.dart';
 import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
+import 'package:flutez/features/Downloads/Bloc/cubit/downloaded_tracks_cubit.dart';
+import 'package:flutez/features/Downloads/models/downloaded_track_model.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/position_data.dart';
@@ -88,29 +90,80 @@ class OfflinePlayingNowScreen extends StatelessWidget {
                     SizedBox(
                       height: 30.h,
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          constraints: BoxConstraints(maxWidth: 260.w),
-                          child: mediaItem != null
-                              ? Text22(
-                                  text: mediaItem.title,
-                                  maxLines: 1,
-                                  overFlow: TextOverflow.ellipsis,
-                                  textColor: Colors.white,
-                                )
-                              : const TextShimmer(width: 0.5),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        mediaItem != null
-                            ? Text16(
-                                text: "${mediaItem.artist}",
-                                weight: FontWeight.w300,
-                              )
-                            : const TextShimmer(width: 0.3),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  constraints: BoxConstraints(maxWidth: 260.w),
+                                  child: mediaItem != null
+                                      ? Text22(
+                                          text: mediaItem.title,
+                                          maxLines: 1,
+                                          overFlow: TextOverflow.ellipsis,
+                                          textColor: Colors.white,
+                                        )
+                                      : const TextShimmer(width: 0.5),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                mediaItem != null
+                                    ? Text16(
+                                        text: "${mediaItem.artist}",
+                                        weight: FontWeight.w300,
+                                      )
+                                    : const TextShimmer(width: 0.3),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 20.w),
+                          if (mediaItem != null)
+                            BlocBuilder<DownloadedTracksCubit, List<DownloadedTrackModel>>(
+                              builder: (context, state) {
+                                return IconWidget(
+                                  onPressed: () async {
+                                    bool? result = await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text('Delete Track'),
+                                              content: const Text('Are you sure you want to delete this track?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => Navigator.of(context).pop(false),
+                                                  child: const Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () => Navigator.of(context).pop(true),
+                                                  child: const Text('Delete'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ) ??
+                                        false;
+                                    if (result) {
+                                      if (context.mounted) {
+                                        context.read<DownloadedTracksCubit>().removeTrackFromDownloadedTracks(
+                                              trackName: mediaItem.title,
+                                              audioPlayer: trackCubit.audioPlayer!,
+                                            );
+                                      }
+                                    }
+                                  },
+                                  iconAsset: Assets.downloadedIcon,
+                                  color: AppColors.smallTextColor,
+                                  size: 22.r,
+                                );
+                              },
+                            ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,
