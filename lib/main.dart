@@ -19,6 +19,7 @@ import 'core/theming/themes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
+  await CacheHelper.initializeConnction();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Bloc.observer = MyBlocObserver();
   initAudio();
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.dark,
-          initialRoute: CacheHelper.isLoggedIn() ? Routes.homeScreen : Routes.loginScreen,
+        initialRoute: CacheHelper.isLoggedIn() ?  CacheHelper.isOffline?Routes.downloadsScreen:Routes.homeScreen: Routes.loginScreen,
           onGenerateRoute: appRouter.generateRoute,
           builder: EasyLoading.init(),
         ),

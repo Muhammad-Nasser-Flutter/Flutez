@@ -1,5 +1,6 @@
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/theming/assets.dart';
+import 'package:flutez/core/widgets/back.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
 import 'package:flutez/core/widgets/search_icon.dart';
@@ -16,28 +17,19 @@ import '../../Track/presentation/widgets/track_item.dart';
 class DownloadsScreen extends StatelessWidget {
   const DownloadsScreen({
     super.key,
+    this.fromMain = true,
   });
+  final bool fromMain;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconWidget(
-              onPressed: () {
-                context.pop();
-              },
-              iconAsset: Assets.arrowBackIcon,
-            ),
-            Text24(
-              text: "Downloads",
-              textColor: Colors.white,
-            ),
-            const SearchWidget()
-          ],
+        leading: fromMain ? null : const Back(),
+        title: Text24(
+          text: "Downloads",
+          textColor: Colors.white,
         ),
       ),
       body: Padding(

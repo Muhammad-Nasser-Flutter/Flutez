@@ -61,8 +61,11 @@ class AppRouter {
         );
 
       case Routes.downloadsScreen:
+        final bool fromMain = (settings.arguments ?? true) as bool;
         return PageTransition(
-          child: const DownloadsScreen(),
+          child: DownloadsScreen(
+            fromMain: fromMain,
+          ),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,

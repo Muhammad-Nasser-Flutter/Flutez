@@ -67,7 +67,7 @@ class CustomDrawer extends StatelessWidget {
                     label: "Downloads",
                     onPressed: () {
                       // context.pop();
-                      context.pushNamed(Routes.downloadsScreen);
+                      context.pushNamed(Routes.downloadsScreen, arguments: false);
                     },
                   ),
                   SizedBox(
