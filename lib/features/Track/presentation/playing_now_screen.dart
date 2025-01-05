@@ -29,7 +29,7 @@ class PlayingNowScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => FavoritesCubit()..getFavorites(),
       child: BlocBuilder<TrackCubit, TrackStates>(
-        builder: (context, state) {
+        builder: (trackContext, state) {
           var trackCubit = TrackCubit.get(context);
           return Scaffold(
             appBar: AppBar(
@@ -134,7 +134,7 @@ class PlayingNowScreen extends StatelessWidget {
                           ),
                           if (mediaItem != null)
                             BlocBuilder<DownloadedTracksCubit, List<DownloadedTrackModel>>(
-                              builder: (context, state) {
+                              builder: (downloadedContext, state) {
                                 bool inDownloads = state.any((element) => element.title == (mediaItem.title ?? ""));
                                 return IconWidget(
                                   onPressed: () async {
@@ -150,7 +150,7 @@ class PlayingNowScreen extends StatelessWidget {
                                       /// remove from downloads
                                       ///
                                       bool? result = await showDialog(
-                                            context: context,
+                                            context: trackContext,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
                                                 title: const Text('Delete Track'),
@@ -172,6 +172,7 @@ class PlayingNowScreen extends StatelessWidget {
                                       if (result) {
                                         if (context.mounted) {
                                           context.read<DownloadedTracksCubit>().removeTrackFromDownloadedTracks(
+                                                screenContext: trackContext,
                                                 trackName: mediaItem.title,
                                                 audioPlayer: trackCubit.audioPlayer!,
                                               );

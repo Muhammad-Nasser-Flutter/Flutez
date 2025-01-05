@@ -124,23 +124,41 @@ class OfflinePlayingNowScreen extends StatelessWidget {
                           SizedBox(width: 20.w),
                           if (mediaItem != null)
                             BlocBuilder<DownloadedTracksCubit, List<DownloadedTrackModel>>(
-                              builder: (context, state) {
+                              builder: (downloadedContext, state) {
                                 return IconWidget(
                                   onPressed: () async {
                                     bool? result = await showDialog(
-                                          context: context,
+                                          context: downloadedContext,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title: const Text('Delete Track'),
-                                              content: const Text('Are you sure you want to delete this track?'),
+                                              backgroundColor: AppColors.scaffoldBackground,
+                                              title: Text18(text: "Delete Track"),
+                                              content: Text16(
+                                                text: 'Are you sure you want to delete this track?',
+                                                textColor: Colors.white,
+                                              ),
                                               actions: [
-                                                TextButton(
+                                                ElevatedButton(
+                                                  style: const ButtonStyle(
+                                                    backgroundColor: WidgetStatePropertyAll(AppColors.smallTextColor),
+                                                  ),
                                                   onPressed: () => Navigator.of(context).pop(false),
-                                                  child: const Text('Cancel'),
+                                                  child: Text14(
+                                                    text: "Cancel",
+                                                    textColor: Colors.white,
+                                                    weight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                                TextButton(
+                                                ElevatedButton(
+                                                  style: const ButtonStyle(
+                                                    backgroundColor: WidgetStatePropertyAll(AppColors.smallTextColor),
+                                                  ),
                                                   onPressed: () => Navigator.of(context).pop(true),
-                                                  child: const Text('Delete'),
+                                                  child: Text14(
+                                                    text: "Delete",
+                                                    textColor: Colors.white,
+                                                    weight: FontWeight.w500,
+                                                  ),
                                                 ),
                                               ],
                                             );
@@ -150,6 +168,7 @@ class OfflinePlayingNowScreen extends StatelessWidget {
                                     if (result) {
                                       if (context.mounted) {
                                         context.read<DownloadedTracksCubit>().removeTrackFromDownloadedTracks(
+                                              screenContext: downloadedContext,
                                               trackName: mediaItem.title,
                                               audioPlayer: trackCubit.audioPlayer!,
                                             );

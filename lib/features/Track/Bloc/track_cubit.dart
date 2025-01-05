@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../core/theming/assets.dart';
-import '../../Playlists/models/playlist_model.dart';
 import '../Model/track_model.dart';
 
 class TrackCubit extends Cubit<TrackStates> {
@@ -18,12 +17,10 @@ class TrackCubit extends Cubit<TrackStates> {
   static TrackCubit get(context) => BlocProvider.of(context);
 
   AudioPlayer? audioPlayer;
+  bool isOffline = false;
 
   void handleOnlinePlaylist(List<Track> playlist, int index) async {
-    // to make the chosen track the first item played
-    // Track item = test.tracks!.removeAt(index);
-    // test.tracks!.insert(0, item);
-    // adding them to the playlist
+    isOffline = false;
     List<AudioSource> list = playlist
         .map(
           (e) => AudioSource.uri(
@@ -48,6 +45,7 @@ class TrackCubit extends Cubit<TrackStates> {
   }
 
   void handleOfflinePlaylist(List<DownloadedTrackModel> playlist, int index) async {
+    isOffline = true;
     // to make the chosen track the first item played
     // Track item = test.tracks!.removeAt(index);
     // test.tracks!.insert(0, item);

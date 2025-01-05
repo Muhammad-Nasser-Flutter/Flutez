@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutez/core/cache_helper/cache_helper.dart';
 import 'package:flutez/core/constant.dart';
+import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/utilies/easy_loading.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutez/features/Downloads/models/downloaded_track_model.dart';
@@ -95,7 +97,11 @@ class DownloadedTracksCubit extends Cubit<List<DownloadedTrackModel>> {
     }
   }
 
-  Future<void> removeTrackFromDownloadedTracks({required String trackName, required AudioPlayer audioPlayer}) async {
+  Future<void> removeTrackFromDownloadedTracks({
+    required String trackName,
+    required AudioPlayer audioPlayer,
+    required BuildContext screenContext,
+  }) async {
     showLoading();
     try {
       // 1. Update the playlist
@@ -139,6 +145,9 @@ class DownloadedTracksCubit extends Cubit<List<DownloadedTrackModel>> {
           .toList();
       emit(tracks);
       hideLoading();
+      // if (screenContext.mounted&&state.isEmpty) {
+      //   screenContext.pop();
+      // }
     } catch (e) {
       print('Error removing track: $e'); // Add logging for debugging
       hideLoading();

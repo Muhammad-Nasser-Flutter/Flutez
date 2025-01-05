@@ -29,7 +29,11 @@ class PlayingTrack extends StatelessWidget {
             ? const SizedBox()
             : GestureDetector(
                 onTap: () {
-                  context.pushNamed(Routes.playingNowScreen, arguments: trackCubit.currentTrack);
+                  if (trackCubit.isOffline) {
+                    context.pushNamed(Routes.playingNowOfflineScreen);
+                  } else {
+                    context.pushNamed(Routes.playingNowScreen, arguments: trackCubit.currentTrack);
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.only(
