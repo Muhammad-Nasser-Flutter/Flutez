@@ -5,10 +5,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/theming/colors.dart';
+import 'package:flutez/core/utilies/easy_loading.dart';
 import 'package:flutez/core/widgets/custom_button.dart';
 import 'package:flutez/core/widgets/custom_text_form_field.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/features/Track/Model/track_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uuid/uuid.dart';
@@ -89,35 +91,30 @@ void showAddTrackDialog({required BuildContext screenContext, required double he
     if (trackFile == null || imageFile == null) {
       throw Exception('Please select both audio and image files');
     }
-
+    try {
     final String trackId = const Uuid().v4();
-
     final storageRef = FirebaseStorage.instance.ref();
-
     // Upload audio file
-
     final String audioPath = 'Tracks/Audio/${trackFile!.path.split('/').last}';
-
     final audioRef = storageRef.child(audioPath);
-
-    await audioRef.putFile(trackFile!);
-
+    await audioRef.putFile(trackFile!, SettableMetadata(contentType: 'audio/mp3'));
     final audioUrl = await audioRef.getDownloadURL();
-
     // Upload image file
-
     final String imagePath = 'Tracks/Images/${imageFile!.path.split('/').last}';
-
     final imageRef = storageRef.child(imagePath);
-
-    await imageRef.putFile(imageFile!);
-
+    await imageRef.putFile(imageFile!, SettableMetadata(contentType: 'image/jpeg'));
     final imageUrl = await imageRef.getDownloadURL();
-
+    print("audioUrl: $audioUrl, imageUrl: $imageUrl");
     return {
       'audioUrl': audioUrl,
       'imageUrl': imageUrl,
     };
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error uploading files: $e');
+      }
+      throw Exception('Error uploading files');
+    }
   }
 
   // Function to save track data to Firestore
@@ -133,9 +130,9 @@ void showAddTrackDialog({required BuildContext screenContext, required double he
             ).toJson(),
           );
     } catch (e) {
-      print('Error saving track data: $e');
-
-      rethrow;
+      if (kDebugMode) {
+        print('Error saving track data: $e');
+      }
     }
   }
 
@@ -163,36 +160,36 @@ void showAddTrackDialog({required BuildContext screenContext, required double he
     builder: (BuildContext context) {
       return Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(10.r),
         ),
         child: StatefulBuilder(
           builder: (context, setState) => IntrinsicHeight(
             child: Container(
-              width: width * 0.4,
-              padding: const EdgeInsets.all(20.0),
+              width: 200.w,
+              padding: EdgeInsets.all(20.r),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Expanded(
-                        child: Text12(
+                        child: Text16(
                           text: "Add track",
                           textColor: Colors.black,
-                          size: 8.sp,
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.close,
                           color: Colors.black,
+                          size: 20.r,
                         ),
                         onPressed: () => context.pop(),
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 25,
+                  SizedBox(
+                    height: 25.h,
                   ),
                   CustomTextFormField(
                     labelText: "Track Name",
@@ -201,12 +198,12 @@ void showAddTrackDialog({required BuildContext screenContext, required double he
                     borderColor: Colors.black54,
                     textColor: Colors.black,
                     borderWidth: 1,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.r),
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: 15.h,
                   ),
                   CustomTextFormField(
                     labelText: "Artist Name",
@@ -215,93 +212,138 @@ void showAddTrackDialog({required BuildContext screenContext, required double he
                     borderColor: Colors.black54,
                     borderWidth: 1,
                     textColor: Colors.black,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.r),
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: 15.h,
                   ),
                   SizedBox(
-                    height: 0.25 * height,
+                    height: 200.h,
                     child: Row(
                       children: [
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.smallTextColor,
-                              border: Border.all(
-                                color: Colors.black54,
-                                width: 1,
+                          child: InkWell(
+                            onTap: () {
+                              pickAudioFile(setState);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: AppColors.smallTextColor,
+                                border: Border.all(
+                                  color: Colors.black54,
+                                  width: 1,
+                                ),
                               ),
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Icon(
-                                    Icons.music_note,
-                                    color: AppColors.scaffoldBackground,
-                                    size: 100.r,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Icon(
+                                      Icons.music_note,
+                                      color: AppColors.scaffoldBackground,
+                                      size: 100.r,
+                                    ),
                                   ),
-                                ),
-                                Text20(
-                                  text: "Upload Track",
-                                  textColor: Colors.black,
-                                ),
-                                const SizedBox(
-                                  height: 30,
-                                )
-                              ],
+                                  if (trackFile != null)
+                                    Text20(
+                                      text: trackFile!.path.split('/').last,
+                                      textColor: Colors.black,
+                                      alignment: TextAlign.center,
+                                    )
+                                  else
+                                    Text20(
+                                      text: "Upload Track",
+                                      textColor: Colors.black,
+                                    ),
+                                  SizedBox(
+                                    height: 30.h,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
+                        SizedBox(
+                          width: 10.w,
                         ),
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.smallTextColor,
-                              border: Border.all(
-                                color: Colors.black54,
-                                width: 1,
+                          child: InkWell(
+                            onTap: () {
+                              pickImageFile(setState);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: AppColors.smallTextColor,
+                                border: Border.all(
+                                  color: Colors.black54,
+                                  width: 1,
+                                ),
                               ),
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Icon(
-                                    Icons.image,
-                                    color: AppColors.scaffoldBackground,
-                                    size: 100.r,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: imageFile == null
+                                        ? Icon(
+                                            Icons.image,
+                                            color: AppColors.scaffoldBackground,
+                                            size: 100.r,
+                                          )
+                                        : Image.file(
+                                            imageFile!,
+                                            fit: BoxFit.cover,
+                                            height: 100.h,
+                                          ),
                                   ),
-                                ),
-                                Text20(
-                                  text: "Upload Cover",
-                                  textColor: Colors.black,
-                                ),
-                                const SizedBox(
-                                  height: 30,
-                                )
-                              ],
+                                  Text20(
+                                    text: "Upload Cover",
+                                    textColor: Colors.black,
+                                  ),
+                                  SizedBox(
+                                    height: 30.h,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 25,
+                  SizedBox(
+                    height: 25.h,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: CustomButton(
                       text: "Submit",
-                      borderRadius: 15,
-                      height: 55,
-                      onPressed: () {},
+                      borderRadius: 15.r,
+                      height: 55.h,
+                      onPressed: () async {
+                        if (trackNameController.text.isNotEmpty &&
+                            artistNameController.text.isNotEmpty &&
+                            trackFile != null &&
+                            imageFile != null) {
+                          try {
+                            showLoading();
+                            await saveTrackData(await uploadFiles());
+                            hideLoading();
+                          } catch (e) {
+                            hideLoading();
+                            if (kDebugMode) {
+                              print(e);
+                            }
+                          }
+                          trackNameController.clear();
+                          artistNameController.clear();
+                          trackFile = null;
+                          imageFile = null;
+                          setState(() {});
+                          context.pop();
+                        }
+                      },
                     ),
                   ),
                 ],
