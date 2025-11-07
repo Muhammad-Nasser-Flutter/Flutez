@@ -109,10 +109,7 @@ class LoginScreen extends StatelessWidget {
                       text: "LOGIN",
                       color: AppColors.smallTextColor,
                       onPressed: () {
-                        authCubit.login(
-                            email: emailController.text,
-                            pass: passController.text,
-                            context: context);
+                        authCubit.login(email: emailController.text, pass: passController.text, context: context);
                       },
                     ),
                     SizedBox(
@@ -148,18 +145,15 @@ class LoginScreen extends StatelessWidget {
                           authCubit.signInWithGoogle();
                         },
                         child: Container(
-                          width: MediaQuery.sizeOf(context).width * 0.8,
+                          // width: MediaQuery.sizeOf(context).width * 0.8,
                           padding: EdgeInsets.all(2.r),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              color: Colors.white),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), color: Colors.white),
                           child: Row(
                             children: [
                               Container(
                                 padding: EdgeInsets.all(10.r),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5.r),
-                                    color: Colors.white),
+                                decoration:
+                                    BoxDecoration(borderRadius: BorderRadius.circular(5.r), color: Colors.white),
                                 child: SvgPicture.asset(
                                   Assets.googleIcon,
                                   width: 35.r,
@@ -182,44 +176,6 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Center(
-                      child: InkWell(
-                        onTap: () {
-                          authCubit.facebookLogin(context);
-                        },
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 0.8,
-                          padding: EdgeInsets.all(2.r),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r),
-                            color: const Color(0xFF0866ff),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(10.r),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.r),
-                                  color: Colors.white,
-                                ),
-                                child: SvgPicture.asset(
-                                  Assets.faceBookIcon,
-                                  width: 35.r,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 25.w,
-                              ),
-                              Text20(
-                                text: "Sign in with Facebook",
-                                maxLines: 1,
-                                overFlow: TextOverflow.ellipsis,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               );

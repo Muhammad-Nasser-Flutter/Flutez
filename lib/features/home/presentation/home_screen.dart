@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                const MyPlaylistWidget(),
+                const PlaylistsWidget(),
                 SizedBox(
                   height: 20.h,
                 ),

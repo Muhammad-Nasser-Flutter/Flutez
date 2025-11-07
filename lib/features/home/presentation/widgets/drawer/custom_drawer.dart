@@ -31,25 +31,29 @@ class CustomDrawer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconWidget(
-                        onPressed: () {
-                          context.pop();
-                        },
-                        iconAsset: Assets.exitIcon,
-                        size: 20.r,
-                      ),
-                      IconWidget(
-                        onPressed: () {},
-                        iconAsset: Assets.moonIcon,
-                        size: 20.r,
-                      ),
-                    ],
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconWidget(
+                      onPressed: () {
+                        context.pop();
+                      },
+                      iconAsset: Assets.exitIcon,
+                      size: 20.r,
+                    ),
                   ),
                   SizedBox(
                     height: 20.h,
+                  ),
+                  DrawerItem(
+                    icon: Assets.volumeIcon,
+                    label: "All Tracks",
+                    onPressed: () {
+                      // context.pop();
+                      context.pushNamed(Routes.searchScreen);
+                    },
+                  ),
+                  SizedBox(
+                    height: 10.h,
                   ),
                   DrawerItem(
                     icon: Assets.heartIcon,
@@ -69,38 +73,6 @@ class CustomDrawer extends StatelessWidget {
                       // context.pop();
                       context.pushNamed(Routes.downloadsScreen, arguments: false);
                     },
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  DrawerItem(
-                    icon: Assets.languageIcon,
-                    label: "Language",
-                    onPressed: () {},
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  DrawerItem(
-                    icon: Assets.contactUsIcon,
-                    label: "Contact us",
-                    onPressed: () {},
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  DrawerItem(
-                    icon: Assets.fAQIcon,
-                    label: "FAQs",
-                    onPressed: () {},
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  DrawerItem(
-                    icon: Assets.settingsIcon,
-                    label: "Settings",
-                    onPressed: () {},
                   ),
                   SizedBox(
                     height: 10.h,

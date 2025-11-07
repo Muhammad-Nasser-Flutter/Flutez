@@ -50,7 +50,7 @@ class CustomButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width: width ?? MediaQuery.of(context).size.width * 0.9,
-        height: height ?? 60.h,
+        height: height ?? 55.r,
         margin: margin,
         decoration: BoxDecoration(
           gradient: gradientColors != null
@@ -65,7 +65,7 @@ class CustomButton extends StatelessWidget {
           boxShadow: boxShadow ??
               [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
+                  color: Colors.grey.withValues(alpha: 0.3),
                   spreadRadius: -1,
                   blurRadius: 5.r,
                 ),

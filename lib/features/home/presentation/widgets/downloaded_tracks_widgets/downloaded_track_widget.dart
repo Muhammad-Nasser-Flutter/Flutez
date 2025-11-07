@@ -8,7 +8,6 @@ import 'package:flutez/features/Downloads/Bloc/cubit/downloaded_tracks_cubit.dar
 import 'package:flutez/features/Downloads/models/downloaded_track_model.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
-import 'package:flutez/features/Track/presentation/Shimmers/image_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/theming/assets.dart';
-import 'package:flutez/core/theming/colors.dart';
 import 'package:flutez/core/widgets/custom_text_form_field.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/core/widgets/icon_widget.dart';
@@ -13,10 +12,9 @@ import 'package:flutez/features/Track/presentation/widgets/playingTrack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({super.key});
+  const SearchScreen({super.key});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();

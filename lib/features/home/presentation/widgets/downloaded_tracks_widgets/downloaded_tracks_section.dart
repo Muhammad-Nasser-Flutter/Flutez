@@ -1,10 +1,6 @@
 import 'package:flutez/core/widgets/custom_texts.dart';
 import 'package:flutez/features/Downloads/Bloc/cubit/downloaded_tracks_cubit.dart';
 import 'package:flutez/features/Downloads/models/downloaded_track_model.dart';
-import 'package:flutez/features/Recommended/Bloc/recommended_cubit.dart';
-import 'package:flutez/features/Recommended/Bloc/recommended_states.dart';
-import 'package:flutez/features/Track/presentation/Shimmers/recommended_shimmer.dart';
-import 'package:flutez/features/Recommended/Presentation/widgets/recommended_item_widget.dart';
 import 'package:flutez/features/home/presentation/widgets/downloaded_tracks_widgets/downloaded_track_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

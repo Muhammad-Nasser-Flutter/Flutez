@@ -26,7 +26,7 @@ final ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: AppColors.scaffoldBackground,
   primaryColor: Colors.black,
   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo)
-      .copyWith(background: Colors.white),
+      .copyWith(surface: Colors.white),
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -35,7 +35,7 @@ final ThemeData darkTheme = ThemeData(
     systemOverlayStyle: SystemUiOverlayStyle.light,
     elevation: 0,
     scrolledUnderElevation: 0,
-    color: AppColors.scaffoldBackground,
+    backgroundColor: AppColors.scaffoldBackground,
     iconTheme: IconThemeData(
       color: Colors.white,
     ),
@@ -51,7 +51,7 @@ final ThemeData darkTheme = ThemeData(
   scaffoldBackgroundColor: AppColors.scaffoldBackground,
   primaryColor: const Color(0xff10151C),
   colorScheme:
-      ColorScheme.fromSwatch().copyWith(background: const Color(0xff10151C)),
+      ColorScheme.fromSwatch().copyWith(surface: const Color(0xff10151C)),
 );
 
 void configLoading() {

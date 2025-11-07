@@ -7,8 +7,8 @@ import '../../../../../../../core/widgets/custom_texts.dart';
 import '../../../Track/presentation/Shimmers/recommended_shimmer.dart';
 import 'home_playlist_item_widget.dart';
 
-class MyPlaylistWidget extends StatelessWidget {
-  const MyPlaylistWidget({super.key});
+class PlaylistsWidget extends StatelessWidget {
+  const PlaylistsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class MyPlaylistWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text24(
-                text: "My Playlists",
+                text: "Playlists",
                 weight: FontWeight.w700,
               ),
               SizedBox(

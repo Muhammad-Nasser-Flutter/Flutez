@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutez/core/cache_helper/cache_helper.dart';
 import 'package:flutez/core/constant.dart';
-import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/utilies/easy_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

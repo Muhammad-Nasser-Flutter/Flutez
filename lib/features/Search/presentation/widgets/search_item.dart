@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/widgets/custom_texts.dart';
-import 'package:flutez/features/Playlists/models/playlist_model.dart';
 import 'package:flutez/features/Search/Bloc/search_cubit.dart';
 import 'package:flutez/features/Search/Bloc/search_states.dart';
-import 'package:flutez/features/Search/models/search_model.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
 import 'package:flutez/features/Track/Model/track_model.dart';

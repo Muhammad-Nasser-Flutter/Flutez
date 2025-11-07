@@ -1,4 +1,5 @@
 import 'package:flutez/core/helpers/extensions.dart';
+import 'package:flutez/core/utilies/easy_loading.dart';
 import 'package:flutez/features/Auth/Bloc/auth_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,10 @@ class RegisterScreen extends StatelessWidget {
             listener: (context, state) {
               if (state is RegisterSuccessState) {
                 context.pushReplacementNamed(Routes.homeScreen);
+                hideLoading();
+              }
+              if (state is RegisterErrorState) {
+                hideLoading();
               }
             },
             builder: (context, state) {
@@ -139,11 +144,10 @@ class RegisterScreen extends StatelessWidget {
                         color: AppColors.smallTextColor,
                         onPressed: () {
                           if (authCubit.checkValidity(
-                            email: emailController.text,
-                            pass: passController.text,
-                            userName: userNameController.text,
-                            phone:phoneController.text
-                          )) {
+                              email: emailController.text,
+                              pass: passController.text,
+                              userName: userNameController.text,
+                              phone: phoneController.text)) {
                             authCubit.register(
                               email: emailController.text,
                               pass: passController.text,

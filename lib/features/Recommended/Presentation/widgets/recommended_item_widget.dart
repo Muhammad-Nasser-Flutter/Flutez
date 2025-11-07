@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutez/core/helpers/extensions.dart';
 import 'package:flutez/core/theming/colors.dart';
-import 'package:flutez/features/Playlists/models/playlist_model.dart';
 import 'package:flutez/features/Recommended/Bloc/recommended_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_cubit.dart';
 import 'package:flutez/features/Track/Bloc/track_states.dart';
